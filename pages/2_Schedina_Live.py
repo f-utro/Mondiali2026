@@ -285,6 +285,21 @@ st.markdown("""
     .match-teams span {
         font-size: 32px !important;
     }
+
+    div.stButton > button {
+    background-color: #ffffff !important; /* Bianco pulito */
+    border: 1px solid #dcdcdc !important;
+    border-radius: 20px !important;       /* Angoli arrotondati */
+    padding: 0.5rem 1rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease;
+    }
+
+    /* Effetto al passaggio del mouse o tocco */
+    div.stButton > button:active {
+        background-color: #f0f0f0 !important;
+        transform: scale(0.98); /* Effetto "click" fisico */
+    }
     </style>
 """, unsafe_allow_html=True)
 
