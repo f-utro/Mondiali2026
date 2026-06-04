@@ -187,163 +187,29 @@ CALENDARIO_GIORNATE = {
 
 # --- ENGINE CSS CUSTOM ---
 st.markdown("""
-    <style>
-    header, .stHeader, [data-testid="stHeader"], [data-testid="stSidebarCollapsedControl"] {
-        display: none !important;
-    }
-    .block-container {
-        max-width: 600px !important;
-        padding-top: 0.5rem !important;
-        padding-bottom: 2rem !important;
-        padding-left: 0.5rem !important;
-        padding-right: 0.5rem !important;
-        margin: 0 auto !important;
-    }
-    .stApp { background-color: #f9ebdf !important; }
-    .stApp h1, .stApp h2, .stApp h3, .stApp h4, .stApp p, .stApp span, .stApp label {
-        color: #111111 !important; 
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-    .login-box {
-        background: #ffffff; padding: 30px; border-radius: 8px; 
-        border: 1px solid #ebdccf; box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-        text-align: center; margin-top: 10px;
-    }
-    .match-card {
-        background: #ffffff; padding: 16px; border-radius: 8px;
-        border: 1px solid #ebdccf; box-shadow: 0 3px 8px rgba(0,0,0,0.02); margin-bottom: 15px;
-    }
-    .match-header { font-size: 11px; font-weight: bold; color: #666666 !important; letter-spacing: 1.2px; margin-bottom: 10px; text-align: center; }
-    .match-teams { display: flex; align-items: center; justify-content: center; gap: 12px; font-weight: 700; font-size: 18px; color: #111111 !important; }
-
-    /* Selettore 1X2 */
-    div[data-testid="stRadioHList"] {
-        gap: 0px !important; border: 2px solid #111111 !important;
-        border-radius: 4px !important; background-color: #ffffff !important;
-        overflow: hidden !important; width: 100% !important; display: flex !important;
-    }
-    div[data-testid="stRadioHList"] input[type="radio"],
-    div[data-testid="stRadioHList"] div[data-testid="stLabelVisibility-collapsed"] div::before {
-        display: none !important;
-    }
-    div[data-testid="stRadioHList"] label {
-        padding: 0px !important; margin: 0px !important; flex: 1 !important; height: 42px !important;
-        display: flex !important; align-items: center !important; justify-content: center !important;
-        border-right: 1px solid #111111 !important; cursor: pointer !important; background-color: #ffffff !important;
-    }
-    div[data-testid="stRadioHList"] label:last-child { border-right: none !important; }
-    div[data-testid="stRadioHList"] label p { font-weight: 900 !important; font-size: 16px !important; color: #111111 !important; margin: 0 !important; }
-    div[data-testid="stRadioHList"] [data-checked="true"] { background-color: #fff2cc !important; }
-    div[data-testid="stRadioHList"] [data-checked="true"] p { color: #cc0000 !important; }
-
-    /* Input Punteggio */
-    div[data-testid="stTextInput"] input { 
-        background-color: #ffffff !important; color: #111111 !important; 
-        border: 2px solid #111111 !important; border-radius: 4px !important; 
-        height: 42px !important; font-size: 16px !important; font-weight: bold !important; text-align: center;
-    }
-    
-    /* Griglia Mobile-Proof */
-    div[data-testid="stHorizontalBlock"] {
-        display: flex !important; flex-direction: row !important; flex-wrap: nowrap !important;
-        width: 100% !important; gap: 4px !important;
-    }
-    div[data-testid="stHorizontalBlock"] > div[data-testid="stColumn"] {
-        flex: 1 1 0% !important; min-width: 0 !important; padding: 0 !important; margin: 0 !important;
-    }
-    div[data-testid="stHorizontalBlock"] div.stButton > button {
-        background-color: #ffffff !important; border: 1px solid #ebdccf !important;
-        border-radius: 6px !important; height: 52px !important; display: flex !important;
-        margin: 0 !important; padding: 0px !important; width: 100% !important;
-    }
-    div[data-testid="stHorizontalBlock"] div.stButton > button p {
-        color: #111111 !important; font-size: 10px !important; line-height: 1.1 !important; text-align: center;
-    }
-    div.match-selected-btn > div.stButton > button {
-        background-color: #fff2cc !important; border: 1px solid #cc0000 !important;
-    }
-    
-    /* Pulsanti Navigazione Menu Alto */
-    .menu-active button { background-color: #111111 !important; color: #ffffff !important; border-radius: 6px !important; font-weight: bold !important; height: 44px !important; }
-    .menu-active button p { color: #ffffff !important; font-size: 12px !important; font-weight: bold !important; }
-    .menu-inactive button { background-color: #ffffff !important; color: #111111 !important; border-radius: 6px !important; border: 1px solid #ebdccf !important; height: 44px !important; }
-    .menu-inactive button p { color: #111111 !important; font-size: 12px !important; }
-
-    /* Pulsanti d'Azione */
-    .btn-next button { background-color: #111111 !important; color: #ffffff !important; height: 46px !important; font-weight: bold !important; border-radius: 4px !important; }
-    .btn-next button p { color: #ffffff !important; }
-    .btn-save button { background-color: #cc0000 !important; color: #ffffff !important; height: 46px !important; font-weight: bold !important; border-radius: 4px !important; }
-    .btn-save button p { color: #ffffff !important; }
-            
-    /* Aumenta la dimensione di base delle emoji */
-    .stButton button p {
-        font-size: 24px !important; 
-        line-height: 1.5 !important;
-    }
-
-    /* Se vuoi che siano ancora più grandi nei bottoni della griglia */
-    .match-teams span {
-        font-size: 32px !important;
-    }
-
-    </style>
-""", unsafe_allow_html=True)
-
-st.markdown("""
 <style>
-/* Forziamo lo stile di TUTTI i bottoni */
-div.stButton > button {
-    background-color: #f0f2f6 !important; /* Grigio chiarissimo */
-    color: #000000 !important;             /* Testo Nero */
-    border: 1px solid #dcdcdc !important;  /* Bordo sottile */
-    border-radius: 8px !important;         /* Angoli arrotondati */
-    font-weight: 600 !important;
-}
-
-/* Effetto al passaggio del mouse o tocco */
-div.stButton > button:hover {
-    background-color: #e0e2e6 !important;
-    border-color: #888888 !important;
-}
-
-/* Stile specifico per il bottone di INVIO (se vuoi renderlo più visibile) */
-div[data-testid="stFormSubmitButton"] > button {
-    background-color: #008000 !important; /* Verde per il successo */
-    color: white !important;
-}
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-/* Questa regola è più specifica e forza il colore indipendentemente dal tema mobile */
-[data-testid="stButton"] button {
-    background-color: #f0f2f6 !important;
-    color: #000000 !important;
-    border: 1px solid #dcdcdc !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    /* Forza il colore del testo anche se il sistema vorrebbe invertire i colori */
-    -webkit-text-fill-color: #000000 !important;
-}
-
-/* Specifico per il mobile: rimuove ombreggiature che creano effetto "nero su nero" */
-@media (max-width: 600px) {
-    [data-testid="stButton"] button {
-        background-color: #ffffff !important; 
-        border: 1px solid #333333 !important;
+    /* 1. Reset base per tutti i bottoni di Streamlit */
+    div[data-testid="stButton"] button {
+        background-color: #000000 !important;      /* Nero */
+        color: #FFFFFF !important;                 /* Testo Bianco */
+        border: 2px solid #00FF00 !important;      /* Bordo Verde */
+        border-radius: 10px !important;
+        font-weight: bold !important;
+        transition: none !important;               /* Evita sfarfallii su mobile */
     }
-}
-</style>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<style>
-/* Selettore ultra-specifico per evitare conflitti */
-div[data-testid="stButton"] button {
-    background-color: #FFFFFF !important;
-    color: #000000 !important;
-    border: 2px solid #000000 !important;
-}
+    /* 2. Forza il colore del testo anche se il browser mobile prova a invertirlo */
+    div[data-testid="stButton"] button p {
+        color: #FFFFFF !important;
+        -webkit-text-fill-color: #FFFFFF !important;
+    }
+
+    /* 3. Effetto Hover/Active per simulare l'overlay */
+    div[data-testid="stButton"] button:hover,
+    div[data-testid="stButton"] button:active {
+        background-color: #003300 !important;      /* Verde scuro al tocco */
+        border: 2px solid #00FF00 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
