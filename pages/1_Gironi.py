@@ -205,9 +205,8 @@ with col_center:
     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
     
     # Questo è il modo più pulito: un bottone "Home" che richiama la funzione
-    if st.button("🏠 Home", use_container_width=True):
-        reset_al_main()
-        
+    st.link_button("🏠 Home", "https://mundialandme.streamlit.app/", use_container_width=True)
+
 # Separatore discreto
 st.markdown("<hr style='border: 0.5px solid #e0e0e0; margin: 15px 0;'>", unsafe_allow_html=True)
 # --- LOGIN UTENTE ---
