@@ -75,7 +75,7 @@ import streamlit as st
 
 st.set_page_config(
     page_title="Mundial&Me  - Home 🏆",
-    page_icon="⚽",
+    page_icon="favicon.png",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
