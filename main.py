@@ -74,11 +74,23 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="TotoJuve&Me - Home 🏆",
+    page_title="Mundial&Me  - Home 🏆",
     page_icon="⚽",
     layout="wide",
     initial_sidebar_state="collapsed"
 )
+
+# Nasconde il menu di Streamlit (che contiene il link GitHub e il profilo)
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+
 
 # --- FORZATURA SFONDO VINTAGE SCHEDINA ROSA ---
 st.markdown("""
