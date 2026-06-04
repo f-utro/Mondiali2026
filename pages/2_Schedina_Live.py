@@ -214,6 +214,18 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+    /* Nasconde il menu di Streamlit (hamburger) */
+    #MainMenu {visibility: hidden;}
+    
+    /* Nasconde il footer con "Made with Streamlit" */
+    footer {visibility: hidden;}
+    
+    /* Nasconde l'header (se vuoi una pulizia totale) */
+    header {visibility: hidden;}
+</style>
+""", unsafe_allow_html=True)
 
 
 
