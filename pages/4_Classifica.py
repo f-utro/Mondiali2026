@@ -16,11 +16,18 @@ def inizializza_gspread():
     if os.path.exists(path_json_locale):
         return gspread.service_account(filename=path_json_locale, scopes=SCOPES)
     else:
+        # Recuperiamo la chiave dai secrets ed eseguiamo una pulizia approfondita
+        pkey = st.secrets["private_key"]
+        
+        # Se la chiave è su più righe, ricostruiamo la stringa con i \n espliciti richiesti dall'API di Google
+        if "\n" in pkey and "\\n" not in pkey:
+            pkey = pkey.replace("\n", "\\n")
+            
         credenziali_cloud = {
             "type": "service_account",
             "project_id": st.secrets["project_id"],
             "private_key_id": st.secrets["private_key_id"],
-            "private_key": st.secrets["private_key"],
+            "private_key": pkey.replace("\\n", "\n"), # Ripristina i line-break corretti per gspread
             "client_email": st.secrets["client_email"],
             "client_id": st.secrets["client_id"],
             "auth_uri": st.secrets["auth_uri"],
