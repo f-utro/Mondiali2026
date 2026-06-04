@@ -171,7 +171,7 @@ with col_center:
 st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 
 # --- CORPO DELLA HOME PAGE ---
-st.markdown("### 🌟 Benvenuto nel Concorso Pronostici Ufficiale della Community!")
+st.markdown("### 🌟 Benvenuto nel Gioco Pronostici Ufficiale della Community!")
 st.write(
     "Metti alla prova la tua competenza calcistica per questo Mondiale. "
     "Compila i tuoi pannelli, sfida gli altri membri del canale e scala la classifica generale! 🚀"

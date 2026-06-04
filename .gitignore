@@ -3,3 +3,4 @@ __pycache__/
 *.pyc
 credenziali_google.json
 .streamlit/
+.DS_Store
