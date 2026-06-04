@@ -79,6 +79,13 @@ FLAGS = {
     "Panama": {"emoji": "🇵🇦", "code": "pa"}
 }
 
+def is_partita_aperta(orario_str):
+    # Formato dell'orario nel calendario
+    fmt = '%Y-%m-%d %H:%M:%S'
+    inizio_partita = datetime.strptime(orario_str, fmt)
+    # Ritorna True se la partita inizia tra più di 0 secondi
+    return datetime.now() < inizio_partita
+
 # Funzione corretta per ottenere l'URL immagine
 def get_flag_link(team):
     return f"https://flagcdn.com/w40/{FLAGS.get(team, {'code': 'xx'})['code']}.png"
@@ -415,28 +422,33 @@ if st.session_state.pagina_corrente == "GIOCA":
                         #if corrente: st.markdown('</div>', unsafe_allow_html=True)
         # --- CICLO PARTITE ---
         for i, m in enumerate(partite):
+
+            aperta = is_partita_aperta(m['orario'])
             # Usiamo un unico blocco HTML per tutto: Bandiere + "vs" + Bottone
             # Questo forza il browser a tenere tutto insieme su una riga
-            st.markdown(f"""
-            <div style="
-                display: flex; flex-direction: column; align-items: center; 
-                margin-bottom: 25px; width: 100%;
-            ">
+            if aperta:
+                st.markdown(f"""
                 <div style="
-                    display: flex; align-items: center; justify-content: center; 
-                    gap: 15px; margin-bottom: 5px;
+                    display: flex; flex-direction: column; align-items: center; 
+                    margin-bottom: 25px; width: 100%;
                 ">
-                    <img src="{get_flag_link(m['t1'])}" style="width: 35px; height: 25px;">
-                    <span style="font-weight: bold;">vs</span>
-                    <img src="{get_flag_link(m['t2'])}" style="width: 35px; height: 25px;">
+                    <div style="
+                        display: flex; align-items: center; justify-content: center; 
+                        gap: 15px; margin-bottom: 5px;
+                    ">
+                        <img src="{get_flag_link(m['t1'])}" style="width: 35px; height: 25px;">
+                        <span style="font-weight: bold;">vs</span>
+                        <img src="{get_flag_link(m['t2'])}" style="width: 35px; height: 25px;">
+                    </div>
                 </div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            # Il bottone sta subito sotto, integrato nel flusso
-            if st.button(f"{m['t1']} - {m['t2']}", key=f"btn_{i}", use_container_width=True):
-                st.session_state.match_idx = i
-                st.rerun()
+                """, unsafe_allow_html=True)
+                
+                # Il bottone sta subito sotto, integrato nel flusso
+                if st.button(f"{m['t1']} - {m['t2']}", key=f"btn_{i}", use_container_width=True):
+                    st.session_state.match_idx = i
+                    st.rerun()
+            else:
+                st.button(f"🔒 {m['t1']} vs {m['t2']} (Chiusa)", disabled=True, key=f"btn_locked_{i}")
         st.markdown("<br>", unsafe_allow_html=True)
         # current_match = partite[st.session_state.match_idx]
         # key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
