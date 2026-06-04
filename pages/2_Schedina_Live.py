@@ -5,7 +5,7 @@ from datetime import datetime
 import gspread
 
 # --- CONFIGURAZIONE PAGINA ---
-st.set_page_config(page_title="TotoJuve&Me Live", page_icon="⚽", layout="centered", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="centered", initial_sidebar_state="collapsed")
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
 LIVE_DATA_FILE = "schedine_live.csv"
@@ -250,12 +250,22 @@ def convalida_risultato(segno, risultato_str):
     except ValueError: return False, "Numeri non validi."
 
 # --- BRANDING HEADER ---
-col_logo, col_titolo = st.columns([1.2, 4.8])
-with col_logo:
-    st.markdown('<div style="border: 3px solid #009933; padding: 6px; text-align: center; border-radius: 5px; background-color: #f0fbf2; margin-top: 5px;"><span style="color: #009933; font-weight: bold; font-size: 10px;">CONCORSO</span><br><span style="color: #009933; font-weight: bold; font-size: 24px; line-height: 24px; font-family: monospace;">J&M</span></div>', unsafe_allow_html=True)
-with col_titolo:
-    st.markdown('<div style="text-align: center;"><h1 style="font-family: \'Brush Script MT\', cursive; font-size: 42px; margin: 0; font-style: italic; line-height: 42px;"><span style="color: #009933;">Toto</span>Juve&Me</h1><p style="color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 1px; margin: 0; font-size: 10px;">" AL SERVIZIO DELLO SPORT BIANCONERO "</p></div>', unsafe_allow_html=True)
+# col_logo, col_titolo = st.columns([1.2, 4.8])
+# with col_logo:
+#     st.markdown('<div style="border: 3px solid #009933; padding: 6px; text-align: center; border-radius: 5px; background-color: #f0fbf2; margin-top: 5px;"><span style="color: #009933; font-weight: bold; font-size: 10px;">CONCORSO</span><br><span style="color: #009933; font-weight: bold; font-size: 24px; line-height: 24px; font-family: monospace;">J&M</span></div>', unsafe_allow_html=True)
+# with col_titolo:
+#     st.markdown('<div style="text-align: center;"><h1 style="font-family: \'Brush Script MT\', cursive; font-size: 42px; margin: 0; font-style: italic; line-height: 42px;"><span style="color: #009933;">Toto</span>Juve&Me</h1><p style="color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 1px; margin: 0; font-size: 10px;">" AL SERVIZIO DELLO SPORT BIANCONERO "</p></div>', unsafe_allow_html=True)
 
+# --- BRANDING HEADER ---
+# Creiamo 3 colonne: quella centrale conterrà il logo, le laterali gestiscono lo spazio
+col_left, col_center, col_right = st.columns([2, 1, 2])
+
+with col_center:
+    # Usiamo il logo "Nero" perché contiene già il nome del brand
+    st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+# Separatore grafico che riprende il colore verde del tema
+st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 # --- STATO DELLA NAVIGAZIONE ---
 if "pagina_corrente" not in st.session_state:
     st.session_state.pagina_corrente = "GIOCA"

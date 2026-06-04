@@ -138,26 +138,37 @@ st.markdown("""
 
 
 # --- HEADER VINTAGE TOTOCALCIO ---
-col_logo, col_titolo = st.columns([1, 4])
-with col_logo:
-    st.markdown("""
-        <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
-            <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
-            <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
-        </div>
-    """, unsafe_allow_html=True)
+# col_logo, col_titolo = st.columns([1, 4])
+# with col_logo:
+#     # st.markdown("""
+#     #     <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
+#     #         <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
+#     #         <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
+#     #     </div>
+#     # """, unsafe_allow_html=True)
+#      st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+    
+# with col_titolo:
+#     st.markdown("""
+#         <div style='text-align: center;'>
+#             <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
+#                 <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
+#             </h1>
+#             <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" AL SERVIZIO DELLO SPORT BIANCONERO \"</p>
+#         </div>
+#     """, unsafe_allow_html=True)
 
-with col_titolo:
-    st.markdown("""
-        <div style='text-align: center;'>
-            <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
-                <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
-            </h1>
-            <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" AL SERVIZIO DELLO SPORT BIANCONERO \"</p>
-        </div>
-    """, unsafe_allow_html=True)
+# st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+# --- BRANDING HEADER ---
+# Creiamo 3 colonne: quella centrale conterrà il logo, le laterali gestiscono lo spazio
+col_left, col_center, col_right = st.columns([2, 1, 2])
 
-st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+with col_center:
+    # Usiamo il logo "Nero" perché contiene già il nome del brand
+    st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+# Separatore grafico che riprende il colore verde del tema
+st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 
 # --- CORPO DELLA HOME PAGE ---
 st.markdown("### 🌟 Benvenuto nel Concorso Pronostici Ufficiale della Community!")
@@ -184,8 +195,8 @@ with col_info:
         st.markdown(
             """
         * **Esito Esatto (1X2)**: **+1 Punto** ➡️ Se indovini chi vince o il pareggio.
-        * **Risultato Esatto**: **+3 Punti** ➡️ Se indovini il punteggio esatto (es. 2-1).
-        * **Combinazione Perfetta (1X2 + Risultato)**: **+4 Punti** totali per la singola partita.
+        * **Risultato Esatto**: **+3 Punti** ➡️ Se indovini il risultato esatto (es. 2-1, 1-0).
+        * **Combinazione Perfetta (1X2 + Risultato)**: **+4 Punti** totali se li indovini entrambi per la singola partita.
         """
         )
 
@@ -197,8 +208,8 @@ with col_info:
         )
         st.markdown(
             """
-        * **Passaggio Turno Indovinato**: **+2 Punti** ➡️ Per ogni squadra che indovini piazzarsi al turno successivo (Ottavi ➡️ Quarti ➡️ Semifinale).
-        * **Finalista Indovinata**: **+4 Punti** ➡️ Se indovini una delle due squadre che raggiungono l'atto finale.
+        * **Passaggio Turno Indovinato**: **+2 Punti** ➡️ Per ogni Passaggio del turno indovinato (Ottavi ➡️ Quarti ➡️ Semifinale).
+        * **Finalista Indovinata**: **+4 Punti** ➡️ Per ogni squadra finalista indovinata.
         * **Vincitore Torneo**: **+7 Punti** ➡️ Se indovini la squadra che solleverà il trofeo.
         """
         )

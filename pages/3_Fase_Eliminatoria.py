@@ -59,7 +59,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.set_page_config(page_title="Tabellone Mondiali 2026 🏆", page_icon="🏆", layout="wide")
+st.set_page_config(page_title="Mundial&Me Live 🏆", page_icon="🏆", layout="wide")
 
 # --- BLOCCO LOCK FASE ELIMINATORIA ---
 st.markdown("<br>", unsafe_allow_html=True)
@@ -88,13 +88,17 @@ if not os.path.exists(ELIMINATORIE_FILE):
 # --- DIZIONARIO BANDIERINE PER UN IMPATTO GRAFICO DA RICEVITORIA ---
 FLAGS = {
     "Messico": "🇲🇽", "Sudafrica": "🇿🇦", "Corea del Sud": "🇰🇷", "Rep. Ceca": "🇨🇿",
-    "Canada": "🇨🇦", "Bosnia": "🇧🇦", "Stati Uniti": "🇺🇸", "Paraguay": "🇵🇾",
-    "Qatar": "🇶🇦", "Svizzera": "🇨🇭", "Brasile": "🇧🇷", "Marocco": "🇲🇦",
-    "Haiti": "🇭🇹", "Scozia": "🏴%E2%80%8D🏴%E2%80%8D🏴%E2%80%8D🏴", "Australia": "🇦🇺", "Turchia": "🇹🇷",
+    "Canada": "🇨🇦", "Bosnia ed Erzegovina": "🇧🇦", "Qatar": "🇶🇦", "Svizzera": "🇨🇭",
+    "Brasile": "🇧🇷", "Marocco": "🇲🇦", "Haiti": "🇭🇹", "Scozia": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+    "Stati Uniti": "🇺🇸", "Paraguay": "🇵🇾", "Australia": "🇦🇺", "Turchia": "🇹🇷",
     "Germania": "🇩🇪", "Curaçao": "🇨🇼", "Costa d'Avorio": "🇨🇮", "Ecuador": "🇪🇨",
     "Paesi Bassi": "🇳🇱", "Giappone": "🇯🇵", "Svezia": "🇸🇪", "Tunisia": "🇹🇳",
     "Belgio": "🇧🇪", "Egitto": "🇪🇬", "Iran": "🇮🇷", "Nuova Zelanda": "🇳🇿",
-    "Spagna": "🇪🇸", "Capo Verde": "🇨🇻", "Arabia Saudita": "🇸🇦", "Uruguay": "🇺🇾"
+    "Spagna": "🇪🇸", "Capo Verde": "🇨🇻", "Arabia Saudita": "🇸🇦", "Uruguay": "🇺🇾",
+    "Francia": "🇫🇷", "Senegal": "🇸🇳", "Iraq": "🇮🇶", "Norvegia": "🇳🇴",
+    "Argentina": "🇦🇷", "Algeria": "🇩🇿", "Austria": "🇦🇹", "Giordania": "🇯🇴",
+    "Portogallo": "🇵🇹", "RD del Congo": "🇨🇩", "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴",
+    "Inghilterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croazia": "🇭🇷", "Ghana": "🇬🇭", "Panama": "🇵🇦"
 }
 
 def label_with_flag(team_name):
@@ -103,26 +107,36 @@ def label_with_flag(team_name):
     return f"{FLAGS.get(team_name, '⚽')} {team_name}"
 
 # --- HEADER VINTAGE COORDINATO CON BRAND SEPARATO ---
-col_logo, col_titolo = st.columns([1, 5])
-with col_logo:
-    st.markdown("""
-        <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
-            <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
-            <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
-        </div>
-    """, unsafe_allow_html=True)
+# col_logo, col_titolo = st.columns([1, 5])
+# with col_logo:
+#     st.markdown("""
+#         <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
+#             <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
+#             <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
+#         </div>
+#     """, unsafe_allow_html=True)
 
-with col_titolo:
-    st.markdown("""
-        <div style='text-align: center;'>
-            <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
-                <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
-            </h1>
-            <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" IL TABELLONE VISIVO AD ALBERO DELLE FASI FINALI \"</p>
-        </div>
-    """, unsafe_allow_html=True)
+# with col_titolo:
+#     st.markdown("""
+#         <div style='text-align: center;'>
+#             <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
+#                 <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
+#             </h1>
+#             <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" IL TABELLONE VISIVO AD ALBERO DELLE FASI FINALI \"</p>
+#         </div>
+#     """, unsafe_allow_html=True)
 
-st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+# st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+# --- BRANDING HEADER ---
+# Creiamo 3 colonne: quella centrale conterrà il logo, le laterali gestiscono lo spazio
+col_left, col_center, col_right = st.columns([2, 1, 2])
+
+with col_center:
+    # Usiamo il logo "Nero" perché contiene già il nome del brand
+    st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+# Separatore grafico che riprende il colore verde del tema
+st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 
 telegram_user = st.text_input("💬 Inserisci il tuo Nome Utente Telegram per sbloccare il Tabellone:", placeholder="@nickname_inserito")
 

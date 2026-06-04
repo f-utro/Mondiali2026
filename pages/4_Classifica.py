@@ -41,27 +41,38 @@ def inizializza_gspread():
 gc = inizializza_gspread()
 sh = gc.open_by_url(URL_FOGLIO)
 
+
 # --- HEADER VINTAGE TOTOCALCIO COORDINATO ---
-col_logo, col_titolo = st.columns([1, 4])
-with col_logo:
-    st.markdown("""
-        <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
-            <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
-            <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
-        </div>
-    """, unsafe_allow_html=True)
+# col_logo, col_titolo = st.columns([1, 4])
+# with col_logo:
+#     st.markdown("""
+#         <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
+#             <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
+#             <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
+#         </div>
+#     """, unsafe_allow_html=True)
 
-with col_titolo:
-    st.markdown("""
-        <div style='text-align: center;'>
-            <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
-                <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
-            </h1>
-            <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" AL SERVIZIO DELLO SPORT BIANCONERO \"</p>
-        </div>
-    """, unsafe_allow_html=True)
+# with col_titolo:
+#     st.markdown("""
+#         <div style='text-align: center;'>
+#             <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
+#                 <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
+#             </h1>
+#             <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" AL SERVIZIO DELLO SPORT BIANCONERO \"</p>
+#         </div>
+#     """, unsafe_allow_html=True)
 
-st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+# st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+# --- BRANDING HEADER ---
+# Creiamo 3 colonne: quella centrale conterrà il logo, le laterali gestiscono lo spazio
+col_left, col_center, col_right = st.columns([2, 1, 2])
+
+with col_center:
+    # Usiamo il logo "Nero" perché contiene già il nome del brand
+    st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+# Separatore grafico che riprende il colore verde del tema
+st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 
 # 🔄 CARICAMENTO DATI IN DIRETTA DA GOOGLE SHEETS
 ws_risultati = sh.worksheet("RisultatiUfficiali")

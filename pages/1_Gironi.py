@@ -49,7 +49,7 @@ gc = inizializza_gspread()
 sh = gc.open_by_url(URL_FOGLIO)
 
 # --- CONFIGURAZIONE PAGINA ---
-st.set_page_config(page_title="Fase a Gironi 🏆", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
+st.set_page_config(page_title="Mundial&Me Live -Fase a Gironi 🏆", page_icon="🏆", layout="wide", initial_sidebar_state="collapsed")
 
 
 # --- FILE DATABASE ---
@@ -161,13 +161,33 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- HEADER TOTOJUVE ---
-col_logo, col_titolo = st.columns([1, 5])
-with col_logo:
-    st.markdown("<div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'><span style='color: #009933; font-weight: bold; font-size: 14px;'>CONCORSO</span><br><span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span></div>", unsafe_allow_html=True)
-with col_titolo:
-    st.markdown("<div style='text-align: center;'><h1 style='font-family: \"Brush Script MT\", cursive; font-size: 52px; margin: 0; font-style: italic;'><span style='color: #009933;'>Toto</span>Juve&Me</h1><p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 2px; margin: 0; font-size: 11px;'>\" SCHEDINA LIVE FASE A GIRONI \"</p></div>", unsafe_allow_html=True)
-st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+# Rimuovi il vecchio blocco 'with col_logo' e 'with col_titolo' 
+# e sostituiscilo con questo:
 
+# Aumentiamo la proporzione del logo e centriamo il contenuto
+# col1, col2 = st.columns([1, 4]) 
+
+# with col1:
+#     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+# with col2:
+#     st.markdown("""
+#         <div style="margin-top: 20px;">
+#             <h1 style="margin: 0; font-size: 28px;">Mundial&Me</h1>
+#             <p style="margin: 0; color: #555;">Il portale ufficiale dei pronostici</p>
+#         </div>
+#     """, unsafe_allow_html=True)
+
+# st.markdown("<hr style='margin-top: 10px; margin-bottom: 20px; border: 1px solid #009933;'>", unsafe_allow_html=True)
+
+# Proporzione [2, 1, 2] -> La colonna centrale è 1/5 della larghezza totale
+col_left, col_center, col_right = st.columns([2, 1, 2])
+
+with col_center:
+    st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+# Separatore discreto
+st.markdown("<hr style='border: 0.5px solid #e0e0e0; margin: 15px 0;'>", unsafe_allow_html=True)
 # --- LOGIN UTENTE ---
 telegram_user = st.text_input("💬 Inserisci il tuo Username Telegram per giocare:", placeholder="@tuo_nickname")
 
