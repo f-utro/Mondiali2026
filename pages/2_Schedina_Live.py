@@ -215,6 +215,11 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+    .stApp { background-color: #f9ebdf !important; }
+</style>
+""", unsafe_allow_html=True)
 
 
 
