@@ -188,26 +188,29 @@ CALENDARIO_GIORNATE = {
 # --- ENGINE CSS CUSTOM ---
 st.markdown("""
 <style>
-    /* 1. Reset base per tutti i bottoni di Streamlit */
+    /* Forza il tema chiaro SOLO per i bottoni, bloccando l'inversione di colore mobile */
     div[data-testid="stButton"] button {
-        background-color: #000000 !important;      /* Nero */
-        color: #FFFFFF !important;                 /* Testo Bianco */
-        border: 2px solid #00FF00 !important;      /* Bordo Verde */
+        background-color: #000000 !important;
+        color: #FFFFFF !important;
+        border: 2px solid #00FF00 !important;
         border-radius: 10px !important;
         font-weight: bold !important;
-        transition: none !important;               /* Evita sfarfallii su mobile */
+        /* Proprietà per impedire al browser mobile di toccare i colori */
+        color-scheme: light !important;
+        -webkit-color-scheme: light !important;
+        forced-color-adjust: none !important;
     }
-
-    /* 2. Forza il colore del testo anche se il browser mobile prova a invertirlo */
+    
+    /* Forza il testo bianco anche se il sistema è in dark mode */
     div[data-testid="stButton"] button p {
         color: #FFFFFF !important;
         -webkit-text-fill-color: #FFFFFF !important;
     }
-
-    /* 3. Effetto Hover/Active per simulare l'overlay */
-    div[data-testid="stButton"] button:hover,
+    
+    /* Effetto hover/click */
+    div[data-testid="stButton"] button:hover, 
     div[data-testid="stButton"] button:active {
-        background-color: #003300 !important;      /* Verde scuro al tocco */
+        background-color: #003300 !important;
         border: 2px solid #00FF00 !important;
     }
 </style>
