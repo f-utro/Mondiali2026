@@ -313,6 +313,28 @@ div[data-testid="stFormSubmitButton"] > button {
 }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+/* Questa regola è più specifica e forza il colore indipendentemente dal tema mobile */
+[data-testid="stButton"] button {
+    background-color: #f0f2f6 !important;
+    color: #000000 !important;
+    border: 1px solid #dcdcdc !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    /* Forza il colore del testo anche se il sistema vorrebbe invertire i colori */
+    -webkit-text-fill-color: #000000 !important;
+}
+
+/* Specifico per il mobile: rimuove ombreggiature che creano effetto "nero su nero" */
+@media (max-width: 600px) {
+    [data-testid="stButton"] button {
+        background-color: #ffffff !important; 
+        border: 1px solid #333333 !important;
+    }
+}
+</style>
+""", unsafe_allow_html=True)
 
 path_json_locale = "credenziali_google.json"
 URL_FOGLIO = "https://docs.google.com/spreadsheets/d/1eplWbGsR3lpAPawatIBuSp5ts20K4Nn-_QUqvE2Md-g/edit"
