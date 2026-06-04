@@ -286,21 +286,32 @@ st.markdown("""
         font-size: 32px !important;
     }
 
-    div.stButton > button {
-    background-color: #ffffff !important; /* Bianco pulito */
-    border: 1px solid #dcdcdc !important;
-    border-radius: 20px !important;       /* Angoli arrotondati */
-    padding: 0.5rem 1rem !important;
-    font-weight: 600 !important;
-    transition: all 0.3s ease;
-    }
-
-    /* Effetto al passaggio del mouse o tocco */
-    div.stButton > button:active {
-        background-color: #f0f0f0 !important;
-        transform: scale(0.98); /* Effetto "click" fisico */
-    }
     </style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+/* Forziamo lo stile di TUTTI i bottoni */
+div.stButton > button {
+    background-color: #f0f2f6 !important; /* Grigio chiarissimo */
+    color: #000000 !important;             /* Testo Nero */
+    border: 1px solid #dcdcdc !important;  /* Bordo sottile */
+    border-radius: 8px !important;         /* Angoli arrotondati */
+    font-weight: 600 !important;
+}
+
+/* Effetto al passaggio del mouse o tocco */
+div.stButton > button:hover {
+    background-color: #e0e2e6 !important;
+    border-color: #888888 !important;
+}
+
+/* Stile specifico per il bottone di INVIO (se vuoi renderlo più visibile) */
+div[data-testid="stFormSubmitButton"] > button {
+    background-color: #008000 !important; /* Verde per il successo */
+    color: white !important;
+}
+</style>
 """, unsafe_allow_html=True)
 
 path_json_locale = "credenziali_google.json"
