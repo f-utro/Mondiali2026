@@ -258,12 +258,31 @@ def convalida_risultato(segno, risultato_str):
 
 # --- BRANDING HEADER ---
 # Creiamo 3 colonne: quella centrale conterrà il logo, le laterali gestiscono lo spazio
+# col_left, col_center, col_right = st.columns([2, 1, 2])
+
+# with col_center:
+#     # Usiamo il logo "Nero" perché contiene già il nome del brand
+#     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
+
+def vai_alla_home():
+    st.session_state.pagina_corrente = "GIOCA"
+    st.session_state.mostra_ricevuta = False
+    # Eventuale pulizia dello stato partita
+    if "partita_attiva" in st.session_state:
+        del st.session_state.partita_attiva
+
+# --- BRANDING HEADER ---
 col_left, col_center, col_right = st.columns([2, 1, 2])
 
 with col_center:
-    # Usiamo il logo "Nero" perché contiene già il nome del brand
+    # Mostriamo l'immagine. Purtroppo non è cliccabile direttamente.
+    # Quindi mettiamo un tasto "Home" subito sotto o sopra il logo.
     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
-
+    
+    # Questo è il modo più pulito: un bottone "Home" che richiama la funzione
+    if st.button("🏠 Home", use_container_width=True, on_click=vai_alla_home):
+        pass
+    
 # Separatore grafico che riprende il colore verde del tema
 st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 # --- STATO DELLA NAVIGAZIONE ---
