@@ -41,8 +41,18 @@ def inizializza_gspread():
 gc = inizializza_gspread()
 sh = gc.open_by_url(URL_FOGLIO)
 
+def get_admin_password():
+    gc = inizializza_gspread() # La tua funzione già esistente
+    sh = gc.open_by_url(URL_FOGLIO)
+    ws = sh.worksheet("AdminConfig")
+    data = ws.get_all_records()
+    # Trova il valore dove Parametro è 'pwd_admin'
+    row = next(item for item in data if item["Parametro"] == "pwd_admin")
+    return str(row["Valore"])
+
+
 # --- SICUREZZA ACCESSO ADMIN ---
-PASSWORD_ADMIN = st.secrets["passwords"]["admin_password"]
+PASSWORD_ADMIN = get_admin_password() #st.secrets["passwords"]["admin_password"]
 
 if "is_admin" not in st.session_state:
     st.session_state["is_admin"] = False
