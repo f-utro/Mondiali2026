@@ -336,6 +336,19 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+/* Selettore ultra-specifico per evitare conflitti */
+div[data-testid="stButton"] button {
+    background-color: #FFFFFF !important;
+    color: #000000 !important;
+    border: 2px solid #000000 !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 path_json_locale = "credenziali_google.json"
 URL_FOGLIO = "https://docs.google.com/spreadsheets/d/1eplWbGsR3lpAPawatIBuSp5ts20K4Nn-_QUqvE2Md-g/edit"
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
@@ -455,6 +468,8 @@ if st.session_state.pagina_corrente == "GIOCA":
         st.session_state.giornata = giornata_selezionata
         st.markdown("<br>", unsafe_allow_html=True)
         input_nome = st.text_input("NOME UTENTE TELEGRAM:", placeholder="Es. @JuvAndMe_User")
+
+        
         
         if st.button("Accedi alla Schedina ➡️", use_container_width=True):
             if input_nome.strip():
