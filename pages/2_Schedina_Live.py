@@ -13,23 +13,95 @@ if not os.path.exists(LIVE_DATA_FILE):
     pd.DataFrame(columns=["Data", "Utente_Telegram", "Giornata", "Partita", "Pronostico_Segno", "Pronostico_Risultato"]).to_csv(LIVE_DATA_FILE, index=False)
 
 # --- DIZIONARIO EMOTICON BANDIERE ---
+# FLAGS = {
+#     "Messico": "🇲🇽", "Sudafrica": "🇿🇦", "Corea del Sud": "🇰🇷", "Rep. Ceca": "🇨🇿",
+#     "Canada": "🇨🇦", "Bosnia ed Erzegovina": "🇧🇦", "Qatar": "🇶🇦", "Svizzera": "🇨🇭",
+#     "Brasile": "🇧🇷", "Marocco": "🇲🇦", "Haiti": "🇭🇹", "Scozia": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+#     "Stati Uniti": "🇺🇸", "Paraguay": "🇵🇾", "Australia": "🇦🇺", "Turchia": "🇹🇷",
+#     "Germania": "🇩🇪", "Curaçao": "🇨🇼", "Costa d'Avorio": "🇨🇮", "Ecuador": "🇪🇨",
+#     "Paesi Bassi": "🇳🇱", "Giappone": "🇯🇵", "Svezia": "🇸🇪", "Tunisia": "🇹🇳",
+#     "Belgio": "🇧🇪", "Egitto": "🇪🇬", "Iran": "🇮🇷", "Nuova Zelanda": "🇳🇿",
+#     "Spagna": "🇪🇸", "Capo Verde": "🇨🇻", "Arabia Saudita": "🇸🇦", "Uruguay": "🇺🇾",
+#     "Francia": "🇫🇷", "Senegal": "🇸🇳", "Iraq": "🇮🇶", "Norvegia": "🇳🇴",
+#     "Argentina": "🇦🇷", "Algeria": "🇩🇿", "Austria": "🇦🇹", "Giordania": "🇯🇴",
+#     "Portogallo": "🇵🇹", "RD del Congo": "🇨🇩", "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴",
+#     "Inghilterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croazia": "🇭🇷", "Ghana": "🇬🇭", "Panama": "🇵🇦"
+# }
+
 FLAGS = {
-    "Messico": "🇲🇽", "Sudafrica": "🇿🇦", "Corea del Sud": "🇰🇷", "Rep. Ceca": "🇨🇿",
-    "Canada": "🇨🇦", "Bosnia ed Erzegovina": "🇧🇦", "Qatar": "🇶🇦", "Svizzera": "🇨🇭",
-    "Brasile": "🇧🇷", "Marocco": "🇲🇦", "Haiti": "🇭🇹", "Scozia": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-    "Stati Uniti": "🇺🇸", "Paraguay": "🇵🇾", "Australia": "🇦🇺", "Turchia": "🇹🇷",
-    "Germania": "🇩🇪", "Curaçao": "🇨🇼", "Costa d'Avorio": "🇨🇮", "Ecuador": "🇪🇨",
-    "Paesi Bassi": "🇳🇱", "Giappone": "🇯🇵", "Svezia": "🇸🇪", "Tunisia": "🇹🇳",
-    "Belgio": "🇧🇪", "Egitto": "🇪🇬", "Iran": "🇮🇷", "Nuova Zelanda": "🇳🇿",
-    "Spagna": "🇪🇸", "Capo Verde": "🇨🇻", "Arabia Saudita": "🇸🇦", "Uruguay": "🇺🇾",
-    "Francia": "🇫🇷", "Senegal": "🇸🇳", "Iraq": "🇮🇶", "Norvegia": "🇳🇴",
-    "Argentina": "🇦🇷", "Algeria": "🇩🇿", "Austria": "🇦🇹", "Giordania": "🇯🇴",
-    "Portogallo": "🇵🇹", "RD del Congo": "🇨🇩", "Uzbekistan": "🇺🇿", "Colombia": "🇨🇴",
-    "Inghilterra": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "Croazia": "🇭🇷", "Ghana": "🇬🇭", "Panama": "🇵🇦"
+    "Messico": {"emoji": "🇲🇽", "code": "mx"},
+    "Sudafrica": {"emoji": "🇿🇦", "code": "za"},
+    "Corea del Sud": {"emoji": "🇰🇷", "code": "kr"},
+    "Rep. Ceca": {"emoji": "🇨🇿", "code": "cz"},
+    "Canada": {"emoji": "🇨🇦", "code": "ca"},
+    "Bosnia ed Erzegovina": {"emoji": "🇧🇦", "code": "ba"},
+    "Qatar": {"emoji": "🇶🇦", "code": "qa"},
+    "Svizzera": {"emoji": "🇨🇭", "code": "ch"},
+    "Brasile": {"emoji": "🇧🇷", "code": "br"},
+    "Marocco": {"emoji": "🇲🇦", "code": "ma"},
+    "Haiti": {"emoji": "🇭🇹", "code": "ht"},
+    "Scozia": {"emoji": "🏴󠁧󠁢󠁳󠁣󠁴󠁿", "code": "gb-sct"},
+    "Stati Uniti": {"emoji": "🇺🇸", "code": "us"},
+    "Paraguay": {"emoji": "🇵🇾", "code": "py"},
+    "Australia": {"emoji": "🇦🇺", "code": "au"},
+    "Turchia": {"emoji": "🇹🇷", "code": "tr"},
+    "Germania": {"emoji": "🇩🇪", "code": "de"},
+    "Curaçao": {"emoji": "🇨🇼", "code": "cw"},
+    "Costa d'Avorio": {"emoji": "🇨🇮", "code": "ci"},
+    "Ecuador": {"emoji": "🇪🇨", "code": "ec"},
+    "Paesi Bassi": {"emoji": "🇳🇱", "code": "nl"},
+    "Giappone": {"emoji": "🇯🇵", "code": "jp"},
+    "Svezia": {"emoji": "🇸🇪", "code": "se"},
+    "Tunisia": {"emoji": "🇹🇳", "code": "tn"},
+    "Belgio": {"emoji": "🇧🇪", "code": "be"},
+    "Egitto": {"emoji": "🇪🇬", "code": "eg"},
+    "Iran": {"emoji": "🇮🇷", "code": "ir"},
+    "Nuova Zelanda": {"emoji": "🇳🇿", "code": "nz"},
+    "Spagna": {"emoji": "🇪🇸", "code": "es"},
+    "Capo Verde": {"emoji": "🇨🇻", "code": "cv"},
+    "Arabia Saudita": {"emoji": "🇸🇦", "code": "sa"},
+    "Uruguay": {"emoji": "🇺🇾", "code": "uy"},
+    "Francia": {"emoji": "🇫🇷", "code": "fr"},
+    "Senegal": {"emoji": "🇸🇳", "code": "sn"},
+    "Iraq": {"emoji": "🇮🇶", "code": "iq"},
+    "Norvegia": {"emoji": "🇳🇴", "code": "no"},
+    "Argentina": {"emoji": "🇦🇷", "code": "ar"},
+    "Algeria": {"emoji": "🇩🇿", "code": "dz"},
+    "Austria": {"emoji": "🇦🇹", "code": "at"},
+    "Giordania": {"emoji": "🇯🇴", "code": "jo"},
+    "Portogallo": {"emoji": "🇵🇹", "code": "pt"},
+    "RD del Congo": {"emoji": "🇨🇩", "code": "cd"},
+    "Uzbekistan": {"emoji": "🇺🇿", "code": "uz"},
+    "Colombia": {"emoji": "🇨🇴", "code": "co"},
+    "Inghilterra": {"emoji": "🏴󠁧󠁢󠁥󠁮󠁧󠁿", "code": "gb-eng"},
+    "Croazia": {"emoji": "🇭🇷", "code": "hr"},
+    "Ghana": {"emoji": "🇬🇭", "code": "gh"},
+    "Panama": {"emoji": "🇵🇦", "code": "pa"}
 }
 
+# Funzione corretta per ottenere l'URL immagine
+def get_flag_link(team):
+    return f"https://flagcdn.com/w40/{FLAGS.get(team, {'code': 'xx'})['code']}.png"
+
 def get_flag(team):
-    return FLAGS.get(team, "⚽")
+    # Accediamo al dizionario FLAGS che hai definito
+    # Estraiamo solo il valore della chiave 'code'
+    data = FLAGS.get(team, {'emoji': '⚽', 'code': 'xx'})
+    code = data.get('code', 'xx')
+    return f"https://flagcdn.com/w40/{code}.png"
+
+# Questa funzione serve SOLO per creare l'URL dell'immagine che st.image capisce
+# def get_flag_link(team_name):
+#     # Usiamo lo stesso dizionario che hai già, ma lo mappiamo ai codici FlagCDN
+#     # Se il nome non è nel dizionario, usiamo 'xx' (bandiera generica)
+#     mapping = {
+#         "Messico": "mx", "Sudafrica": "za", "Corea del Sud": "kr", "Rep. Ceca": "cz",
+#         "Canada": "ca", "Bosnia ed Erzegovina": "ba", "Qatar": "qa", "Svizzera": "ch",
+#         "Brasile": "br", "Marocco": "ma", "Haiti": "ht", "Scozia": "gb-sct"
+#         # ... aggiungi qui gli altri che ti servono nello stesso formato "Nome": "codice"
+#     }
+#     codice = mapping.get(team_name, "xx")
+#     return f"https://flagcdn.com/w40/{codice}.png"
 
 # --- CALENDARIO COMPLETO REINTEGRATO ---
 CALENDARIO_GIORNATE = {
@@ -202,6 +274,17 @@ st.markdown("""
     .btn-next button p { color: #ffffff !important; }
     .btn-save button { background-color: #cc0000 !important; color: #ffffff !important; height: 46px !important; font-weight: bold !important; border-radius: 4px !important; }
     .btn-save button p { color: #ffffff !important; }
+            
+    /* Aumenta la dimensione di base delle emoji */
+    .stButton button p {
+        font-size: 24px !important; 
+        line-height: 1.5 !important;
+    }
+
+    /* Se vuoi che siano ancora più grandi nei bottoni della griglia */
+    .match-teams span {
+        font-size: 32px !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
@@ -338,31 +421,61 @@ if st.session_state.pagina_corrente == "GIOCA":
         partite = CALENDARIO_GIORNATE[st.session_state.giornata]
         st.markdown("<p style='font-weight: bold; margin-bottom: 8px; font-size: 13px; text-align: center;'>👉 Seleziona la partita da inserire/modificare:</p>", unsafe_allow_html=True)
         
+        # --- BLOCCO CORRETTO DA SOSTITUIRE ---
         DENSITA_COLONNE = 3
         for riga_idx in range(0, len(partite), DENSITA_COLONNE):
-            cols_badge = st.columns(DENSITA_COLONNE, gap="small")
+            cols = st.columns(DENSITA_COLONNE, gap="small")
             for col_idx in range(DENSITA_COLONNE):
                 match_idx = riga_idx + col_idx
                 if match_idx < len(partite):
                     m = partite[match_idx]
-                    key = f"{m['t1']}_vs_{m['t2']}"
-                    voto = st.session_state.giocate_live[key]
-                    info_p = f"{voto['1X2']} ({voto['ris']})" if (voto["1X2"] != "-" and voto["ris"] != "") else "-"
-                    label_badge = f"{get_flag(m['t1'])}🆚{get_flag(m['t2'])}\n{info_p}"
-                    corrente = st.session_state.match_idx == match_idx
                     
-                    with cols_badge[col_idx]:
-                        if corrente: st.markdown('<div class="match-selected-btn">', unsafe_allow_html=True)
-                        if st.button(label_badge, key=f"btn_grid_{match_idx}", use_container_width=True):
+                    # All'interno del tuo ciclo, sostituisci il blocco con questo:
+                    with cols[col_idx]:
+                        m = partite[match_idx] # Partita corrente
+                        
+                        # Crea una mini-riga per le bandiere
+                        b1, b2, b3 = st.columns([1, 1, 1])
+                        with b1: st.image(get_flag_link(m['t1']), width=30)
+                        with b2: st.write("vs")
+                        with b3: st.image(get_flag_link(m['t2']), width=30)
+                        
+                        # Bottone subito sotto
+                        if st.button(f"{m['t1']} - {m['t2']}", key=f"btn_{match_idx}", use_container_width=True):
                             st.session_state.match_idx = match_idx
                             st.rerun()
-                        if corrente: st.markdown('</div>', unsafe_allow_html=True)
+                            
+                        
+                        #if corrente: st.markdown('</div>', unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
-        current_match = partite[st.session_state.match_idx]
-        key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
+        # current_match = partite[st.session_state.match_idx]
+        # key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
         
-        st.markdown(f'<div class="match-card"><div class="match-header">⚽ MATCH CORRENTE (N.{st.session_state.match_idx+1})</div><div class="match-teams"><span>{get_flag(current_match["t1"])} {current_match["t1"]}</span><span style="color: #009933; margin: 0 10px;">-</span><span>{current_match["t2"]} {get_flag(current_match["t2"])}</span></div></div>', unsafe_allow_html=True)
+        
+        # st.markdown(f'<div class="match-card"><div class="match-header">⚽ MATCH CORRENTE (N.{st.session_state.match_idx+1})</div><div class="match-teams"><span>{get_flag(current_match["t1"])} {current_match["t1"]}</span><span style="color: #009933; margin: 0 10px;">-</span><span>{current_match["t2"]} {get_flag(current_match["t2"])}</span></div></div>', unsafe_allow_html=True)
+        current_match = partite[st.session_state.match_idx]
+        
+        st.markdown(f'<div class="match-card"><div class="match-header">⚽ MATCH CORRENTE (N.{st.session_state.match_idx+1})</div>', unsafe_allow_html=True)
+        
+        # Allineamento a 5 colonne: [Bandiera1, Nome1, VS, Nome2, Bandiera2]
+        c1, c2, c3, c4, c5 = st.columns([1, 2, 1, 2, 1])
+        current_match = partite[st.session_state.match_idx]
+       
+        with c1: 
+            st.image(get_flag_link(current_match['t1']), width=35)
+        with c2: 
+            st.markdown(f"**{current_match['t1']}**")
+        with c3: 
+            st.write("vs")
+        with c4: 
+            st.markdown(f"**{current_match['t2']}**") # <--- AGGIUNTO: Nome seconda squadra
+        with c5: 
+            st.image(get_flag_link(current_match['t2']), width=35) # <--- AGGIUNTO: Bandiera seconda squadra
+        
+       
+        st.markdown('</div>', unsafe_allow_html=True)  
+        key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
         
         col_es, col_totogol = st.columns([1, 1])
         with col_es:
