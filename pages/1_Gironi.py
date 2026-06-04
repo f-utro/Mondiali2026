@@ -377,7 +377,6 @@ if telegram_user:
                     worksheet.clear()
                     worksheet.update([df_finale.columns.values.tolist()] + df_finale.fillna("").values.tolist())
                     
-                    st.success("🎯 Schedina gironi inserita con successo su Google Sheets!")        
                     st.success("🎯 Schedina inserita! Fai lo screenshot alle tue card qui sopra e vedi chi vince sul gruppo!")
                     st.balloons()
 else:
