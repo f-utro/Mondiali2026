@@ -249,7 +249,7 @@ with col_navigazione:
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     
     # Pulsante gigante per la Schedina Live (Totocalcio Style)
-    if st.button("🎰 APRI TOTOCALCIO LIVE", use_container_width=True, type="primary"):
+    if st.button("🎰 APRI TOTO&ME LIVE", use_container_width=True, type="primary"):
         st.switch_page("pages/2_Schedina_Live.py")
         
     st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
