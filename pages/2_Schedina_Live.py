@@ -188,36 +188,30 @@ CALENDARIO_GIORNATE = {
 # --- ENGINE CSS CUSTOM ---
 st.markdown("""
 <style>
-    /* Forza il tema chiaro SOLO per i bottoni, bloccando l'inversione di colore mobile */
-    div[data-testid="stButton"] button {
-        background-color: #000000 !important;
-        color: #FFFFFF !important;
-        border: 2px solid #00FF00 !important;
-        border-radius: 10px !important;
-        font-weight: bold !important;
-        /* Proprietà per impedire al browser mobile di toccare i colori */
-        color-scheme: light !important;
-        -webkit-color-scheme: light !important;
-        forced-color-adjust: none !important;
-    }
-    
-    /* Forza il testo bianco anche se il sistema è in dark mode */
-    div[data-testid="stButton"] button p {
-        color: #FFFFFF !important;
-        -webkit-text-fill-color: #FFFFFF !important;
-    }
-    
-    /* Effetto hover/click */
-    div[data-testid="stButton"] button:hover, 
-    div[data-testid="stButton"] button:active {
-        background-color: #003300 !important;
-        border: 2px solid #00FF00 !important;
-    }
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
     .stApp { background-color: #f9ebdf !important; }
+    
+    /* Contenitore del bottone personalizzato */
+    .match-btn-content {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+    }
+    
+    /* Stile per le bandiere */
+    .flag-icon { 
+        width: 35px !important; 
+        height: 25px !important; 
+        object-fit: contain; 
+        flex-shrink: 0; 
+    }
+    
+    /* Stile per il testo */
+    .match-text { 
+        font-weight: bold !important; 
+        font-size: 14px !important; 
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -359,32 +353,78 @@ if st.session_state.pagina_corrente == "GIOCA":
         st.markdown("<p style='font-weight: bold; margin-bottom: 8px; font-size: 13px; text-align: center;'>👉 Seleziona la partita da inserire/modificare:</p>", unsafe_allow_html=True)
         
         # --- BLOCCO CORRETTO DA SOSTITUIRE ---
-        DENSITA_COLONNE = 3
-        for riga_idx in range(0, len(partite), DENSITA_COLONNE):
-            cols = st.columns(DENSITA_COLONNE, gap="small")
-            for col_idx in range(DENSITA_COLONNE):
-                match_idx = riga_idx + col_idx
-                if match_idx < len(partite):
-                    m = partite[match_idx]
+#         DENSITA_COLONNE = 3
+#         for riga_idx in range(0, len(partite), DENSITA_COLONNE):
+#             cols = st.columns(DENSITA_COLONNE, gap="small")
+#             for col_idx in range(DENSITA_COLONNE):
+#                 match_idx = riga_idx + col_idx
+#                 if match_idx < len(partite):
+#                     m = partite[match_idx]
                     
-                    # All'interno del tuo ciclo, sostituisci il blocco con questo:
-                    with cols[col_idx]:
-                        m = partite[match_idx] # Partita corrente
+#                     # All'interno del tuo ciclo, sostituisci il blocco con questo:
+#                     with cols[col_idx]:
+#                         m = partite[match_idx] # Partita corrente
                         
-                        # Crea una mini-riga per le bandiere
-                        b1, b2, b3 = st.columns([1, 1, 1])
-                        with b1: st.image(get_flag_link(m['t1']), width=30)
-                        with b2: st.write("vs")
-                        with b3: st.image(get_flag_link(m['t2']), width=30)
-                        
-                        # Bottone subito sotto
-                        if st.button(f"{m['t1']} - {m['t2']}", key=f"btn_{match_idx}", use_container_width=True):
-                            st.session_state.match_idx = match_idx
-                            st.rerun()
-                            
-                        
-                        #if corrente: st.markdown('</div>', unsafe_allow_html=True)
+#                         # Crea una mini-riga per le bandiere
+#                         # b1, b2, b3 = st.columns([1, 1, 1])
+#                         # with b1: st.image(get_flag_link(m['t1']), width=30)
+#                         # with b2: st.write("vs")
+#                         # with b3: st.image(get_flag_link(m['t2']), width=30)
+#                         # Invece di b1, b2, b3 = st.columns([1, 1, 1]) ...
+# # Usa questa singola riga di markdown con stile HTML:
 
+#                         link_id = f"btn_{match_idx}"
+    
+#                         # Questo HTML crea un rettangolo cliccabile che sembra un bottone
+#                         # Al click, invia un segnale a Streamlit usando i query_params
+#                         st.markdown(f"""
+#                         <a href="?match_idx={match_idx}" style="text-decoration: none;">
+#                             <div class="match-btn-custom" style="
+#                                 display: flex; align-items: center; justify-content: center; gap: 15px;
+#                                 background-color: #000000; border: 2px solid #00FF00; border-radius: 8px;
+#                                 padding: 12px; color: white; font-weight: bold; width: 100%;
+#                             ">
+#                                 <img src="{get_flag_link(m['t1'])}" style="width: 35px; height: 25px;">
+#                                 <span>{m['t1']} vs {m['t2']}</span>
+#                                 <img src="{get_flag_link(m['t2'])}" style="width: 35px; height: 25px;">
+#                             </div>
+#                         </a>
+#                         """, unsafe_allow_html=True)
+
+#                         # # Il tuo bottone va subito dopo
+#                         # if st.button(label_html, key=f"btn_{match_idx}", use_container_width=True):
+#                         #     st.session_state.match_idx = match_idx
+#                         #     st.rerun()
+                            
+#         if "match_idx" in st.query_params:
+#             st.session_state.match_idx = int(st.query_params["match_idx"])
+#             st.query_params.clear() # Pulisce l'URL
+#             st.rerun()
+                        #if corrente: st.markdown('</div>', unsafe_allow_html=True)
+        # --- CICLO PARTITE ---
+        for i, m in enumerate(partite):
+            # Usiamo un unico blocco HTML per tutto: Bandiere + "vs" + Bottone
+            # Questo forza il browser a tenere tutto insieme su una riga
+            st.markdown(f"""
+            <div style="
+                display: flex; flex-direction: column; align-items: center; 
+                margin-bottom: 25px; width: 100%;
+            ">
+                <div style="
+                    display: flex; align-items: center; justify-content: center; 
+                    gap: 15px; margin-bottom: 5px;
+                ">
+                    <img src="{get_flag_link(m['t1'])}" style="width: 35px; height: 25px;">
+                    <span style="font-weight: bold;">vs</span>
+                    <img src="{get_flag_link(m['t2'])}" style="width: 35px; height: 25px;">
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Il bottone sta subito sotto, integrato nel flusso
+            if st.button(f"{m['t1']} - {m['t2']}", key=f"btn_{i}", use_container_width=True):
+                st.session_state.match_idx = i
+                st.rerun()
         st.markdown("<br>", unsafe_allow_html=True)
         # current_match = partite[st.session_state.match_idx]
         # key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
