@@ -1,0 +1,258 @@
+import streamlit as st
+import pandas as pd
+import os
+import json
+import gspread
+
+st.set_page_config(page_title="Classifica Ufficiale 🏆", page_icon="🏆", layout="wide")
+
+# --- CONFIGURAZIONE GOOGLE SHEETS (GSPREAD) ---
+URL_FOGLIO = "https://docs.google.com/spreadsheets/d/1eplWbGsR3lpAPawatIBuSp5ts20K4Nn-_QUqvE2Md-g/edit"
+path_json_locale = "credenziali_google.json"
+SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
+
+@st.cache_resource
+def inizializza_gspread():
+    if os.path.exists(path_json_locale):
+        return gspread.service_account(filename=path_json_locale, scopes=SCOPES)
+    else:
+        credenziali_cloud = {
+            "type": "service_account",
+            "project_id": st.secrets["project_id"],
+            "private_key_id": st.secrets["private_key_id"],
+            "private_key": st.secrets["private_key"],
+            "client_email": st.secrets["client_email"],
+            "client_id": st.secrets["client_id"],
+            "auth_uri": st.secrets["auth_uri"],
+            "token_uri": st.secrets["token_uri"],
+            "auth_provider_x509_cert_url": st.secrets["auth_provider_x509_cert_url"],
+            "client_x509_cert_url": st.secrets["client_x509_cert_url"]
+        }
+        return gspread.service_account_from_dict(credenziali_cloud, scopes=SCOPES)
+
+# Connessione al foglio master Google Sheets
+gc = inizializza_gspread()
+sh = gc.open_by_url(URL_FOGLIO)
+
+# --- HEADER VINTAGE TOTOCALCIO COORDINATO ---
+col_logo, col_titolo = st.columns([1, 4])
+with col_logo:
+    st.markdown("""
+        <div style='border: 3px solid #009933; padding: 10px; text-align: center; border-radius: 5px; background-color: #f0fbf2;'>
+            <span style='color: #009933; font-weight: bold; font-size: 14px; font-family: sans-serif;'>CONCORSO</span><br>
+            <span style='color: #009933; font-weight: bold; font-size: 32px; line-height: 32px; font-family: monospace;'>J&M</span>
+        </div>
+    """, unsafe_allow_html=True)
+
+with col_titolo:
+    st.markdown("""
+        <div style='text-align: center;'>
+            <h1 style='font-family: "Brush Script MT", cursive, sans-serif; font-size: 58px; margin: 0; font-style: italic; line-height: 1.1;'>
+                <span style='color: #009933;'>Toto</span><span style='color: #111111;'>Juve&Me</span>
+            </h1>
+            <p style='color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 3px; margin: 0; font-size: 12px;'>\" AL SERVIZIO DELLO SPORT BIANCONERO \"</p>
+        </div>
+    """, unsafe_allow_html=True)
+
+st.markdown("<hr style='border: 1px solid #009933;'>", unsafe_allow_html=True)
+
+# 🔄 CARICAMENTO DATI IN DIRETTA DA GOOGLE SHEETS
+ws_risultati = sh.worksheet("RisultatiUfficiali")
+ws_live = sh.worksheet("SchedineLive")
+ws_gironi = sh.worksheet("Gironi")
+
+try:
+    df_res = pd.DataFrame(ws_risultati.get_all_records())
+    df_live = pd.DataFrame(ws_live.get_all_records())
+    df_gironi = pd.DataFrame(ws_gironi.get_all_records())
+except Exception as e:
+    st.error(f"Errore nel caricamento delle tabelle da Google Sheets: {e}")
+    df_res = pd.DataFrame(columns=["Tipo", "Chiave_Evento", "Valore_1", "Valore_2"])
+    df_live = pd.DataFrame()
+    df_gironi = pd.DataFrame()
+
+# --- BLOCCO DI CALCOLO DINAMICO ---
+punteggi_utenti = {}
+
+if not df_res.empty:
+    partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
+    risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
+    podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
+    squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
+    fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
+
+    # 1. Calcolo da Schedine Live (Esito e Totogol)
+    if not df_live.empty:
+        df_live = df_live.sort_values(by="Data")
+        df_live_grouped = df_live.groupby(['Utente_Telegram', 'Partita']).last().reset_index()
+        
+        for _, row in df_live_grouped.iterrows():
+            u = row['Utente_Telegram']
+            p = row['Partita']
+            prono_segno = str(row['Pronostico_Segno']).strip()
+            prono_risultato = str(row['Pronostico_Resultato'] if 'Pronostico_Resultato' in row else row.get('Pronostico_Risultato', '')).strip()
+            
+            if u not in punteggi_utenti:
+                punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
+            
+            if p in partite_reali and str(partite_reali[p]).strip() == prono_segno:
+                punteggi_utenti[u]["Gironi_1X2"] += 1
+            if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
+                punteggi_utenti[u]["Risultati_Esatti"] += 3
+
+    # 2. Calcolo Classifica Finali Gironi (Bonus Podio +2)
+    if not df_gironi.empty:
+        df_gironi = df_gironi.sort_values(by="Data")
+        
+        for u, gruppo_utente in df_gironi.groupby('Utente_Telegram'):
+            if u not in punteggi_utenti:
+                punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
+            
+            ultimo_timestamp = gruppo_utente["Data"].max()
+            ultime_giocate_g = gruppo_utente[gruppo_utente["Data"] == ultimo_timestamp]
+            
+            for chiave_g, (r1, r2) in podio_gironi.items():
+                lettera = chiave_g.replace("Pos_Girone_", "")
+                giocate_del_girone = ultime_giocate_g[ultime_giocate_g["Girone"] == lettera] if "Girone" in ultime_giocate_g.columns else pd.DataFrame()
+                
+                if not giocate_del_girone.empty:
+                    p1 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"].empty else ""
+                    p2 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"].empty else ""
+                    
+                    if p1 == str(r1).strip() and p2 == str(r2).strip():
+                        punteggi_utenti[u]["Podio_Bonus"] += 2
+
+            # 3. Calcolo Punti Tabellone Intero per le Fasi Eliminatorie
+            for _, row_g in ultime_giocate_g.iterrows():
+                squadra_scelta = str(row_g["Squadra_Pronosticata"]).lower().strip()
+                if squadra_scelta in squadre_eliminate:
+                    fase_raggiunta = fasi_eliminate[squadra_scelta]
+                    if fase_raggiunta in ["Ottavi", "Quarti", "Semifinale"]:
+                        punteggi_utenti[u]["Eliminatorie"] += 2
+                    elif fase_raggiunta == "Finalista":
+                        punteggi_utenti[u]["Eliminatorie"] += 4
+                    elif fase_raggiunta == "Campione":
+                        punteggi_utenti[u]["Eliminatorie"] += 7
+
+# --- MOSTRA LA TABELLA CLASSIFICA ---
+if punteggi_utenti:
+    for u in punteggi_utenti:
+        punteggi_utenti[u]["Totale"] = (punteggi_utenti[u]["Gironi_1X2"] + 
+                                                punteggi_utenti[u]["Risultati_Esatti"] + 
+                                                punteggi_utenti[u]["Podio_Bonus"] + 
+                                                punteggi_utenti[u]["Eliminatorie"])
+        
+    df_c = pd.DataFrame.from_dict(punteggi_utenti, orient='index').reset_index()
+    df_c.columns = ["Utente Telegram", "Esiti 1X2", "Totogol", "Bonus Podio", "Tabellone", "PUNTEGGIO TOTALE"]
+    df_c = df_c.sort_values(by="PUNTEGGIO TOTALE", ascending=False).reset_index(drop=True)
+    
+    df_c.index = df_c.index + 1
+    df_c.insert(0, "Pos.", df_c.index)
+    #df_c["Pos."] = df_c["Pos"].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
+    df_c["Pos."] = df_c["Pos."].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
+    st.markdown("### 🏁 CLASSIFICA GENERALE TOTOJUVE&ME")
+    
+    # --- RENDERING HTML/CSS OTTIMIZZATO SENZA SCROLL ---
+    html_classifica = """
+    <style>
+        .classifica-container {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            width: 100%;
+            margin: 15px 0;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            font-size: 13px;
+            border: 1px solid #e1e4e6;
+        }
+        .classifica-header {
+            background: linear-gradient(135deg, #009933, #007722);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.8px;
+        }
+        .classifica-header th {
+            padding: 14px 6px;
+            text-align: center;
+            color: #ffffff !important; /* Forza il testo bianco per il contrasto */
+            vertical-align: middle;
+        }
+        .classifica-header th.align-left {
+            text-align: left;
+            padding-left: 16px;
+        }
+        .classifica-row {
+            border-bottom: 1px solid #edf0f2;
+        }
+        .classifica-row:last-child {
+            border-bottom: none;
+        }
+        .classifica-row td {
+            padding: 12px 6px;
+            text-align: center;
+            color: #333333;
+            vertical-align: middle;
+        }
+        .classifica-row td.align-left {
+            text-align: left;
+            padding-left: 16px;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        .pos-col { width: 14%; font-size: 14px; font-weight: bold; }
+        .user-col { width: 32%; }
+        .punti-col { width: 10%; font-weight: 500; }
+        .tot-col { 
+            width: 14%; 
+            font-weight: 700; 
+            color: #009933; 
+            font-size: 15px; 
+            background-color: #f4fbf6;
+        }
+        .classifica-header th.tot-header {
+            background: #006611;
+            color: #ffffff !important;
+        }
+    </style>
+    <table class="classifica-container">
+        <tr class="classifica-header">
+            <th class="pos-col">POS</th>
+            <th class="user-col align-left">PARTECIPANTE</th>
+            <th class="punti-col">1X2</th>
+            <th class="punti-col">GOAL</th>
+            <th class="punti-col">PODIO</th>
+            <th class="punti-col">FASE</th>
+            <th class="tot-col tot-header">TOT</th>
+        </tr>
+    """
+
+    for _, row in df_c.iterrows():
+        pos = row["Pos."]
+        utente = row["Utente Telegram"]
+        p_1x2 = row["Esiti 1X2"]
+        p_totogol = row["Totogol"]
+        p_podio = row["Bonus Podio"]
+        p_tabellone = row["Tabellone"]
+        p_totale = row["PUNTEGGIO TOTALE"]
+
+        html_classifica += f"""
+        <tr class="classifica-row">
+            <td class="pos-col">{pos}</td>
+            <td class="user-col align-left">{utente}</td>
+            <td class="punti-col">{p_1x2}</td>
+            <td class="punti-col">{p_totogol}</td>
+            <td class="punti-col">{p_podio}</td>
+            <td class="punti-col">{p_tabellone}</td>
+            <td class="tot-col">{p_totale}</td>
+        </tr>
+        """
+
+    html_classifica += "</table>"
+    st.markdown(html_classifica.replace("\n", ""), unsafe_allow_html=True)
+
+else:
+    st.info("⏳ In attesa del caricamento delle giocate e dei dati dell'Admin per calcolare la classifica.")
