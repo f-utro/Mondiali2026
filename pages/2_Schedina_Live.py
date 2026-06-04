@@ -535,7 +535,12 @@ if st.session_state.pagina_corrente == "GIOCA":
             giocate_effettuate += 1
             testo_ricevuta += (
                 '<div style="display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 13px; padding: 6px 0; border-bottom: 1px dotted #bbbbbb;">'
-                f'<span style="font-weight: bold;">{idx+1:02d}. {get_flag(m["t1"])} {m["t1"][:10]} - {m["t2"][:10]} {get_flag(m["t2"])}</span>'
+                f'<span style="font-weight: bold; display: flex; align-items: center; gap: 5px;">'
+                    f'{idx+1:02d}. '
+                    f'<img src="{get_flag_link(m["t1"])}" style="width: 20px; height: 15px;"> '
+                    f'{m["t1"][:10]} - {m["t2"][:10]} '
+                    f'<img src="{get_flag_link(m["t2"])}" style="width: 20px; height: 15px;">'
+                f'</span>'
                 f'<span style="font-weight: 900; color: #cc0000; font-size: 14px;">[{voto["1X2"]}] ({voto["ris"]})</span>'
                 '</div>'
             )
