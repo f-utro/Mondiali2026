@@ -11,6 +11,122 @@ URL_FOGLIO = "https://docs.google.com/spreadsheets/d/1eplWbGsR3lpAPawatIBuSp5ts2
 path_json_locale = "credenziali_google.json"
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets", "https://www.googleapis.com/auth/drive"]
 
+CALENDARIO_GIORNATE = {
+        "Giornata 1 (11 - 17 Giugno)": [
+            {"t1": "Messico", "t2": "Sudafrica", "ora": "13:00", "data": "11/06"},
+            {"t1": "Corea del Sud", "t2": "Rep. Ceca", "ora": "20:00", "data": "11/06"},
+            {"t1": "Canada", "t2": "Bosnia ed Erzegovina", "ora": "15:00", "data": "12/06"},
+            {"t1": "Stati Uniti", "t2": "Paraguay", "ora": "18:00", "data": "12/06"},
+            {"t1": "Qatar", "t2": "Svizzera", "ora": "12:00", "data": "13/06"},
+            {"t1": "Brasile", "t2": "Marocco", "ora": "18:00", "data": "13/06"},
+            {"t1": "Haiti", "t2": "Scozia", "ora": "21:00", "data": "13/06"},
+            {"t1": "Australia", "t2": "Turchia", "ora": "21:00", "data": "13/06"},
+            {"t1": "Germania", "t2": "Curaçao", "ora": "12:00", "data": "14/06"},
+            {"t1": "Paesi Bassi", "t2": "Giappone", "ora": "15:00", "data": "14/06"},
+            {"t1": "Costa d'Avorio", "t2": "Ecuador", "ora": "19:00", "data": "14/06"},
+            {"t1": "Svezia", "t2": "Tunisia", "ora": "20:00", "data": "14/06"},
+            {"t1": "Belgio", "t2": "Egitto", "ora": "12:00", "data": "15/06"},
+            {"t1": "Iran", "t2": "Nuova Zelanda", "ora": "18:00", "data": "15/06"},
+            {"t1": "Spagna", "t2": "Capo Verde", "ora": "12:00", "data": "15/06"},
+            {"t1": "Arabia Saudita", "t2": "Uruguay", "ora": "18:00", "data": "15/06"},
+            {"t1": "Francia", "t2": "Senegal", "ora": "15:00", "data": "16/06"},
+            {"t1": "Iraq", "t2": "Norvegia", "ora": "18:00", "data": "16/06"},
+            {"t1": "Argentina", "t2": "Algeria", "ora": "20:00", "data": "16/06"},
+            {"t1": "Austria", "t2": "Giordania", "ora": "21:00", "data": "16/06"},
+            {"t1": "Inghilterra", "t2": "Croazia", "ora": "15:00", "data": "17/06"},
+            {"t1": "Ghana", "t2": "Panama", "ora": "19:00", "data": "17/06"},
+            {"t1": "Portogallo", "t2": "RD del Congo", "ora": "12:00", "data": "17/06"},
+            {"t1": "Uzbekistan", "t2": "Colombia", "ora": "20:00", "data": "17/06"}
+        ],
+        "Giornata 2 (18 - 23 Giugno)": [
+            {"t1": "Rep. Ceca", "t2": "Sudafrica", "ora": "12:00", "data": "18/06"},
+            {"t1": "Messico", "t2": "Corea del Sud", "ora": "19:00", "data": "18/06"},
+            {"t1": "Svizzera", "t2": "Bosnia ed Erzegovina", "ora": "12:00", "data": "18/06"},
+            {"t1": "Canada", "t2": "Qatar", "ora": "15:00", "data": "18/06"},
+            {"t1": "Scozia", "t2": "Marocco", "ora": "18:00", "data": "19/06"},
+            {"t1": "Brasile", "t2": "Haiti", "ora": "21:00", "data": "19/06"},
+            {"t1": "Stati Uniti", "t2": "Australia", "ora": "12:00", "data": "19/06"},
+            {"t1": "Turchia", "t2": "Paraguay", "ora": "21:00", "data": "19/06"},
+            {"t1": "Germania", "t2": "Costa d'Avorio", "ora": "16:00", "data": "20/06"},
+            {"t1": "Ecuador", "t2": "Curaçao", "ora": "19:00", "data": "20/06"},
+            {"t1": "Paesi Bassi", "t2": "Svezia", "ora": "12:00", "data": "20/06"},
+            {"t1": "Tunisia", "t2": "Giappone", "ora": "22:00", "data": "20/06"},
+            {"t1": "Belgio", "t2": "Iran", "ora": "12:00", "data": "21/06"},
+            {"t1": "Nuova Zelanda", "t2": "Egitto", "ora": "18:00", "data": "21/06"},
+            {"t1": "Spagna", "t2": "Arabia Saudita", "ora": "12:00", "data": "21/06"},
+            {"t1": "Uruguay", "t2": "Capo Verde", "ora": "18:00", "data": "21/06"},
+            {"t1": "Francia", "t2": "Iraq", "ora": "17:00", "data": "22/06"},
+            {"t1": "Norvegia", "t2": "Senegal", "ora": "20:00", "data": "22/06"},
+            {"t1": "Argentina", "t2": "Austria", "ora": "12:00", "data": "22/06"},
+            {"t1": "Giordania", "t2": "Algeria", "ora": "20:00", "data": "22/06"},
+            {"t1": "Portogallo", "t2": "Uzbekistan", "ora": "12:00", "data": "23/06"},
+            {"t1": "Colombia", "t2": "RD del Congo", "ora": "20:00", "data": "23/06"},
+            {"t1": "Inghilterra", "t2": "Ghana", "ora": "16:00", "data": "23/06"},
+            {"t1": "Panama", "t2": "Croazia", "ora": "19:00", "data": "23/06"}
+        ],
+        "Giornata 3 (24 - 27 Giugno)": [
+            {"t1": "Rep. Ceca", "t2": "Messico", "ora": "19:00", "data": "24/06"},
+            {"t1": "Sudafrica", "t2": "Corea del Sud", "ora": "19:00", "data": "24/06"},
+            {"t1": "Svizzera", "t2": "Canada", "ora": "12:00", "data": "24/06"},
+            {"t1": "Bosnia ed Erzegovina", "t2": "Qatar", "ora": "12:00", "data": "24/06"},
+            {"t1": "Scozia", "t2": "Brasile", "ora": "18:00", "data": "24/06"},
+            {"t1": "Marocco", "t2": "Haiti", "ora": "18:00", "data": "24/06"},
+            {"t1": "Turchia", "t2": "Stati Uniti", "ora": "19:00", "data": "25/06"},
+            {"t1": "Paraguay", "t2": "Australia", "ora": "19:00", "data": "25/06"},
+            {"t1": "Curaçao", "t2": "Costa d'Avorio", "ora": "16:00", "data": "25/06"},
+            {"t1": "Ecuador", "t2": "Germania", "ora": "16:00", "data": "25/06"},
+            {"t1": "Giappone", "t2": "Svezia", "ora": "18:00", "data": "25/06"},
+            {"t1": "Tunisia", "t2": "Paesi Bassi", "ora": "18:00", "data": "25/06"},
+            {"t1": "Egitto", "t2": "Iran", "ora": "20:00", "data": "26/06"},
+            {"t1": "Nuova Zelanda", "t2": "Belgio", "ora": "20:00", "data": "26/06"},
+            {"t1": "Capo Verde", "t2": "Arabia Saudita", "ora": "19:00", "data": "26/06"},
+            {"t1": "Uruguay", "t2": "Spagna", "ora": "18:00", "data": "26/06"},
+            {"t1": "Norvegia", "t2": "Francia", "ora": "15:00", "data": "26/06"},
+            {"t1": "Senegal", "t2": "Iraq", "ora": "15:00", "data": "26/06"},
+            {"t1": "Algeria", "t2": "Austria", "ora": "21:00", "data": "27/06"},
+            {"t1": "Giordania", "t2": "Argentina", "ora": "21:00", "data": "27/06"},
+            {"t1": "Colombia", "t2": "Portogallo", "ora": "19:30", "data": "27/06"},
+            {"t1": "RD del Congo", "t2": "Uzbekistan", "ora": "19:30", "data": "27/06"},
+            {"t1": "Panama", "t2": "Inghilterra", "ora": "17:00", "data": "27/06"},
+            {"t1": "Croazia", "t2": "Ghana", "ora": "17:00", "data": "27/06"}
+            ]
+    }
+
+from datetime import datetime
+
+def filtra_giocate_valide(df_live):
+    giocate_valide = []
+    ora_attuale = datetime.now()
+    # Assumiamo l'anno corrente (2026)
+    anno = ora_attuale.year
+    
+    for _, row in df_live.iterrows():
+        # Recuperiamo la partita dalla riga del CSV
+        partita_nome = row["Partita"]
+        
+        # Cerchiamo la partita nel calendario per trovare data e ora
+        orario_inizio = None
+        for giornata in CALENDARIO_GIORNATE:
+            for match in CALENDARIO_GIORNATE[giornata]:
+                match_str = f"{match['t1']} vs {match['t2']}"
+                if match_str == partita_nome:
+                    # Uniamo data e ora: "27/06" + "17:00" -> 2026-06-27 17:00:00
+                    data_str = f"{anno}/{match['data']} {match['ora']}"
+                    orario_inizio = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
+                    break
+        
+        # Data in cui l'utente ha inviato la giocata (deve essere presente nel CSV)
+        try:
+            data_giocata = datetime.strptime(row["Data_Invio"], '%Y-%m-%d %H:%M:%S')
+        except:
+            continue # Salta righe malformate
+
+        # Filtro: Giocata deve essere precedente all'inizio partita
+        if orario_inizio and data_giocata < orario_inizio:
+            giocate_valide.append(row)
+            
+    return pd.DataFrame(giocate_valide)
+
 @st.cache_resource
 def inizializza_gspread():
     if os.path.exists(path_json_locale):
@@ -81,7 +197,7 @@ ws_gironi = sh.worksheet("Gironi")
 
 try:
     df_res = pd.DataFrame(ws_risultati.get_all_records())
-    df_live = pd.DataFrame(ws_live.get_all_records())
+    df_live = filtra_giocate_valide(pd.DataFrame(ws_live.get_all_records()))
     df_gironi = pd.DataFrame(ws_gironi.get_all_records())
 except Exception as e:
     st.error(f"Errore nel caricamento delle tabelle da Google Sheets: {e}")
