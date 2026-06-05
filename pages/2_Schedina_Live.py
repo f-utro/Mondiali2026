@@ -189,7 +189,7 @@ st.markdown("""
 
     /* Forza il colore del testo dentro l'expander */
     div[data-testid="stExpander"] {
-        background-color: #ffffff !important;
+        background-color: #f9ebdf !important;
         color: #000000 !important;
     }
 
