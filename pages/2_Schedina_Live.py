@@ -173,6 +173,38 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+    /* Forza lo sfondo del corpo dell'expander (la parte che si apre) */
+    .st-emotion-cache-1n76uvr { /* Nota: la classe di Streamlit può variare, usiamo selettori robusti */
+        background-color: #ffffff !important;
+    }
+
+    /* Forza il titolo dell'expander */
+    .st-expander {
+        background-color: #ffffff !important;
+        border: 1px solid #c9e4b7 !important;
+        border-radius: 10px !important;
+    }
+
+    /* Forza il colore del testo dentro l'expander */
+    div[data-testid="stExpander"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+
+    /* Forza il testo dell'header dell'expander */
+    button[data-testid="stExpanderDetails"] p {
+        color: #000000 !important;
+        font-weight: bold;
+    }
+    
+    /* Forza lo sfondo quando l'expander è espanso */
+    div[data-testid="stExpanderDetails"] {
+        background-color: #ffffff !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
