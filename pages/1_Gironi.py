@@ -197,37 +197,59 @@ def reset_al_main():
     # Ricarica la pagina per applicare il reset
     st.rerun()
 # --- BRANDING HEADER ---
-col_left, col_center, col_right = st.columns([1, 2, 1])
-with col_center:
-    st.image("Mundial&Me Logo Nero.png", use_container_width=True)
-    
-    # Tre colonne per i tre bottoni
-    b1, b2, b3 = st.columns(3)
-    
-    with b1:
-        st.markdown("""
-            <a href="https://mundialandme.streamlit.app/" target="_self" 
-            style="display: block; padding: 0.5rem; background-color: #f0f2f6; 
-            border: 1px solid #dcdcdc; border-radius: 0.5rem; text-decoration: none; 
-            color: black; text-align: center; font-size: 12px;">🏠 Home</a>
-        """, unsafe_allow_html=True)
-        
-    with b2:
-        st.markdown("""
-            <a href="https://t.me/+SAwDw59_ym7swlzf" target="_self" 
-            style="display: block; padding: 0.5rem; background-color: #f0f2f6; 
-            border: 1px solid #dcdcdc; border-radius: 0.5rem; text-decoration: none; 
-            color: black; text-align: center; font-size: 12px;">💬 Chat</a>
-        """, unsafe_allow_html=True)
-        
-    with b3:
-        st.markdown("""
-            <a href="http://twitch.tv/juvandmeofficial" target="_self" 
-            style="display: block; padding: 0.5rem; background-color: #f0f2f6; 
-            border: 1px solid #dcdcdc; border-radius: 0.5rem; text-decoration: none; 
-            color: #9146ff; text-align: center; font-size: 12px;">💜 Twitch</a>
-        """, unsafe_allow_html=True)
+# --- HEADER CON ICONE STANDARD E LOGO CLICCABILE ---
 
+# 1. Creiamo un contenitore centrale
+col_left, col_center, col_right = st.columns([1, 2, 1])
+
+with col_center:
+    # Logo cliccabile
+    st.markdown(
+        """
+        <div style="text-align: center;">
+            <a href="https://mundialandme.streamlit.app/" target="_self">
+                <img src="https://raw.githubusercontent.com/f-utro/Mondiali2026/main/Mundial&Me%20Logo%20Nero.png" width="200">
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Spazio tra logo e icone
+    st.write(" ")
+    
+    st.markdown("""
+        <style>
+            .social-icons-wrapper { 
+                display: flex; justify-content: center; gap: 20px; margin: 10px 0 20px 0; 
+            }
+            .icon-link { 
+                display: flex; align-items: center; justify-content: center;
+                width: 30px; height: 30px; transition: transform 0.2s;
+            }
+            .icon-link:hover { transform: scale(1.15); }
+            .icon-link svg { width: 100%; height: 100%; }
+        </style>
+        
+        <div class="social-icons-wrapper">
+            <!-- Telegram -->
+            <a href="https://t.me/+SAwDw59_ym7swlzf" class="icon-link" target="_self">
+                <svg viewBox="0 0 24 24" fill="#0088cc"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-1.46-.96-2.28-1.56-3.7-2.52-1.63-1.1-.57-1.71.35-2.67.24-.25 4.39-4.01 4.47-4.35.01-.04.02-.2-.09-.28-.11-.08-.26-.05-.37-.03-.16.04-2.73 1.74-7.72 5.09-.72.48-1.38.71-1.96.69-.64-.02-1.87-.36-2.79-.66-1.28-.42-2.31-.64-2.23-1.35.03-.27.4-.54 1.1-.82 6.84-2.97 11.45-4.96 13.84-5.99 6.59-2.82 7.96-3.32 8.87-3.34.2 0 .64.05.93.28.24.19.3.42.33.59.03.18.06.63.02 1.19z"/></svg>
+            </a>
+            <!-- Twitch -->
+            <a href="http://twitch.tv/juvandmeofficial" class="icon-link" target="_self">
+                <svg viewBox="0 0 24 24" fill="#9146ff"><path d="M11.57 2.14L9 4.71H4v11.57h4v3.43h2.57l2.57-3.43h2.57l5.14-5.14V2.14h-9.43zM16.29 13.71h-2.57l-2.57 3.43v-3.43H6.43V6.43h9.86v7.28z"/></svg>
+            </a>
+            <!-- YouTube -->
+            <a href="https://www.youtube.com/@juvme8305" class="icon-link" target="_self">
+                <svg viewBox="0 0 24 24" fill="#ff0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.377.505 9.377.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+            </a>
+            <!-- X -->
+            <a href="https://x.com/juvandme" class="icon-link" target="_self">
+                <svg viewBox="0 0 24 24" fill="#000000"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </a>
+        </div>
+    """, unsafe_allow_html=True)
 st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 # --- LOGIN UTENTE ---
 telegram_user = st.text_input("💬 Inserisci il tuo Username Telegram per giocare:", placeholder="@tuo_nickname")
