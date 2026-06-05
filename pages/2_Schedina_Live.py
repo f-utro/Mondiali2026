@@ -20,34 +20,67 @@ if "match_idx" not in st.session_state:
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="centered", initial_sidebar_state="collapsed")
 # --- ENGINE CSS CUSTOM ---
+# st.markdown("""
+# <style>
+#     /* 1. Blocca la Dark Mode forzata del browser (fondamentale per mobile) */
+#     :root {
+#         color-scheme: light only;
+#     }
+
+#     /* 2. CONFIGURAZIONE BASE (LIGHT MODE) */
+#     .stApp { 
+#         background-color: #f9ebdf !important; 
+#     }
+    
+#     h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
+#         color: #000000 !important; 
+#     }
+
+#     /* 3. MEDIA QUERY PER DARK MODE (Opzionale, ma ora rispettata) */
+#     @media (prefers-color-scheme: dark) {
+#         :root { color-scheme: dark; }
+#         .stApp { background-color: #262730 !important; }
+#         h1, h2, h3, h4, h5, h6, p, div, span, label, li { color: #ffffff !important; }
+#         .telegram-ballon {
+#             background-color: #1e3a1e !important; 
+#             border: 1px solid #4a7c4a !important;
+#             color: #ffffff !important;
+#         }
+#     }
+
+   
+# </style>
+# """, unsafe_allow_html=True)
 st.markdown("""
 <style>
-    /* 1. Blocca la Dark Mode forzata del browser (fondamentale per mobile) */
-    :root {
-        color-scheme: light only;
-    }
-
-    /* 2. CONFIGURAZIONE BASE (LIGHT MODE) */
-    .stApp { 
-        background-color: #f9ebdf !important; 
+    /* 1. Blocca totalmente l'inversione colori del browser (Android/iOS) */
+    html {
+        color-scheme: light !important;
     }
     
-    h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
-        color: #000000 !important; 
+    /* 2. Forza il tuo sfondo su TUTTO il corpo dell'app */
+    .stApp, body, .stAppHeader {
+        background-color: #f9ebdf !important;
     }
 
-    /* 3. MEDIA QUERY PER DARK MODE (Opzionale, ma ora rispettata) */
+    /* 3. Forza il testo nero ovunque */
+    h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+        color: #000000 !important;
+    }
+
+    /* 4. Disabilita le impostazioni di sistema che potrebbero sovrascrivere */
     @media (prefers-color-scheme: dark) {
-        :root { color-scheme: dark; }
-        .stApp { background-color: #262730 !important; }
-        h1, h2, h3, h4, h5, h6, p, div, span, label, li { color: #ffffff !important; }
-        .telegram-ballon {
-            background-color: #1e3a1e !important; 
-            border: 1px solid #4a7c4a !important;
-            color: #ffffff !important;
+        :root {
+            color-scheme: light !important;
+        }
+        .stApp {
+            background-color: #f9ebdf !important;
+        }
+        h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+            color: #000000 !important;
         }
     }
-
+            
     /* 4. Nascondi elementi Streamlit */
     #MainMenu, footer, header { visibility: hidden !important; }
 
