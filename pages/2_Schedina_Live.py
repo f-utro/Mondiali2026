@@ -143,6 +143,36 @@ st.markdown("""
     }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+    /* Forza il colore di sfondo dellaselectbox quando è chiusa */
+    div[data-baseweb="select"] > div {
+        background-color: #ffffff !important;
+        border: 1px solid #c9e4b7 !important;
+    }
+    
+    /* Forza il colore del testo all'interno della selectbox */
+    div[data-baseweb="select"] span {
+        color: #000000 !important;
+    }
+
+    /* Forza il colore quando la tendina è aperta (il menu vero e proprio) */
+    div[role="listbox"] {
+        background-color: #ffffff !important;
+    }
+    
+    /* Forza il colore delle opzioni nel menu */
+    div[role="option"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    
+    /* Forza il colore quando passi sopra un'opzione col mouse */
+    div[role="option"]:hover {
+        background-color: #f9ebdf !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
