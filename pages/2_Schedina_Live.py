@@ -93,6 +93,56 @@ st.markdown("""
     .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
 </style>
 """, unsafe_allow_html=True)
+st.markdown("""
+<style>
+    /* 1. Forza il tema chiaro a livello di documento */
+    :root {
+        color-scheme: light !important;
+    }
+
+    /* 2. Forza lo sfondo di tutta l'app */
+    .stApp { 
+        background-color: #f9ebdf !important; 
+    }
+
+    /* 3. Forza lo sfondo e il colore dei WIDGET (Input, Select, Bottoni) */
+    /* Input di testo e Selectbox */
+    div[data-baseweb="base-input"], 
+    div[data-baseweb="select"],
+    input, 
+    textarea,
+    div[data-baseweb="dropdown"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #c9e4b7 !important;
+    }
+
+    /* Bottoni */
+    button {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #c9e4b7 !important;
+    }
+
+    /* Etichette (label) dei campi */
+    label {
+        color: #000000 !important;
+    }
+
+    /* Forza il colore del testo ovunque */
+    h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+        color: #000000 !important;
+    }
+
+    /* 4. Ignora il tema scuro del sistema */
+    @media (prefers-color-scheme: dark) {
+        :root { color-scheme: light !important; }
+        .stApp, div[data-baseweb="base-input"], button {
+            background-color: #f9ebdf !important;
+        }
+    }
+</style>
+""", unsafe_allow_html=True)
 
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
