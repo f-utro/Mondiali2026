@@ -182,7 +182,7 @@ st.markdown("""
 
     /* Forza il titolo dell'expander */
     .st-expander {
-        background-color: #ffffff !important;
+        background-color: #f9ebdf !important;
         border: 1px solid #c9e4b7 !important;
         border-radius: 10px !important;
     }
