@@ -4,19 +4,6 @@ import os
 from datetime import datetime
 import gspread
 
-
-# --- INIZIALIZZAZIONE STATO (METTI QUESTO SUBITO DOPO GLI IMPORT) ---
-if "cedola" not in st.session_state:
-    st.session_state.cedola = {}
-if "utente" not in st.session_state:
-    st.session_state.utente = ""
-if "giornata" not in st.session_state:
-    st.session_state.giornata = "Giornata 1 (11 - 17 Giugno)"
-if "pagina_corrente" not in st.session_state:
-    st.session_state.pagina_corrente = "GIOCA"
-if "match_idx" not in st.session_state:
-    st.session_state.match_idx = None
-
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="centered", initial_sidebar_state="collapsed")
 
@@ -136,16 +123,6 @@ def is_partita_aperta(match_dict):
     except Exception as e:
         print(f"Errore orario: {e}")
         return False # Se c'è un errore, per sicurezza blocchiamo la giocata
- 
-def is_giornata_valida(nome_giornata):
-    # Estraiamo le date dal nome, es: "Giornata 1 (11 - 17 Giugno)"
-    try:
-        data_str = nome_giornata.split('(')[1].replace(')', '').split('-')[1].strip()
-        # Assumiamo l'anno corrente (2026)
-        data_fine = datetime.strptime(f"{data_str} 2026", "%d %B %Y")
-        return data_fine >= datetime.now()
-    except:
-        return True # Se fallisce, mostra tutto per sicurezza
     
 # Funzione corretta per ottenere l'URL immagine
 def get_flag_link(team):
@@ -294,17 +271,6 @@ st.markdown("""
     header {visibility: hidden;}
 </style>
 """, unsafe_allow_html=True)
-st.markdown("""
-<style>
-    .stApp { background-color: #f9ebdf !important; }
-    .telegram-ballon {
-        background-color: #effdde; padding: 15px; border-radius: 15px;
-        border-bottom-left-radius: 0; margin-bottom: 20px;
-        border: 1px solid #c9e4b7; color: #000; font-family: monospace;
-    }
-    .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
-</style>
-""", unsafe_allow_html=True)
 
 
 
@@ -346,11 +312,11 @@ def convalida_risultato(segno, risultato_str):
     if "-" not in risultato_str: return False, "Formato: 'GolCasa-GolTrasferta' (es. 2-1)."
     try:
         gol_casa, gol_trasf = map(int, risultato_str.split("-"))
-        if segno == "1" and gol_casa <= gol_trasf: return False, "Segno 1 richiede gol casa > gol trasferta."
-        if segno == "2" and gol_trasf <= gol_casa: return False, "Segno 2 richiede gol trasferta > gol casa."
-        if segno == "X" and gol_casa != gol_trasf: return False, "Segno X richiede pareggio."
+        if segno == "1" and gol_casa <= gol_trasf: return False, "Incoerente con Segno 1."
+        if segno == "2" and gol_trasf <= gol_casa: return False, "Incoerente con Segno 2."
+        if segno == "X" and gol_casa != gol_trasf: return False, "Incoerente con Segno X."
         return True, ""
-    except ValueError: return False, "Inserisci solo numeri separati da '-'."
+    except ValueError: return False, "Numeri non validi."
 
 # --- BRANDING HEADER ---
 # col_logo, col_titolo = st.columns([1.2, 4.8])
@@ -367,28 +333,6 @@ def convalida_risultato(segno, risultato_str):
 #     # Usiamo il logo "Nero" perché contiene già il nome del brand
 #     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
 
-def invia_a_sheets(cedola, utente):
-    # 1. Connessione a Google Sheets
-    # Assicurati di avere il file 'credentials.json' nella cartella del progetto
-    ws = sh.worksheet("SchedineLive")
-    
-    data_invio = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    righe_da_aggiungere = []
-    
-    for match, pronostico in cedola.items():
-        righe_da_aggiungere.append([
-            data_invio,
-            utente,
-            st.session_state.giornata, # O st.session_state.giornata
-            match,
-            pronostico["1X2"],
-            pronostico["ris"]
-        ])
-    
-    # 2. Scrittura Batch (più efficiente di append_row singolo)
-    if righe_da_aggiungere:
-        ws.append_rows(righe_da_aggiungere)
-
 def vai_alla_home():
     st.session_state.pagina_corrente = "GIOCA"
     st.session_state.mostra_ricevuta = False
@@ -397,224 +341,344 @@ def vai_alla_home():
         del st.session_state.partita_attiva
 
 # --- BRANDING HEADER ---
-# --- INIZIALIZZAZIONE STATO ---
+col_left, col_center, col_right = st.columns([2, 1, 2])
 
-# --- BRANDING HEADER ---
-col_left, col_center, col_right = st.columns([1, 2, 1]) # Ho leggermente allargato la colonna centrale
 with col_center:
+    # Mostriamo l'immagine. Purtroppo non è cliccabile direttamente.
+    # Quindi mettiamo un tasto "Home" subito sotto o sopra il logo.
     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
     
-    # Creiamo due colonne per i bottoni affiancati
-    b1, b2 = st.columns(2)
-    with b1:
-        st.link_button("🏠 Home", "https://mundialandme.streamlit.app/", use_container_width=True)
-    with b2:
-        # Sostituisci il link con il tuo link di invito Telegram
-        st.link_button("💬 Chat", "https://t.me/TUO_LINK_INVITO", use_container_width=True)
+    # Questo è il modo più pulito: un bottone "Home" che richiama la funzione
+    st.link_button("🏠 Home", "https://mundialandme.streamlit.app/", use_container_width=True)
 
+# Separatore grafico che riprende il colore verde del tema
 st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
+# --- STATO DELLA NAVIGAZIONE ---
+if "pagina_corrente" not in st.session_state:
+    st.session_state.pagina_corrente = "GIOCA"
+
 st.markdown("<br>", unsafe_allow_html=True)
 
 # --- NAVIGAZIONE PRINCIPALE ---
-
-# col_nav1, col_nav2 = st.columns(2)
-# with col_nav1:
-#     # if st.button("📝 COMPILA SCHEDINA", use_container_width=True):
-#     #     st.session_state.pagina_corrente = "GIOCA"
-#     #     st.rerun()
-#     #     --- AREA INVIO (POSIZIONATA IN CIMA O SUBITO DOPO IL LOGO) ---
-#     st.markdown("---")
-#     # Usiamo un container per isolare l'invio
-#     with st.container(border=True):
-#         st.subheader("🚀 Controllo Cedola")
-#         if not st.session_state.cedola:
-#             st.write("La cedola è vuota.")
-#         else:
-#             if st.button("INVIA SCHEDINA DEFINITIVA", type="primary", use_container_width=True):
-#                 # STAMPA IMMEDIATA A CONSOLE (Devi vedere questo nel terminale)
-#                 print("--- CLICK RILEVATO ---") 
-                
-#                 # Debug visivo obbligatorio
-#                 st.toast("Invio in corso...", icon="⏳")
-                
-#                 try:
-#                     # Carichiamo gspread qui per essere sicuri
-#                     # gc = gspread.service_account(filename='credentials.json')
-#                     # sh = gc.open("Mondiali2026_Database")
-#                     worksheet = sh.worksheet("SchedineLive")
-                    
-#                     ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-#                     righe = [[ts, st.session_state.utente, st.session_state.giornata, k, v["1X2"], v["ris"]] 
-#                             for k, v in st.session_state.cedola.items()]
-                    
-#                     worksheet.append_rows(righe)
-                    
-#                     st.session_state.cedola = {}
-#                     st.success("✅ Salvato!")
-#                     st.balloons()
-#                     st.rerun()
-#                 except Exception as e:
-#                     st.error(f"ERRORE CRITICO: {e}")
-# with col_nav2:
-#     if st.button("🏆 CLASSIFICA LIVE", use_container_width=True):
-#         st.session_state.pagina_corrente = "CLASSIFICA"
-#         st.rerun()
-# st.markdown('</div>', unsafe_allow_html=True)
+col_nav1, col_nav2 = st.columns(2)
+with col_nav1:
+    st.markdown(f'<div class="{"menu-active" if st.session_state.pagina_corrente == "GIOCA" else "menu-inactive"}">', unsafe_allow_html=True)
+    if st.button("📝 COMPILA SCHEDINA", use_container_width=True):
+        st.session_state.pagina_corrente = "GIOCA"
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
+with col_nav2:
+    st.markdown(f'<div class="{"menu-active" if st.session_state.pagina_corrente == "CLASSIFICA" else "menu-inactive"}">', unsafe_allow_html=True)
+    if st.button("🏆 CLASSIFICA LIVE", use_container_width=True):
+        st.session_state.pagina_corrente = "CLASSIFICA"
+        st.rerun()
+    st.markdown('</div>', unsafe_allow_html=True)
 
 st.markdown("<hr style='margin-top:10px; margin-bottom:15px; border:0; border-top:1px solid #ebdccf;'>", unsafe_allow_html=True)
-
-
-# --- INSERIMENTO NOME ---
-st.session_state.utente = st.text_input("👤 Il tuo Nome Telegram", value=st.session_state.utente, placeholder="Es: @MarioRossi")
-
-#
-giornate_disponibili = [g for g in CALENDARIO_GIORNATE.keys() if is_giornata_valida(g)]
-
-# Se non ci sono giornate future, mostriamo un avviso o l'ultima
-if not giornate_disponibili:
-    st.warning("Il torneo è concluso!")
-    giornate_disponibili = list(CALENDARIO_GIORNATE.keys())
-
-# --- SELECTBOX DINAMICO ---
-# Impostiamo di default la prima della lista (la più vicina temporalmente)
-giornata_scelta = st.selectbox(
-    "📅 Seleziona il turno:", 
-    options=giornate_disponibili,
-    index=0 
-)
-st.session_state.giornata = giornata_scelta
 
 # ==========================================
 # SEZIONE GIOCO
 # ==========================================
 if st.session_state.pagina_corrente == "GIOCA":
-  # --- CEDOLA STICKY (Sempre in alto) ---
-    with st.container(border=True):
-        st.subheader("🎫 La tua Cedola Live")
-        if not st.session_state.cedola:
-            st.info("La tua cedola è attualmente vuota. Seleziona una partita qui sotto!")
-        else:
-            # Visualizzazione "Ricevuta" per lo screenshot
-            st.markdown(f"""
-            <div style="background: #fdfdfd; border: 2px solid #333; padding: 15px; font-family: 'Courier New', monospace;">
-                <h4 style="text-align:center; border-bottom: 1px solid #333;">RICEVUTA PROVVISORIA</h4>
-                <p><b>Utente:</b> {st.session_state.utente}</p>
-                {"".join([f"<p>{m} : <b>{v['1X2']} ({v['ris']})</b></p>" for m, v in st.session_state.cedola.items()])}
-                <hr>
-                <p style="text-align:center; font-size:10px;">FAI UNO SCREENSHOT E INVIALO SU TELEGRAM!</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if st.button("🚀 INVIA SCHEDINA", type="primary", use_container_width=True):
-                # LOGICA DI INVIO A GOOGLE SHEETS
-                with st.spinner("Invio in corso..."):
-                    invia_a_sheets(st.session_state.cedola, st.session_state.utente)
-                st.success("✅ Schedina inviata! Fai lo screenshot e condividilo su Telegram!")
-                st.balloons()
-                
-                # 3. NON svuotare subito la cedola!
-                # Creiamo un bottone "Pulisci" che appare SOLO dopo l'invio riuscito
-                if st.button("OK, ho fatto lo screenshot, pulisci tutto"):
-                    st.session_state.cedola = {}
-                    st.rerun()
-                    
-                # Fermiamo l'esecuzione qui per non far sparire la ricevuta
-                st.stop()
+    if "telegram_user" not in st.session_state: st.session_state.telegram_user = ""
+    if "match_idx" not in st.session_state: st.session_state.match_idx = 0
+    if "mostra_ricevuta" not in st.session_state: st.session_state.mostra_ricevuta = False
 
-    # --- LISTA PARTITE (Allineate) ---
-    st.markdown("---")
-    partite = CALENDARIO_GIORNATE[st.session_state.giornata]
-    
-    def get_flag(team_name):
-        return FLAGS.get(team_name, {}).get("emoji", "⚽")
+    if not st.session_state.telegram_user:
+        st.markdown('<div class="login-box">', unsafe_allow_html=True)
+        st.markdown("<h3 style='margin-top:0; margin-bottom: 15px; font-weight: 800;'>🎟️ APRI SCHEDINA LIVE</h3>", unsafe_allow_html=True)
+        
+        # TORNA LA SELEZIONE DELLA GIORNATA COMPLETA
+        giornata_selezionata = st.selectbox("📅 SELEZIONA IL CONCORSO:", list(CALENDARIO_GIORNATE.keys()))
+        st.session_state.giornata = giornata_selezionata
+        st.markdown("<br>", unsafe_allow_html=True)
+        input_nome = st.text_input("NOME UTENTE TELEGRAM:", placeholder="Es. @JuvAndMe_User")
 
-# --- LISTA PARTITE ---
-    for i, m in enumerate(partite):
-        match_key = f"{m['t1']} vs {m['t2']}"
         
-        # Costruzione etichetta bottone
-        f1 = get_flag(m['t1'])
-        f2 = get_flag(m['t2'])
-        btn_label = f"{f1} {m['t1']} vs {m['t2']} {f2}"
         
-        # Centratura: Usiamo 3 colonne [1, 2, 1] per lasciare i lati vuoti
-        col_l, col_c, col_r = st.columns([1, 4, 1])
-        
-        with col_c:
-            if not is_partita_aperta(m):
-                st.button(f"🔒 {btn_label}", disabled=True, use_container_width=True)
+        if st.button("Accedi alla Schedina ➡️", use_container_width=True):
+            if input_nome.strip():
+                st.session_state.telegram_user = input_nome.strip()
+                st.session_state.giocate_live = {f"{m['t1']}_vs_{m['t2']}": {"1X2": "-", "ris": ""} for m in CALENDARIO_GIORNATE[giornata_selezionata]}
+                st.rerun()
             else:
-                if st.button(btn_label, key=f"btn_{i}", use_container_width=True):
-                    st.session_state.match_idx = i
-                    st.rerun()
+                st.warning("⚠️ Inserisci il tuo username Telegram.")
+        st.markdown('</div>', unsafe_allow_html=True)
 
-        # Espansione form di inserimento (sempre centrata sotto il bottone)
-        if st.session_state.match_idx == i:
+    elif not st.session_state.mostra_ricevuta:
+        partite = CALENDARIO_GIORNATE[st.session_state.giornata]
+        st.markdown("<p style='font-weight: bold; margin-bottom: 8px; font-size: 13px; text-align: center;'>👉 Seleziona la partita da inserire/modificare:</p>", unsafe_allow_html=True)
+        
+        # --- BLOCCO CORRETTO DA SOSTITUIRE ---
+#         DENSITA_COLONNE = 3
+#         for riga_idx in range(0, len(partite), DENSITA_COLONNE):
+#             cols = st.columns(DENSITA_COLONNE, gap="small")
+#             for col_idx in range(DENSITA_COLONNE):
+#                 match_idx = riga_idx + col_idx
+#                 if match_idx < len(partite):
+#                     m = partite[match_idx]
+                    
+#                     # All'interno del tuo ciclo, sostituisci il blocco con questo:
+#                     with cols[col_idx]:
+#                         m = partite[match_idx] # Partita corrente
+                        
+#                         # Crea una mini-riga per le bandiere
+#                         # b1, b2, b3 = st.columns([1, 1, 1])
+#                         # with b1: st.image(get_flag_link(m['t1']), width=30)
+#                         # with b2: st.write("vs")
+#                         # with b3: st.image(get_flag_link(m['t2']), width=30)
+#                         # Invece di b1, b2, b3 = st.columns([1, 1, 1]) ...
+# # Usa questa singola riga di markdown con stile HTML:
+
+#                         link_id = f"btn_{match_idx}"
+    
+#                         # Questo HTML crea un rettangolo cliccabile che sembra un bottone
+#                         # Al click, invia un segnale a Streamlit usando i query_params
+#                         st.markdown(f"""
+#                         <a href="?match_idx={match_idx}" style="text-decoration: none;">
+#                             <div class="match-btn-custom" style="
+#                                 display: flex; align-items: center; justify-content: center; gap: 15px;
+#                                 background-color: #000000; border: 2px solid #00FF00; border-radius: 8px;
+#                                 padding: 12px; color: white; font-weight: bold; width: 100%;
+#                             ">
+#                                 <img src="{get_flag_link(m['t1'])}" style="width: 35px; height: 25px;">
+#                                 <span>{m['t1']} vs {m['t2']}</span>
+#                                 <img src="{get_flag_link(m['t2'])}" style="width: 35px; height: 25px;">
+#                             </div>
+#                         </a>
+#                         """, unsafe_allow_html=True)
+
+#                         # # Il tuo bottone va subito dopo
+#                         # if st.button(label_html, key=f"btn_{match_idx}", use_container_width=True):
+#                         #     st.session_state.match_idx = match_idx
+#                         #     st.rerun()
+                            
+#         if "match_idx" in st.query_params:
+#             st.session_state.match_idx = int(st.query_params["match_idx"])
+#             st.query_params.clear() # Pulisce l'URL
+#             st.rerun()
+                        #if corrente: st.markdown('</div>', unsafe_allow_html=True)
+
+        # --- LOGICA DI PAGINA ---
+        partite = CALENDARIO_GIORNATE[st.session_state.giornata]
+
+        st.markdown("### 🗓️ Calendario Giornata")
+
+        for i, m in enumerate(partite):
+            # Usiamo un container per ogni riga
             with st.container():
-                st.markdown(f"<div style='text-align: center;'><h4>{btn_label}</h4></div>", unsafe_allow_html=True)
-            with st.expander("📝 Inserisci Pronostico", expanded=True):
+                # Riga compatta (sempre visibile)
+                col_btn, col_status = st.columns([4, 1])
+                
+                with col_btn:
+                    # Bottone che cambia etichetta se la partita è selezionata
+                    label = f"⚽ {m['t1']} vs {m['t2']}"
+                    if st.button(label, key=f"btn_{i}", use_container_width=True):
+                        st.session_state.match_idx = i
+                
+                # Indica se la partita è chiusa
+                if not is_partita_aperta(m):
+                    with col_status:
+                        st.markdown("🔒")
+
+            # Se questa partita è stata selezionata, apriamo il form "dentro" il flusso
+            if st.session_state.match_idx == i:
+                st.divider()
+                st.markdown(f"#### Inserisci pronostico: {m['t1']} vs {m['t2']}")
+                
+                # Form di input compatto
                 c1, c2 = st.columns(2)
                 with c1:
-                    segno = st.radio("Segno", ["1", "X", "2"], horizontal=True, key=f"s_{i}")
+                    segno = st.radio("1X2", ["1", "X", "2"], horizontal=True, key=f"segno_{i}")
                 with c2:
-                    ris = st.text_input("Ris. Esatto", key=f"r_{i}")
-                
-                if st.button("➕ Aggiungi alla Cedola", key=f"add_{i}"):
-                    # Chiamiamo la funzione di convalida
-                    is_valid, msg = convalida_risultato(segno, ris)
+                    ris = st.text_input("Ris. Esatto", placeholder="2-1", key=f"ris_{i}")
                     
-                    if not st.session_state.utente:
-                        st.error("Inserisci prima il tuo Nome Telegram!")
-                    elif not is_valid:
-                        # Mostriamo l'errore specifico (es. "Segno X richiede pareggio")
-                        st.warning(f"⚠️ {msg}")
-                    else:
-                        # Tutto ok, aggiungiamo alla cedola
-                        st.session_state.cedola[match_key] = {"1X2": segno, "ris": ris}
-                        st.success("Aggiunto!")
-                        st.rerun()
-    # if st.button("🚀 INVIA SCHEDINA DEFINITIVA", type="primary", use_container_width=True):
-    #     print(f"Debug: Utente = {st.session_state.utente}")
-    #     print(f"Debug: Cedola = {st.session_state.cedola}")
-    #     # Debug 1: Controlla cosa stiamo inviando
-    #     st.write(f"Debug: Utente = {st.session_state.utente}")
-    #     st.write(f"Debug: Cedola = {st.session_state.cedola}")
+                if st.button("💾 Salva", key=f"save_{i}", type="primary"):
+                    # Salvataggio...
+                    st.session_state.match_idx = None # Chiude il form dopo il salvataggio
+                    st.rerun()
+                st.divider()
+        # --- CICLO PARTITE ---
+        # for i, m in enumerate(partite):
+
+        #     aperta = is_partita_aperta(m)
+        #     # Usiamo un unico blocco HTML per tutto: Bandiere + "vs" + Bottone
+        #     # Questo forza il browser a tenere tutto insieme su una riga
+        #     if aperta:
+        #         st.markdown(f"""
+        #         <div style="
+        #             display: flex; flex-direction: column; align-items: center; 
+        #             margin-bottom: 25px; width: 100%;
+        #         ">
+        #             <div style="
+        #                 display: flex; align-items: center; justify-content: center; 
+        #                 gap: 15px; margin-bottom: 5px;
+        #             ">
+        #                 <img src="{get_flag_link(m['t1'])}" style="width: 35px; height: 25px;">
+        #                 <span style="font-weight: bold;">vs</span>
+        #                 <img src="{get_flag_link(m['t2'])}" style="width: 35px; height: 25px;">
+        #             </div>
+        #         </div>
+        #         """, unsafe_allow_html=True)
+                
+        #         # Il bottone sta subito sotto, integrato nel flusso
+        #         if st.button(f"{m['t1']} - {m['t2']}", key=f"btn_{i}", use_container_width=True):
+        #             st.session_state.match_idx = i
+        #             st.rerun()
+        #     else:
+        #         st.button(f"🔒 {m['t1']} vs {m['t2']} (Chiusa)", disabled=True, key=f"btn_locked_{i}")
+        # st.markdown("<br>", unsafe_allow_html=True)
+        # # current_match = partite[st.session_state.match_idx]
+        # # key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
         
-    #     if not st.session_state.utente:
-    #         st.error("Errore: Il nome Telegram è vuoto!")
-    #     elif not st.session_state.cedola:
-    #         st.warning("Errore: La cedola è vuota!")
-    #     else:
-    #         try:
-    #             # Debug 2: Conferma avvio invio
-    #             st.info("Tentativo di invio al database...")
+        
+        # # st.markdown(f'<div class="match-card"><div class="match-header">⚽ MATCH CORRENTE (N.{st.session_state.match_idx+1})</div><div class="match-teams"><span>{get_flag(current_match["t1"])} {current_match["t1"]}</span><span style="color: #009933; margin: 0 10px;">-</span><span>{current_match["t2"]} {get_flag(current_match["t2"])}</span></div></div>', unsafe_allow_html=True)
+        # current_match = partite[st.session_state.match_idx]
+        
+        # st.markdown(f'<div class="match-card"><div class="match-header">⚽ MATCH CORRENTE (N.{st.session_state.match_idx+1})</div>', unsafe_allow_html=True)
+        
+        # # Allineamento a 5 colonne: [Bandiera1, Nome1, VS, Nome2, Bandiera2]
+        # c1, c2, c3, c4, c5 = st.columns([1, 2, 1, 2, 1])
+        # current_match = partite[st.session_state.match_idx]
+       
+        # with c1: 
+        #     st.image(get_flag_link(current_match['t1']), width=35)
+        # with c2: 
+        #     st.markdown(f"**{current_match['t1']}**")
+        # with c3: 
+        #     st.write("vs")
+        # with c4: 
+        #     st.markdown(f"**{current_match['t2']}**") # <--- AGGIUNTO: Nome seconda squadra
+        # with c5: 
+        #     st.image(get_flag_link(current_match['t2']), width=35) # <--- AGGIUNTO: Bandiera seconda squadra
+        
+       
+        # st.markdown('</div>', unsafe_allow_html=True)  
+        # key_match = f"{current_match['t1']}_vs_{current_match['t2']}"
+        
+        # col_es, col_totogol = st.columns([1, 1])
+        # with col_es:
+        #     st.markdown("<label style='font-weight: bold; font-size: 13px;'>📊 Segno 1X2:</label>", unsafe_allow_html=True)
+        #     opzioni = ["-", "1", "X", "2"]
+        #     def_1x2 = st.session_state.giocate_live[key_match]["1X2"]
+        #     idx_1x2 = opzioni.index(def_1x2) if def_1x2 in opzioni else 0
+        #     nuovo_segno = st.radio("Esito", opzioni, index=idx_1x2, key=f"rad_{key_match}", horizontal=True, label_visibility="collapsed")
+        #     st.session_state.giocate_live[key_match]["1X2"] = nuovo_segno
+            
+        # with col_totogol:
+        #     st.markdown("<label style='font-weight: bold; font-size: 13px;'>🔢 Risultato Esatto:</label>", unsafe_allow_html=True)
+        #     nuovo_ris = st.text_input("Risultato", value=st.session_state.giocate_live[key_match]["ris"], placeholder="Es. 2-1", key=f"txt_{key_match}", label_visibility="collapsed").strip()
+        #     st.session_state.giocate_live[key_match]["ris"] = nuovo_ris
+
+        # valido, msg_errore = convalida_risultato(st.session_state.giocate_live[key_match]["1X2"], st.session_state.giocate_live[key_match]["ris"])
+        # if not valido and st.session_state.giocate_live[key_match]["ris"] != "":
+        #     st.error(f"⚠️ {msg_errore}")
+        #     pronostico_pronto = False
+        # else: pronostico_pronto = True
+
+        # st.markdown("<br>", unsafe_allow_html=True)
+        # col_btn_next, col_btn_save = st.columns(2)
+        # with col_btn_next:
+        #     st.markdown('<div class="btn-next">', unsafe_allow_html=True)
+        #     if st.session_state.match_idx < len(partite) - 1:
+        #         if st.button("➡️ PROSSIMA PARTITA", use_container_width=True):
+        #             if pronostico_pronto:
+        #                 st.session_state.match_idx += 1
+        #                 st.rerun()
+        #     else:
+        #         st.button("🏁 ULTIMA PARTITA", disabled=True, use_container_width=True)
+        #     st.markdown('</div>', unsafe_allow_html=True)
+            
+        # with col_btn_save:
+        #     st.markdown('<div class="btn-save">', unsafe_allow_html=True)
+        #     if st.button("📝 I Tuoi Pronostici", use_container_width=True):
+        #         if pronostico_pronto:
+        #             st.session_state.mostra_ricevuta = True
+        #             st.rerun()
+        #     st.markdown('</div>', unsafe_allow_html=True)
+
+    # --- CORREZIONE INTEGRALE E PARSING CORRETTO HTML SCONTRINO ---
+    # --- BLOCCO RICEVUTA CORRETTO E BLINDATO SENZA TAG RAW ---
+    else:
+        partite = CALENDARIO_GIORNATE[st.session_state.giornata]
+        telegram_user = st.session_state.telegram_user
+        
+        # Inizializziamo l'html su un'unica riga logica
+        testo_ricevuta = (
+            '<div style="background: #fff2cc; border: 2px solid #111111; padding: 20px; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.08);">'
+            '<div style="text-align: center; border-bottom: 2px dashed #111111; padding-bottom: 12px; margin-bottom: 18px;">'
+            '<h3 style="margin: 0; font-family: monospace; font-weight: 900; letter-spacing: 2px;">RICEVUTA CONCORSO J&M</h3>'
+            f'<p style="margin: 6px 0 0 0; font-size: 14px; font-family: monospace; font-weight: bold;">UTENTE: {telegram_user}</p>'
+            f'<p style="margin: 2px 0 0 0; font-size: 11px; font-family: monospace; color: #777777;">{datetime.now().strftime("%d/%m/%Y %H:%M")}</p>'
+            '</div>'
+        )
+
+        giocate_effettuate = 0
+        for idx, m in enumerate(partite):
+            k = f"{m['t1']}_vs_{m['t2']}"
+            voto = st.session_state.giocate_live[k]
+            
+            # Filtro per mostrare solo i match compilati
+            if voto['1X2'] == "-" or voto['1X2'] == "" or not voto['1X2']:
+                continue
                 
-    #             # --- TUA FUNZIONE DI INVIO ---
-    #             ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    #             righe_da_aggiungere = []
+            giocate_effettuate += 1
+            testo_ricevuta += (
+                '<div style="display: flex; justify-content: space-between; align-items: center; font-family: monospace; font-size: 13px; padding: 6px 0; border-bottom: 1px dotted #bbbbbb;">'
+                f'<span style="font-weight: bold; display: flex; align-items: center; gap: 5px;">'
+                    f'{idx+1:02d}. '
+                    f'<img src="{get_flag_link(m["t1"])}" style="width: 20px; height: 15px;"> '
+                    f'{m["t1"][:10]} - {m["t2"][:10]} '
+                    f'<img src="{get_flag_link(m["t2"])}" style="width: 20px; height: 15px;">'
+                f'</span>'
+                f'<span style="font-weight: 900; color: #cc0000; font-size: 14px;">[{voto["1X2"]}] ({voto["ris"]})</span>'
+                '</div>'
+            )
+
+        if giocate_effettuate == 0:
+            testo_ricevuta += '<p style="text-align:center; font-family:monospace; color:#cc0000; padding: 10px 0;">⚠️ Nessun pronostico inserito.</p>'
+
+        testo_ricevuta += '</div>'
+        
+        # Pulizia totale dei ritorni a capo per evitare bug di rendering in Streamlit
+        testo_ricevuta = testo_ricevuta.replace("\n", "")
+        
+        # Rendering finale
+        st.markdown(testo_ricevuta, unsafe_allow_html=True)
+        st.caption(f"Visualizzazione Smart: mostrati solo i {giocate_effettuate} match compilati.")
+        
+        c_mod, c_save = st.columns(2)
+        with c_mod:
+            if st.button("🔄 Torna a Modificare", use_container_width=True):
+                st.session_state.mostra_ricevuta = False
+                st.rerun()
+        with c_save:
+            st.markdown('<div class="btn-save">', unsafe_allow_html=True)
+            if st.button("🚀 INVIA PRONOSTICI 🚀", use_container_width=True):
+                righe = []
+                ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                for m in partite:
+                    k = f"{m['t1']}_vs_{m['t2']}"
+                    voto = st.session_state.giocate_live[k]
+                    righe.append({
+                        "Data": ts, "Utente_Telegram": telegram_user, "Giornata": st.session_state.giornata,
+                        "Partita": k, "Pronostico_Segno": voto["1X2"], "Pronostico_Risultato": voto["ris"]
+                    })
+                df_nuovo_live = pd.DataFrame(righe)
+                worksheet = sh.worksheet("SchedineLive")
+                try:
+                    records = worksheet.get_all_records()
+                    df_esistente_live = pd.DataFrame(records)
+                except Exception:
+                    df_esistente_live = pd.DataFrame(columns=["Data", "Utente_Telegram", "Giornata", "Partita", "Pronostico_Segno", "Pronostico_Risultato"])
                 
-    #             for match_key, voto in st.session_state.cedola.items():
-    #                 righe_da_aggiungere.append([ts, st.session_state.utente, st.session_state.giornata, match_key, voto["1X2"], voto["ris"]])
-                
-    #             # Inizializza la connessione qui (o assicurati che 'sh' sia definito globalmente)
-    #             # gc = gspread.service_account(filename='credentials.json')
-    #             # sh = gc.open("Mondiali2026_Database")
-                
-    #             worksheet = sh.worksheet("SchedineLive")
-    #             worksheet.append_rows(righe_da_aggiungere)
-                
-    #             # Reset
-    #             st.session_state.cedola = {}
-    #             st.success("✅ Inviato!")
-    #             st.balloons()
-    #             st.rerun()
-                
-    #         except Exception as e:
-    #             # Questo è il punto critico: qui vedrai l'errore reale
-    #             st.error(f"Errore tecnico: {e}")
-    if st.button("🗑️ Svuota Schedina"):
-        st.session_state.cedola = {}
-        st.rerun()
+                df_finale_live = pd.concat([df_esistente_live, df_nuovo_live], ignore_index=True)
+                worksheet.clear()
+                worksheet.update([df_finale_live.columns.values.tolist()] + df_finale_live.fillna("").values.tolist())
+                st.success("Salvataggio completato sul Database!")
+                st.balloons()
+            st.markdown('</div>', unsafe_allow_html=True)
+
 # ==========================================
 # SEZIONE CLASSIFICHE
 # ==========================================
