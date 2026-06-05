@@ -305,7 +305,14 @@ st.markdown("""
     .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
 </style>
 """, unsafe_allow_html=True)
-
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
 
 path_json_locale = "credenziali_google.json"
@@ -450,7 +457,7 @@ with col_center:
             </a>
         </div>
     """, unsafe_allow_html=True)
-    
+
 st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 st.markdown("<br>", unsafe_allow_html=True)
 

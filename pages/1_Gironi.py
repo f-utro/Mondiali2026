@@ -75,6 +75,14 @@ def get_flag_url(team_name):
         return "https://flagcdn.com/w80/un.png"
     return f"https://flagcdn.com/w80/{code}.png"
 
+hide_streamlit_style = """
+            <style>
+            #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+            </style>
+            """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 # --- STILE CSS COMPLETO (Design Premium TotoJuve) ---
 st.markdown("""
     <style>
