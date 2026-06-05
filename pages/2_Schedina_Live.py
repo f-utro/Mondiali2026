@@ -175,33 +175,40 @@ st.markdown("""
 """, unsafe_allow_html=True)
 st.markdown("""
 <style>
-    /* Forza lo sfondo del corpo dell'expander (la parte che si apre) */
-    .st-emotion-cache-1n76uvr { /* Nota: la classe di Streamlit può variare, usiamo selettori robusti */
-        background-color: #ffffff !important;
-    }
-
-    /* Forza il titolo dell'expander */
-    .st-expander {
-        background-color: #f9ebdf !important;
-        border: 1px solid #c9e4b7 !important;
-        border-radius: 10px !important;
-    }
-
-    /* Forza il colore del testo dentro l'expander */
+    /* 1. Forza il colore di sfondo dell'expander a rosato */
     div[data-testid="stExpander"] {
         background-color: #f9ebdf !important;
+        border: 1px solid #c9e4b7 !important;
+    }
+
+    /* 2. Forza il colore dell'area interna quando viene aperta */
+    div[data-testid="stExpanderDetails"] {
+        background-color: #f9ebdf !important;
+    }
+
+    /* 3. Forza il colore del titolo dell'expander (la barra nera che vedi) */
+    button[data-testid="stExpanderDetails"] {
+        background-color: #f9ebdf !important;
         color: #000000 !important;
     }
 
-    /* Forza il testo dell'header dell'expander */
-    button[data-testid="stExpanderDetails"] p {
+    /* 4. Forza il colore di TUTTO il testo dentro l'expander a nero */
+    div[data-testid="stExpander"] * {
         color: #000000 !important;
-        font-weight: bold;
     }
-    
-    /* Forza lo sfondo quando l'expander è espanso */
-    div[data-testid="stExpanderDetails"] {
+
+    /* 5. Forza lo sfondo dell'input (Ris. Esatto) a bianco/chiaro */
+    input {
         background-color: #ffffff !important;
+        color: #000000 !important;
+        border: 1px solid #c9e4b7 !important;
+    }
+
+    /* 6. Forza il colore del box della "Cedola Live" (quello grigio bluastro) */
+    div[data-testid="stAlert"] {
+        background-color: #f9ebdf !important;
+        border: 1px solid #c9e4b7 !important;
+        color: #000000 !important;
     }
 </style>
 """, unsafe_allow_html=True)
