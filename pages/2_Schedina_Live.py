@@ -22,30 +22,46 @@ st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="center
 # --- ENGINE CSS CUSTOM ---
 st.markdown("""
 <style>
-    /* 1. Forza il tema Light e il colore di sfondo crema */
+    /* --- 1. CONFIGURAZIONE BASE (LIGHT MODE) --- */
     .stApp { 
         background-color: #f9ebdf !important; 
     }
     
-    /* 2. Forza il testo nero ovunque per evitare illeggibilità in dark mode */
+    /* Forza testo nero in modalità light */
     h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
         color: #000000 !important; 
     }
 
-    /* 3. Nascondi elementi Streamlit */
-    #MainMenu, footer, header { 
+    /* --- 2. CONFIGURAZIONE AUTOMATICA (DARK MODE) --- */
+    @media (prefers-color-scheme: dark) {
+        .stApp { 
+            background-color: #262730 !important; /* Grigio scuro di sistema */
+        }
+        /* Forza testo bianco in modalità dark per leggibilità */
+        h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
+            color: #ffffff !important; 
+        }
+        /* Adatta il balloon di Telegram al tema scuro */
+        .telegram-ballon {
+            background-color: #1e3a1e !important; 
+            border: 1px solid #4a7c4a !important;
+            color: #ffffff !important;
+        }
+    }
+
+    /* --- 3. ELEMENTI FISSI (Non cambiano) --- */
+    MainMenu, footer,{ 
         visibility: hidden !important; 
     }
 
-    /* 4. Componenti personalizzati */
     .telegram-ballon {
-        background-color: #effdde !important; 
+        background-color: #effdde; 
         padding: 15px; 
         border-radius: 15px;
         border-bottom-left-radius: 0; 
         margin-bottom: 20px;
         border: 1px solid #c9e4b7; 
-        color: #000000 !important; 
+        color: #000000; 
         font-family: monospace;
     }
     .match-row { 
@@ -339,20 +355,7 @@ def convalida_risultato(segno, risultato_str):
         return True, ""
     except ValueError: return False, "Inserisci solo numeri separati da '-'."
 
-# --- BRANDING HEADER ---
-# col_logo, col_titolo = st.columns([1.2, 4.8])
-# with col_logo:
-#     st.markdown('<div style="border: 3px solid #009933; padding: 6px; text-align: center; border-radius: 5px; background-color: #f0fbf2; margin-top: 5px;"><span style="color: #009933; font-weight: bold; font-size: 10px;">CONCORSO</span><br><span style="color: #009933; font-weight: bold; font-size: 24px; line-height: 24px; font-family: monospace;">J&M</span></div>', unsafe_allow_html=True)
-# with col_titolo:
-#     st.markdown('<div style="text-align: center;"><h1 style="font-family: \'Brush Script MT\', cursive; font-size: 42px; margin: 0; font-style: italic; line-height: 42px;"><span style="color: #009933;">Toto</span>Juve&Me</h1><p style="color: #555555; font-weight: bold; font-family: monospace; letter-spacing: 1px; margin: 0; font-size: 10px;">" AL SERVIZIO DELLO SPORT BIANCONERO "</p></div>', unsafe_allow_html=True)
 
-# --- BRANDING HEADER ---
-# Creiamo 3 colonne: quella centrale conterrà il logo, le laterali gestiscono lo spazio
-# col_left, col_center, col_right = st.columns([2, 1, 2])
-
-# with col_center:
-#     # Usiamo il logo "Nero" perché contiene già il nome del brand
-#     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
 
 def invia_a_sheets(cedola, utente):
     # 1. Connessione a Google Sheets
