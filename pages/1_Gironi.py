@@ -197,18 +197,38 @@ def reset_al_main():
     # Ricarica la pagina per applicare il reset
     st.rerun()
 # --- BRANDING HEADER ---
-col_left, col_center, col_right = st.columns([2, 1, 2])
-
+col_left, col_center, col_right = st.columns([1, 2, 1])
 with col_center:
-    # Mostriamo l'immagine. Purtroppo non è cliccabile direttamente.
-    # Quindi mettiamo un tasto "Home" subito sotto o sopra il logo.
     st.image("Mundial&Me Logo Nero.png", use_container_width=True)
     
-    # Questo è il modo più pulito: un bottone "Home" che richiama la funzione
-    st.link_button("🏠 Home", "https://mundialandme.streamlit.app/", use_container_width=True)
+    # Tre colonne per i tre bottoni
+    b1, b2, b3 = st.columns(3)
+    
+    with b1:
+        st.markdown("""
+            <a href="https://mundialandme.streamlit.app/" target="_self" 
+            style="display: block; padding: 0.5rem; background-color: #f0f2f6; 
+            border: 1px solid #dcdcdc; border-radius: 0.5rem; text-decoration: none; 
+            color: black; text-align: center; font-size: 12px;">🏠 Home</a>
+        """, unsafe_allow_html=True)
+        
+    with b2:
+        st.markdown("""
+            <a href="https://t.me/+SAwDw59_ym7swlzf" target="_self" 
+            style="display: block; padding: 0.5rem; background-color: #f0f2f6; 
+            border: 1px solid #dcdcdc; border-radius: 0.5rem; text-decoration: none; 
+            color: black; text-align: center; font-size: 12px;">💬 Chat</a>
+        """, unsafe_allow_html=True)
+        
+    with b3:
+        st.markdown("""
+            <a href="http://twitch.tv/juvandmeofficial" target="_self" 
+            style="display: block; padding: 0.5rem; background-color: #f0f2f6; 
+            border: 1px solid #dcdcdc; border-radius: 0.5rem; text-decoration: none; 
+            color: #9146ff; text-align: center; font-size: 12px;">💜 Twitch</a>
+        """, unsafe_allow_html=True)
 
-# Separatore discreto
-st.markdown("<hr style='border: 0.5px solid #e0e0e0; margin: 15px 0;'>", unsafe_allow_html=True)
+st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_allow_html=True)
 # --- LOGIN UTENTE ---
 telegram_user = st.text_input("💬 Inserisci il tuo Username Telegram per giocare:", placeholder="@tuo_nickname")
 
