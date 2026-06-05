@@ -113,13 +113,17 @@ def filtra_giocate_valide(df_live):
             
     return pd.DataFrame(giocate_valide)
 
-def is_partita_aperta(orario_str):
-    # Formato dell'orario nel calendario
-    fmt = '%Y-%m-%d %H:%M:%S'
-    inizio_partita = datetime.strptime(orario_str, fmt)
-    # Ritorna True se la partita inizia tra più di 0 secondi
-    return datetime.now() < inizio_partita
-
+def is_partita_aperta(match_dict):
+    # Ricostruiamo la data intera usando le tue chiavi 'data' e 'ora'
+    # Esempio: data="27/06", ora="17:00" -> anno=2026
+    try:
+        data_str = f"2026/{match_dict['data']} {match_dict['ora']}"
+        inizio_partita = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
+        return datetime.now() < inizio_partita
+    except Exception as e:
+        print(f"Errore orario: {e}")
+        return False # Se c'è un errore, per sicurezza blocchiamo la giocata
+    
 # Funzione corretta per ottenere l'URL immagine
 def get_flag_link(team):
     return f"https://flagcdn.com/w40/{FLAGS.get(team, {'code': 'xx'})['code']}.png"
@@ -457,7 +461,7 @@ if st.session_state.pagina_corrente == "GIOCA":
         # --- CICLO PARTITE ---
         for i, m in enumerate(partite):
 
-            aperta = is_partita_aperta(m['orario'])
+            aperta = is_partita_aperta(m)
             # Usiamo un unico blocco HTML per tutto: Bandiere + "vs" + Bottone
             # Questo forza il browser a tenere tutto insieme su una riga
             if aperta:
