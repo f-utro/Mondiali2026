@@ -22,26 +22,25 @@ st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="center
 # --- ENGINE CSS CUSTOM ---
 st.markdown("""
 <style>
-    /* --- 1. CONFIGURAZIONE BASE (LIGHT MODE) --- */
+    /* 1. Blocca la Dark Mode forzata del browser (fondamentale per mobile) */
+    :root {
+        color-scheme: light only;
+    }
+
+    /* 2. CONFIGURAZIONE BASE (LIGHT MODE) */
     .stApp { 
         background-color: #f9ebdf !important; 
     }
     
-    /* Forza testo nero in modalità light */
     h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
         color: #000000 !important; 
     }
 
-    /* --- 2. CONFIGURAZIONE AUTOMATICA (DARK MODE) --- */
+    /* 3. MEDIA QUERY PER DARK MODE (Opzionale, ma ora rispettata) */
     @media (prefers-color-scheme: dark) {
-        .stApp { 
-            background-color: #262730 !important; /* Grigio scuro di sistema */
-        }
-        /* Forza testo bianco in modalità dark per leggibilità */
-        h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
-            color: #ffffff !important; 
-        }
-        /* Adatta il balloon di Telegram al tema scuro */
+        :root { color-scheme: dark; }
+        .stApp { background-color: #262730 !important; }
+        h1, h2, h3, h4, h5, h6, p, div, span, label, li { color: #ffffff !important; }
         .telegram-ballon {
             background-color: #1e3a1e !important; 
             border: 1px solid #4a7c4a !important;
@@ -49,30 +48,18 @@ st.markdown("""
         }
     }
 
-    /* --- 3. ELEMENTI FISSI (Non cambiano) --- */
-    MainMenu, footer,{ 
-        visibility: hidden !important; 
-    }
+    /* 4. Nascondi elementi Streamlit */
+    #MainMenu, footer, header { visibility: hidden !important; }
 
+    /* 5. Componenti personalizzati */
     .telegram-ballon {
-        background-color: #effdde; 
-        padding: 15px; 
-        border-radius: 15px;
-        border-bottom-left-radius: 0; 
-        margin-bottom: 20px;
-        border: 1px solid #c9e4b7; 
-        color: #000000; 
-        font-family: monospace;
+        background-color: #effdde; padding: 15px; border-radius: 15px;
+        border-bottom-left-radius: 0; margin-bottom: 20px;
+        border: 1px solid #c9e4b7; color: #000000; font-family: monospace;
     }
-    .match-row { 
-        display: flex; 
-        justify-content: space-between; 
-        padding: 5px 0; 
-        border-bottom: 1px solid #dcdcdc; 
-    }
+    .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
 </style>
 """, unsafe_allow_html=True)
-
 
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
