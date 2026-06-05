@@ -19,6 +19,45 @@ if "match_idx" not in st.session_state:
 
 # --- CONFIGURAZIONE PAGINA ---
 st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="centered", initial_sidebar_state="collapsed")
+# --- ENGINE CSS CUSTOM ---
+st.markdown("""
+<style>
+    /* 1. Forza il tema Light e il colore di sfondo crema */
+    .stApp { 
+        background-color: #f9ebdf !important; 
+    }
+    
+    /* 2. Forza il testo nero ovunque per evitare illeggibilità in dark mode */
+    h1, h2, h3, h4, h5, h6, p, div, span, label, li { 
+        color: #000000 !important; 
+    }
+
+    /* 3. Nascondi elementi Streamlit */
+    #MainMenu, footer, header { 
+        visibility: hidden !important; 
+    }
+
+    /* 4. Componenti personalizzati */
+    .telegram-ballon {
+        background-color: #effdde !important; 
+        padding: 15px; 
+        border-radius: 15px;
+        border-bottom-left-radius: 0; 
+        margin-bottom: 20px;
+        border: 1px solid #c9e4b7; 
+        color: #000000 !important; 
+        font-family: monospace;
+    }
+    .match-row { 
+        display: flex; 
+        justify-content: space-between; 
+        padding: 5px 0; 
+        border-bottom: 1px solid #dcdcdc; 
+    }
+</style>
+""", unsafe_allow_html=True)
+
+
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
 LIVE_DATA_FILE = "schedine_live.csv"
@@ -253,66 +292,7 @@ CALENDARIO_GIORNATE = {
             ]
     }
 
-# --- ENGINE CSS CUSTOM ---
-st.markdown("""
-<style>
-    .stApp { background-color: #f9ebdf !important; }
-    
-    /* Contenitore del bottone personalizzato */
-    .match-btn-content {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        gap: 12px !important;
-        width: 100% !important;
-    }
-    
-    /* Stile per le bandiere */
-    .flag-icon { 
-        width: 35px !important; 
-        height: 25px !important; 
-        object-fit: contain; 
-        flex-shrink: 0; 
-    }
-    
-    /* Stile per il testo */
-    .match-text { 
-        font-weight: bold !important; 
-        font-size: 14px !important; 
-    }
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-    /* Nasconde il menu di Streamlit (hamburger) */
-    #MainMenu {visibility: hidden;}
-    
-    /* Nasconde il footer con "Made with Streamlit" */
-    footer {visibility: hidden;}
-    
-    /* Nasconde l'header (se vuoi una pulizia totale) */
-    header {visibility: hidden;}
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-    .stApp { background-color: #f9ebdf !important; }
-    .telegram-ballon {
-        background-color: #effdde; padding: 15px; border-radius: 15px;
-        border-bottom-left-radius: 0; margin-bottom: 20px;
-        border: 1px solid #c9e4b7; color: #000; font-family: monospace;
-    }
-    .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
-</style>
-""", unsafe_allow_html=True)
-hide_streamlit_style = """
-            <style>
-            #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-            </style>
-            """
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 
 
 path_json_locale = "credenziali_google.json"
