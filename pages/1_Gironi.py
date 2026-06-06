@@ -332,7 +332,7 @@ if telegram_user:
             st.markdown(f"""
                 <div style='text-align: center; margin-bottom: 15px;'>
                     <h2 style='color: #009933; margin: 0; font-family: sans-serif; font-weight: 800; letter-spacing: 1px;'>
-                        🏆 GRUPPO {lettera_corrente}
+                        🏆 {lettera_corrente}
                     </h2>
                     <p style='color: #666666; font-size: 12px; margin: 2px 0 0 0; font-weight: bold; text-transform: uppercase;'>Scegli le due squadre che passano il turno</p>
                 </div>
