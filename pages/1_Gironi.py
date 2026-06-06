@@ -319,7 +319,7 @@ if telegram_user:
         elif scelte["1"] != "-" and scelte["2"] != "-":
             status_class = "done"
             icon = "✅"
-        badge_html += f'<div class="girone-badge {status_class}">Girone {let} {icon}</div>'
+        badge_html += f'<div class="girone-badge {status_class}">{let} {icon}</div>'
     badge_html += '</div>'
     st.markdown(badge_html, unsafe_allow_html=True)
 
