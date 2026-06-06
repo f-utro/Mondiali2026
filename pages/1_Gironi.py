@@ -59,14 +59,30 @@ if not os.path.exists(GIRONI_FILE):
 
 # --- DIZIONARIO CODICI ISO DELLE BANDIERE HD ---
 FLAG_CODES = {
+    # Gruppo A
     "Messico": "mx", "Sudafrica": "za", "Corea del Sud": "kr", "Rep. Ceca": "cz",
-    "Canada": "ca", "Bosnia": "ba", "Stati Uniti": "us", "Paraguay": "py",
-    "Qatar": "qa", "Svizzera": "ch", "Brasile": "br", "Marocco": "ma",
-    "Haiti": "ht", "Scozia": "gb-sct", "Australia": "au", "Turchia": "tr",
+    # Gruppo B
+    "Canada": "ca", "Bosnia ed Erzegovina": "ba", "Qatar": "qa", "Svizzera": "ch",
+    # Gruppo C
+    "Brasile": "br", "Marocco": "ma", "Haiti": "ht", "Scozia": "gb-sct",
+    # Gruppo D
+    "Stati Uniti": "us", "Paraguay": "py", "Australia": "au", "Turchia": "tr",
+    # Gruppo E
     "Germania": "de", "Curaçao": "cw", "Costa d'Avorio": "ci", "Ecuador": "ec",
-    "Paesi Bassi": "nl", "Giappone": "jp", "Svezia": "se", "Tunisia": "tn",
+    # Gruppo F
+    "Olanda": "nl", "Giappone": "jp", "Svezia": "se", "Tunisia": "tn",
+    # Gruppo G
     "Belgio": "be", "Egitto": "eg", "Iran": "ir", "Nuova Zelanda": "nz",
-    "Spagna": "es", "Capo Verde": "cv", "Arabia Saudita": "sa", "Uruguay": "uy"
+    # Gruppo H
+    "Spagna": "es", "Capo Verde": "cv", "Arabia Saudita": "sa", "Uruguay": "uy",
+    # Gruppo I
+    "Francia": "fr", "Senegal": "sn", "Iraq": "iq", "Norvegia": "no",
+    # Gruppo J
+    "Argentina": "ar", "Algeria": "dz", "Austria": "at", "Giordania": "jo",
+    # Gruppo K
+    "Portogallo": "pt", "Rep. Dem. del Congo": "cd", "Uzbekistan": "uz", "Colombia": "co",
+    # Gruppo L
+    "Inghilterra": "gb-eng", "Croazia": "hr", "Ghana": "gh", "Panama": "pa"
 }
 
 def get_flag_url(team_name):
@@ -259,16 +275,30 @@ st.markdown("<hr style='border: 1px solid #009933; margin: 15px 0;'>", unsafe_al
 telegram_user = st.text_input("💬 Inserisci il tuo Username Telegram per giocare:", placeholder="@tuo_nickname")
 
 if telegram_user:
+    # squadre_gironi = {
+    #     "A": ["Messico", "Sudafrica", "Corea del Sud", "Rep. Ceca"],
+    #     "B": ["Canada", "Bosnia", "Qatar", "Svizzera"],
+    #     "C": ["Germania", "Curaçao", "Costa d'Avorio", "Ecuador"],
+    #     "D": ["Stati Uniti", "Paraguay", "Haiti", "Scozia"],
+    #     "E": ["Brasile", "Marocco", "Australia", "Turchia"],
+    #     "F": ["Paesi Bassi", "Giappone", "Svezia", "Tunisia"],
+    #     "G": ["Belgio", "Egitto", "Iran", "Nuova Zelanda"],
+    #     "H": ["Spagna", "Capo Verde", "Arabia Saudita", "Uruguay"]
+    # }
     squadre_gironi = {
-        "A": ["Messico", "Sudafrica", "Corea del Sud", "Rep. Ceca"],
-        "B": ["Canada", "Bosnia", "Qatar", "Svizzera"],
-        "C": ["Germania", "Curaçao", "Costa d'Avorio", "Ecuador"],
-        "D": ["Stati Uniti", "Paraguay", "Haiti", "Scozia"],
-        "E": ["Brasile", "Marocco", "Australia", "Turchia"],
-        "F": ["Paesi Bassi", "Giappone", "Svezia", "Tunisia"],
-        "G": ["Belgio", "Egitto", "Iran", "Nuova Zelanda"],
-        "H": ["Spagna", "Capo Verde", "Arabia Saudita", "Uruguay"]
-    }
+    "Gruppo A": ["Messico", "Sudafrica", "Corea del Sud", "Rep. Ceca"],
+    "Gruppo B": ["Canada", "Bosnia ed Erzegovina", "Qatar", "Svizzera"],
+    "Gruppo C": ["Brasile", "Marocco", "Haiti", "Scozia"],
+    "Gruppo D": ["Stati Uniti", "Paraguay", "Australia", "Turchia"],
+    "Gruppo E": ["Germania", "Curaçao", "Costa d'Avorio", "Ecuador"],
+    "Gruppo F": ["Olanda", "Giappone", "Svezia", "Tunisia"],
+    "Gruppo G": ["Belgio", "Egitto", "Iran", "Nuova Zelanda"],
+    "Gruppo H": ["Spagna", "Capo Verde", "Arabia Saudita", "Uruguay"],
+    "Gruppo I": ["Francia", "Senegal", "Iraq", "Norvegia"],
+    "Gruppo J": ["Argentina", "Algeria", "Austria", "Giordania"],
+    "Gruppo K": ["Portogallo", "Rep. Dem. del Congo", "Uzbekistan", "Colombia"],
+    "Gruppo L": ["Inghilterra", "Croazia", "Ghana", "Panama"]
+}
     
     lista_lettere = list(squadre_gironi.keys())
 
