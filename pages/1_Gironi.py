@@ -414,7 +414,7 @@ if telegram_user:
                 card_html = f"""
                 <div style='background-color: #ffffff; border-left: 6px solid #009933; border-radius: 8px; padding: 14px; margin-bottom: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.06); border: 1px solid #ebdccf;'>
                     <div style='font-weight: bold; color: #111111; font-size: 16px; margin-bottom: 8px; border-bottom: 1px dashed #dddddd; padding-bottom: 4px; display:flex; justify-content:space-between; align-items:center;'>
-                        <span style='font-family: sans-serif; font-weight: 700;'>⚽ Gruppo {let}</span>
+                        <span style='font-family: sans-serif; font-weight: 700;'>⚽ {let}</span>
                         <span style='font-size: 10px; background-color: #e2f0d9; color: #009933; padding: 2px 8px; border-radius: 10px; font-weight: bold;'>COMPLETATO</span>
                     </div>
                     <div style='display: flex; justify-content: space-between; align-items: center; font-size: 14px; margin-bottom: 6px;'>
