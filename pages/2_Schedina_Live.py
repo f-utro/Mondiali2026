@@ -3,7 +3,7 @@ import pandas as pd
 import os
 from datetime import datetime
 import gspread
-
+from zoneinfo import ZoneInfo
 
 # --- INIZIALIZZAZIONE STATO (METTI QUESTO SUBITO DOPO GLI IMPORT) ---
 if "cedola" not in st.session_state:
@@ -320,24 +320,51 @@ def filtra_giocate_valide(df_live):
             
     return pd.DataFrame(giocate_valide)
 
-def is_partita_aperta(match_dict):
-    # Ricostruiamo la data intera usando le tue chiavi 'data' e 'ora'
-    # Esempio: data="27/06", ora="17:00" -> anno=2026
-    try:
-        data_str = f"2026/{match_dict['data']} {match_dict['ora']}"
-        inizio_partita = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
-        return datetime.now() < inizio_partita
-    except Exception as e:
-        print(f"Errore orario: {e}")
-        return False # Se c'è un errore, per sicurezza blocchiamo la giocata
+# def is_partita_aperta(match_dict):
+#     # Ricostruiamo la data intera usando le tue chiavi 'data' e 'ora'
+#     # Esempio: data="27/06", ora="17:00" -> anno=2026
+#     try:
+#         data_str = f"2026/{match_dict['data']} {match_dict['ora']}"
+#         inizio_partita = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
+#         return datetime.now() < inizio_partita
+#     except Exception as e:
+#         print(f"Errore orario: {e}")
+#         return False # Se c'è un errore, per sicurezza blocchiamo la giocata
  
+def is_partita_aperta(match_dict):
+    # Definiamo il fuso orario
+    fuso_roma = ZoneInfo("Europe/Rome")
+    
+    try:
+        # Costruiamo la stringa: 2026/giorno/mese ora:minuto
+        # match_dict['data'] è nel formato "DD/MM"
+        data_str = f"2026/{match_dict['data']} {match_dict['ora']}"
+        
+        # Facciamo il parsing. Attenzione: %d è giorno, %m è mese
+        data_partita_naive = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
+        
+        # Rendiamo la data della partita 'aware' forzando il fuso di Roma
+        inizio_partita = data_partita_naive.replace(tzinfo=fuso_roma)
+        
+        # Ora confrontiamo con l'ora attuale (aware)
+        adesso = datetime.now(fuso_roma)
+        # adesso = datetime(2026, 6, 11, 21, 20, tzinfo=fuso_roma)
+
+        return adesso < inizio_partita
+        
+    except Exception as e:
+        print(f"Errore nel calcolo orario per {match_dict}: {e}")
+        return False # Bloccato in caso di errore
+
 def is_giornata_valida(nome_giornata):
     # Estraiamo le date dal nome, es: "Giornata 1 (11 - 17 Giugno)"
+    fuso_roma = ZoneInfo("Europe/Rome")
+
     try:
         data_str = nome_giornata.split('(')[1].replace(')', '').split('-')[1].strip()
         # Assumiamo l'anno corrente (2026)
         data_fine = datetime.strptime(f"{data_str} 2026", "%d %B %Y")
-        return data_fine >= datetime.now()
+        return data_fine.replace(tzinfo=fuso_roma) >= datetime.now(fuso_roma)
     except:
         return True # Se fallisce, mostra tutto per sicurezza
     
@@ -368,85 +395,84 @@ def get_flag(team):
 # --- CALENDARIO COMPLETO REINTEGRATO ---
 CALENDARIO_GIORNATE = {
         "Giornata 1 (11 - 17 Giugno)": [
-            {"t1": "Messico", "t2": "Sudafrica", "ora": "13:00", "data": "11/06"},
-            {"t1": "Corea del Sud", "t2": "Rep. Ceca", "ora": "20:00", "data": "11/06"},
-            {"t1": "Canada", "t2": "Bosnia ed Erzegovina", "ora": "15:00", "data": "12/06"},
-            {"t1": "Stati Uniti", "t2": "Paraguay", "ora": "18:00", "data": "12/06"},
-            {"t1": "Qatar", "t2": "Svizzera", "ora": "12:00", "data": "13/06"},
-            {"t1": "Brasile", "t2": "Marocco", "ora": "18:00", "data": "13/06"},
-            {"t1": "Haiti", "t2": "Scozia", "ora": "21:00", "data": "13/06"},
-            {"t1": "Australia", "t2": "Turchia", "ora": "21:00", "data": "13/06"},
-            {"t1": "Germania", "t2": "Curaçao", "ora": "12:00", "data": "14/06"},
-            {"t1": "Paesi Bassi", "t2": "Giappone", "ora": "15:00", "data": "14/06"},
-            {"t1": "Costa d'Avorio", "t2": "Ecuador", "ora": "19:00", "data": "14/06"},
-            {"t1": "Svezia", "t2": "Tunisia", "ora": "20:00", "data": "14/06"},
-            {"t1": "Belgio", "t2": "Egitto", "ora": "12:00", "data": "15/06"},
-            {"t1": "Iran", "t2": "Nuova Zelanda", "ora": "18:00", "data": "15/06"},
-            {"t1": "Spagna", "t2": "Capo Verde", "ora": "12:00", "data": "15/06"},
-            {"t1": "Arabia Saudita", "t2": "Uruguay", "ora": "18:00", "data": "15/06"},
-            {"t1": "Francia", "t2": "Senegal", "ora": "15:00", "data": "16/06"},
-            {"t1": "Iraq", "t2": "Norvegia", "ora": "18:00", "data": "16/06"},
-            {"t1": "Argentina", "t2": "Algeria", "ora": "20:00", "data": "16/06"},
-            {"t1": "Austria", "t2": "Giordania", "ora": "21:00", "data": "16/06"},
-            {"t1": "Inghilterra", "t2": "Croazia", "ora": "15:00", "data": "17/06"},
-            {"t1": "Ghana", "t2": "Panama", "ora": "19:00", "data": "17/06"},
-            {"t1": "Portogallo", "t2": "RD del Congo", "ora": "12:00", "data": "17/06"},
-            {"t1": "Uzbekistan", "t2": "Colombia", "ora": "20:00", "data": "17/06"}
+            {"t1": "Messico", "t2": "Sudafrica", "ora": "21:00", "data": "11/06"},
+            {"t1": "Corea del Sud", "t2": "Rep. Ceca", "ora": "02:00", "data": "12/06"},
+            {"t1": "Canada", "t2": "Bosnia ed Erzegovina", "ora": "21:00", "data": "12/06"},
+            {"t1": "Stati Uniti", "t2": "Paraguay", "ora": "01:00", "data": "13/06"},
+            {"t1": "Qatar", "t2": "Svizzera", "ora": "20:00", "data": "13/06"},
+            {"t1": "Brasile", "t2": "Marocco", "ora": "00:00", "data": "14/06"},
+            {"t1": "Haiti", "t2": "Scozia", "ora": "03:00", "data": "14/06"},
+            {"t1": "Australia", "t2": "Turchia", "ora": "06:00", "data": "14/06"},
+            {"t1": "Germania", "t2": "Curaçao", "ora": "17:00", "data": "14/06"},
+            {"t1": "Paesi Bassi", "t2": "Giappone", "ora": "20:00", "data": "14/06"},
+            {"t1": "Costa d'Avorio", "t2": "Ecuador", "ora": "01:00", "data": "15/06"},
+            {"t1": "Svezia", "t2": "Tunisia", "ora": "04:00", "data": "15/06"},
+            {"t1": "Belgio", "t2": "Egitto", "ora": "21:00", "data": "15/06"},
+            {"t1": "Iran", "t2": "Nuova Zelanda", "ora": "03:00", "data": "16/06"},
+            {"t1": "Spagna", "t2": "Capo Verde", "ora": "18:00", "data": "15/06"},
+            {"t1": "Arabia Saudita", "t2": "Uruguay", "ora": "00:00", "data": "16/06"},
+            {"t1": "Francia", "t2": "Senegal", "ora": "21:00", "data": "16/06"},
+            {"t1": "Iraq", "t2": "Norvegia", "ora": "00:00", "data": "17/06"},
+            {"t1": "Argentina", "t2": "Algeria", "ora": "03:00", "data": "17/06"},
+            {"t1": "Austria", "t2": "Giordania", "ora": "06:00", "data": "17/06"},
+            {"t1": "Inghilterra", "t2": "Croazia", "ora": "22:00", "data": "17/06"},
+            {"t1": "Ghana", "t2": "Panama", "ora": "01:00", "data": "18/06"},
+            {"t1": "Portogallo", "t2": "RD del Congo", "ora": "18:00", "data": "17/06"},
+            {"t1": "Uzbekistan", "t2": "Colombia", "ora": "04:00", "data": "18/06"}
         ],
         "Giornata 2 (18 - 23 Giugno)": [
-            {"t1": "Rep. Ceca", "t2": "Sudafrica", "ora": "12:00", "data": "18/06"},
-            {"t1": "Messico", "t2": "Corea del Sud", "ora": "19:00", "data": "18/06"},
-            {"t1": "Svizzera", "t2": "Bosnia ed Erzegovina", "ora": "12:00", "data": "18/06"},
-            {"t1": "Canada", "t2": "Qatar", "ora": "15:00", "data": "18/06"},
-            {"t1": "Scozia", "t2": "Marocco", "ora": "18:00", "data": "19/06"},
-            {"t1": "Brasile", "t2": "Haiti", "ora": "21:00", "data": "19/06"},
-            {"t1": "Stati Uniti", "t2": "Australia", "ora": "12:00", "data": "19/06"},
-            {"t1": "Turchia", "t2": "Paraguay", "ora": "21:00", "data": "19/06"},
-            {"t1": "Germania", "t2": "Costa d'Avorio", "ora": "16:00", "data": "20/06"},
-            {"t1": "Ecuador", "t2": "Curaçao", "ora": "19:00", "data": "20/06"},
-            {"t1": "Paesi Bassi", "t2": "Svezia", "ora": "12:00", "data": "20/06"},
-            {"t1": "Tunisia", "t2": "Giappone", "ora": "22:00", "data": "20/06"},
-            {"t1": "Belgio", "t2": "Iran", "ora": "12:00", "data": "21/06"},
-            {"t1": "Nuova Zelanda", "t2": "Egitto", "ora": "18:00", "data": "21/06"},
-            {"t1": "Spagna", "t2": "Arabia Saudita", "ora": "12:00", "data": "21/06"},
-            {"t1": "Uruguay", "t2": "Capo Verde", "ora": "18:00", "data": "21/06"},
-            {"t1": "Francia", "t2": "Iraq", "ora": "17:00", "data": "22/06"},
-            {"t1": "Norvegia", "t2": "Senegal", "ora": "20:00", "data": "22/06"},
-            {"t1": "Argentina", "t2": "Austria", "ora": "12:00", "data": "22/06"},
-            {"t1": "Giordania", "t2": "Algeria", "ora": "20:00", "data": "22/06"},
-            {"t1": "Portogallo", "t2": "Uzbekistan", "ora": "12:00", "data": "23/06"},
-            {"t1": "Colombia", "t2": "RD del Congo", "ora": "20:00", "data": "23/06"},
-            {"t1": "Inghilterra", "t2": "Ghana", "ora": "16:00", "data": "23/06"},
-            {"t1": "Panama", "t2": "Croazia", "ora": "19:00", "data": "23/06"}
+            {"t1": "Rep. Ceca", "t2": "Sudafrica", "ora": "18:00", "data": "18/06"},
+            {"t1": "Messico", "t2": "Corea del Sud", "ora": "01:00", "data": "19/06"},
+            {"t1": "Svizzera", "t2": "Bosnia ed Erzegovina", "ora": "18:00", "data": "18/06"},
+            {"t1": "Canada", "t2": "Qatar", "ora": "21:00", "data": "18/06"},
+            {"t1": "Scozia", "t2": "Marocco", "ora": "23:00", "data": "19/06"},
+            {"t1": "Brasile", "t2": "Haiti", "ora": "03:00", "data": "20/06"},
+            {"t1": "Stati Uniti", "t2": "Australia", "ora": "21:00", "data": "19/06"},
+            {"t1": "Turchia", "t2": "Paraguay", "ora": "06:00", "data": "20/06"},
+            {"t1": "Germania", "t2": "Costa d'Avorio", "ora": "22:00", "data": "20/06"},
+            {"t1": "Ecuador", "t2": "Curaçao", "ora": "02:00", "data": "21/06"},
+            {"t1": "Paesi Bassi", "t2": "Svezia", "ora": "18:00", "data": "20/06"},
+            {"t1": "Tunisia", "t2": "Giappone", "ora": "04:00", "data": "21/06"},
+            {"t1": "Belgio", "t2": "Iran", "ora": "21:00", "data": "21/06"},
+            {"t1": "Nuova Zelanda", "t2": "Egitto", "ora": "03:00", "data": "22/06"},
+            {"t1": "Spagna", "t2": "Arabia Saudita", "ora": "18:00", "data": "21/06"},
+            {"t1": "Uruguay", "t2": "Capo Verde", "ora": "00:00", "data": "22/06"},
+            {"t1": "Francia", "t2": "Iraq", "ora": "23:00", "data": "22/06"},
+            {"t1": "Norvegia", "t2": "Senegal", "ora": "02:00", "data": "23/06"},
+            {"t1": "Argentina", "t2": "Austria", "ora": "19:00", "data": "22/06"},
+            {"t1": "Giordania", "t2": "Algeria", "ora": "05:00", "data": "23/06"},
+            {"t1": "Portogallo", "t2": "Uzbekistan", "ora": "18:00", "data": "23/06"},
+            {"t1": "Colombia", "t2": "RD del Congo", "ora": "02:00", "data": "24/06"},
+            {"t1": "Inghilterra", "t2": "Ghana", "ora": "22:00", "data": "23/06"},
+            {"t1": "Panama", "t2": "Croazia", "ora": "01:00", "data": "24/06"}
         ],
         "Giornata 3 (24 - 27 Giugno)": [
-            {"t1": "Rep. Ceca", "t2": "Messico", "ora": "19:00", "data": "24/06"},
-            {"t1": "Sudafrica", "t2": "Corea del Sud", "ora": "19:00", "data": "24/06"},
-            {"t1": "Svizzera", "t2": "Canada", "ora": "12:00", "data": "24/06"},
-            {"t1": "Bosnia ed Erzegovina", "t2": "Qatar", "ora": "12:00", "data": "24/06"},
-            {"t1": "Scozia", "t2": "Brasile", "ora": "18:00", "data": "24/06"},
-            {"t1": "Marocco", "t2": "Haiti", "ora": "18:00", "data": "24/06"},
-            {"t1": "Turchia", "t2": "Stati Uniti", "ora": "19:00", "data": "25/06"},
-            {"t1": "Paraguay", "t2": "Australia", "ora": "19:00", "data": "25/06"},
-            {"t1": "Curaçao", "t2": "Costa d'Avorio", "ora": "16:00", "data": "25/06"},
-            {"t1": "Ecuador", "t2": "Germania", "ora": "16:00", "data": "25/06"},
-            {"t1": "Giappone", "t2": "Svezia", "ora": "18:00", "data": "25/06"},
-            {"t1": "Tunisia", "t2": "Paesi Bassi", "ora": "18:00", "data": "25/06"},
-            {"t1": "Egitto", "t2": "Iran", "ora": "20:00", "data": "26/06"},
-            {"t1": "Nuova Zelanda", "t2": "Belgio", "ora": "20:00", "data": "26/06"},
-            {"t1": "Capo Verde", "t2": "Arabia Saudita", "ora": "19:00", "data": "26/06"},
-            {"t1": "Uruguay", "t2": "Spagna", "ora": "18:00", "data": "26/06"},
-            {"t1": "Norvegia", "t2": "Francia", "ora": "15:00", "data": "26/06"},
-            {"t1": "Senegal", "t2": "Iraq", "ora": "15:00", "data": "26/06"},
-            {"t1": "Algeria", "t2": "Austria", "ora": "21:00", "data": "27/06"},
-            {"t1": "Giordania", "t2": "Argentina", "ora": "21:00", "data": "27/06"},
-            {"t1": "Colombia", "t2": "Portogallo", "ora": "19:30", "data": "27/06"},
-            {"t1": "RD del Congo", "t2": "Uzbekistan", "ora": "19:30", "data": "27/06"},
-            {"t1": "Panama", "t2": "Inghilterra", "ora": "17:00", "data": "27/06"},
-            {"t1": "Croazia", "t2": "Ghana", "ora": "17:00", "data": "27/06"}
+            {"t1": "Rep. Ceca", "t2": "Messico", "ora": "01:00", "data": "25/06"},
+            {"t1": "Sudafrica", "t2": "Corea del Sud", "ora": "01:00", "data": "25/06"},
+            {"t1": "Svizzera", "t2": "Canada", "ora": "18:00", "data": "24/06"},
+            {"t1": "Bosnia ed Erzegovina", "t2": "Qatar", "ora": "18:00", "data": "24/06"},
+            {"t1": "Scozia", "t2": "Brasile", "ora": "00:00", "data": "25/06"},
+            {"t1": "Marocco", "t2": "Haiti", "ora": "00:00", "data": "25/06"},
+            {"t1": "Turchia", "t2": "Stati Uniti", "ora": "04:00", "data": "26/06"},
+            {"t1": "Paraguay", "t2": "Australia", "ora": "04:00", "data": "26/06"},
+            {"t1": "Curaçao", "t2": "Costa d'Avorio", "ora": "22:00", "data": "25/06"},
+            {"t1": "Ecuador", "t2": "Germania", "ora": "23:00", "data": "25/06"},
+            {"t1": "Giappone", "t2": "Svezia", "ora": "01:00", "data": "26/06"},
+            {"t1": "Tunisia", "t2": "Paesi Bassi", "ora": "23:00", "data": "25/06"},
+            {"t1": "Egitto", "t2": "Iran", "ora": "03:00", "data": "27/06"},
+            {"t1": "Nuova Zelanda", "t2": "Belgio", "ora": "03:00", "data": "27/06"},
+            {"t1": "Capo Verde", "t2": "Arabia Saudita", "ora": "00:00", "data": "27/06"},
+            {"t1": "Uruguay", "t2": "Spagna", "ora": "00:00", "data": "27/06"},
+            {"t1": "Norvegia", "t2": "Francia", "ora": "21:00", "data": "26/06"},
+            {"t1": "Senegal", "t2": "Iraq", "ora": "21:00", "data": "26/06"},
+            {"t1": "Algeria", "t2": "Austria", "ora": "04:00", "data": "28/06"},
+            {"t1": "Giordania", "t2": "Argentina", "ora": "04:00", "data": "28/06"},
+            {"t1": "Colombia", "t2": "Portogallo", "ora": "23:30", "data": "27/06"},
+            {"t1": "RD del Congo", "t2": "Uzbekistan", "ora": "02:30", "data": "28/06"},
+            {"t1": "Panama", "t2": "Inghilterra", "ora": "23:00", "data": "27/06"},
+            {"t1": "Croazia", "t2": "Ghana", "ora": "23:00", "data": "27/06"}
             ]
     }
-
 
 
 
