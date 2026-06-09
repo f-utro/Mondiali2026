@@ -72,6 +72,10 @@
 # st.success("💡 Fai click in alto a sinistra, seleziona 'Gironi' e piazza i tuoi primi pronostici prima che scada il tempo!")
 
 import streamlit as st
+from datetime import datetime
+from zoneinfo import ZoneInfo
+
+fuso_roma = ZoneInfo("Europe/Rome")
 
 st.set_page_config(
     page_title="Mundial&Me  - Home 🏆",
@@ -265,19 +269,50 @@ with col_info:
 
         st.info("💡 *Nota: Tutti i pronostici della fase eliminatoria sono 'fissi' una volta convalidati prima degli ottavi. Segui l'avanzamento e la spinta della tua schedina nella dashboard!*")
 
+# with col_navigazione:
+#     st.markdown("#### 🚀 ACCESSO RAPIDO AI VOTI")
+#     st.write("Clicca direttamente qui sotto per entrare nelle schede di gioco senza usare il menu laterale:")
+    
+#     st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
+    
+#     # Pulsante gigante per la Fase a Gironi
+#     if st.button("📊 APRI SCHEDINA GIRONI", use_container_width=True, type="secondary"):
+#         st.switch_page("pages/1_Gironi.py")
+        
+#     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
+    
+#     # Pulsante gigante per la Schedina Live (Totocalcio Style)
+#     if st.button("🎰 APRI TOTO&ME LIVE", use_container_width=True, type="primary"):
+#         st.switch_page("pages/2_Schedina_Live.py")
+        
+#     st.markdown("<div style='margin-top: 25px;'></div>", unsafe_allow_html=True)
+#     st.caption("📱 **Sei da Mobile?** I pulsanti qui sopra sono fatti apposta per saltare subito al voto dal tuo smartphone!")
+
+# Data di chiusura (Giovedì 11 giugno ore 20:00)
+CHIUSURA_GIRONI = datetime(2026, 6, 11, 20, 0, 0, tzinfo=fuso_roma)
+#CHIUSURA_GIRONI = datetime(2026, 6, 9, 14, 48, 0, tzinfo=fuso_roma)
+adesso = datetime.now(fuso_roma)
+
 with col_navigazione:
     st.markdown("#### 🚀 ACCESSO RAPIDO AI VOTI")
     st.write("Clicca direttamente qui sotto per entrare nelle schede di gioco senza usare il menu laterale:")
     
     st.markdown("<div style='margin-top: 15px;'></div>", unsafe_allow_html=True)
     
-    # Pulsante gigante per la Fase a Gironi
-    if st.button("📊 APRI SCHEDINA GIRONI", use_container_width=True, type="secondary"):
-        st.switch_page("pages/1_Gironi.py")
+    # --- LOGICA GIRONI ---
+    if adesso < CHIUSURA_GIRONI:
+        # Il torneo non è ancora iniziato: bottone attivo
+        if st.button("📊 APRI SCHEDINA GIRONI", use_container_width=True, type="secondary"):
+            st.switch_page("pages/1_Gironi.py")
+    else:
+        # Torneo iniziato: bottone disabilitato o sostituito da avviso
+        st.button("📊 SCHEDINA GIRONI CHIUSA", use_container_width=True, disabled=True)
+        st.caption("🚫 *Pronostici per i gironi chiusi. Ora si gioca solo Live su TOTO&ME!*")
         
     st.markdown("<div style='margin-top: 10px;'></div>", unsafe_allow_html=True)
     
-    # Pulsante gigante per la Schedina Live (Totocalcio Style)
+    # --- LOGICA TOTO&ME ---
+    # Questo resta sempre attivo (o puoi aggiungere logiche diverse se necessario)
     if st.button("🎰 APRI TOTO&ME LIVE", use_container_width=True, type="primary"):
         st.switch_page("pages/2_Schedina_Live.py")
         
