@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import os
 import gspread
+from zoneinfo import ZoneInfo
 
 # URL univoco del tuo foglio Google di TotoJuve&Me
 URL_FOGLIO = "https://docs.google.com/spreadsheets/d/1eplWbGsR3lpAPawatIBuSp5ts20K4Nn-_QUqvE2Md-g/edit"
@@ -447,7 +448,8 @@ if telegram_user:
                     st.rerun()
             with col_salva:
                if st.button("🚀 CONVALIDA E INVIA LA SCHEDINA 🚀", use_container_width=True):
-                    ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    fuso_roma = ZoneInfo("Europe/Rome")
+                    ts = datetime.now(fuso_roma).strftime("%Y-%m-%d %H:%M:%S")
                     nuove_righe = []
                     for let in lista_lettere:
                         scelte = st.session_state.scelte_salvate[let]

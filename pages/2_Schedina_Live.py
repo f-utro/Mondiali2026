@@ -526,8 +526,8 @@ def invia_a_sheets(cedola, utente):
     # 1. Connessione a Google Sheets
     # Assicurati di avere il file 'credentials.json' nella cartella del progetto
     ws = sh.worksheet("SchedineLive")
-    
-    data_invio = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    fuso_roma = ZoneInfo("Europe/Rome")
+    data_invio = datetime.now(fuso_roma).strftime("%Y-%m-%d %H:%M:%S")
     righe_da_aggiungere = []
     
     for match, pronostico in cedola.items():
