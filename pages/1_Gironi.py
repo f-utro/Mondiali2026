@@ -7,6 +7,26 @@ import os
 import gspread
 from zoneinfo import ZoneInfo
 
+# 1. Definizione chiusura (uguale a quella nella home)
+fuso_roma = ZoneInfo("Europe/Rome")
+CHIUSURA_GIRONI = datetime(2026, 6, 11, 20, 0, 0, tzinfo=fuso_roma)
+
+# 2. Controllo di sicurezza
+def check_chiusura():
+    if datetime.now(fuso_roma) >= CHIUSURA_GIRONI:
+        st.error("🚫 **Pronostici chiusi!**")
+        st.write("I pronostici per la fase a gironi sono terminati. Non è più possibile inviare o modificare le schedine.")
+        st.write("Puoi ancora pronosticare le singole parite fino al loro calcio di inizio.")
+        
+        if st.button("Torna alla Home"):
+            st.switch_page("main.py")
+        
+        # STOP: impedisce al resto della pagina di caricarsi
+        st.stop()
+
+# Esegui il controllo immediatamente
+check_chiusura()
+
 # URL univoco del tuo foglio Google di TotoJuve&Me
 URL_FOGLIO = "https://docs.google.com/spreadsheets/d/1eplWbGsR3lpAPawatIBuSp5ts20K4Nn-_QUqvE2Md-g/edit"
 
