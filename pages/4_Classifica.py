@@ -162,10 +162,10 @@ def filtra_giocate_valide(df_live):
         
         # 2. Parsing Data Invio
         try:
-            dt_invio = datetime.strptime(row["Data_Invio"], '%Y-%m-%d %H:%M:%S')
+            dt_invio = datetime.strptime(row["Data"], '%Y-%m-%d %H:%M:%S')
             data_giocata = dt_invio.replace(tzinfo=fuso_roma)
         except Exception as e:
-            st.write(f"Errore parsing data {row['Data_Invio']}: {e}")
+            st.write(f"Errore parsing data {row['Data']}: {e}")
             continue
 
         # 3. Confronto con STAMPA (Questo ti dirà la verità!)
