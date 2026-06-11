@@ -260,8 +260,10 @@ except Exception as e:
 punteggi_utenti = {}
 
 if not df_res.empty:
-    partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
-    risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
+    #partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
+    #risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
+    partite_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1'])}
+    risultati_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2'])}
     podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
     squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
@@ -274,17 +276,29 @@ if not df_res.empty:
         for _, row in df_live_grouped.iterrows():
             u = row['Utente_Telegram']
             p = row['Partita']
+            #prono_segno = str(row['Pronostico_Segno']).strip()
+            #prono_risultato = str(row['Pronostico_Resultato'] if 'Pronostico_Resultato' in row else row.get('Pronostico_Risultato', '')).strip()
             prono_segno = str(row['Pronostico_Segno']).strip()
-            prono_risultato = str(row['Pronostico_Resultato'] if 'Pronostico_Resultato' in row else row.get('Pronostico_Risultato', '')).strip()
+            prono_risultato = str(row.get('Pronostico_Risultato', '')).strip() # Corretto 'Risultato'
             
             if u not in punteggi_utenti:
                 punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
             
-            if p in partite_reali and str(partite_reali[p]).strip() == prono_segno:
-                punteggi_utenti[u]["Gironi_1X2"] += 1
-            if prono_risultato.strip() !='':             
-                        if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
-                            punteggi_utenti[u]["Risultati_Esatti"] += 3
+            #if p in partite_reali and str(partite_reali[p]).strip() == prono_segno:
+            #    punteggi_utenti[u]["Gironi_1X2"] += 1
+            #if prono_risultato.strip() !='':             
+            #            if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
+            #                punteggi_utenti[u]["Risultati_Esatti"] += 3
+            # 3. Confronto debuggato
+            if p in partite_reali:
+               reale_segno = partite_reali[p]
+               if reale_segno == prono_segno:
+                  punteggi_utenti[u]["Gironi_1X2"] += 1
+            
+               if prono_risultato: # Se l'utente ha messo un risultato
+                  reale_ris = risultati_reali.get(p, "")
+                  if reale_ris == prono_risultato:
+                     punteggi_utenti[u]["Risultati_Esatti"] += 3
 
     # 2. Calcolo Classifica Finali Gironi (Bonus Podio +2)
     if not df_gironi.empty:
