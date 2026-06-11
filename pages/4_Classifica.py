@@ -324,11 +324,11 @@ if not df_res.empty:
         st.write(f"Chiavi caricate: {chiavi_test[:5]}")
 
 # Controlliamo la partita specifica che fallisce
-       p_test = "messico vs sudafrica"
-       if p_test in partite_reali:
-          st.success(f"Trovata! La chiave '{p_test}' esiste.")
-       else:
-          st.error(f"La chiave '{p_test}' NON esiste nel dizionario.")
+        p_test = "messico vs sudafrica"
+        if p_test in partite_reali:
+           st.success(f"Trovata! La chiave '{p_test}' esiste.")
+        else:
+           st.error(f"La chiave '{p_test}' NON esiste nel dizionario.")
 
         for _, row in df_live_grouped.iterrows():
             u = row['Utente_Telegram']
