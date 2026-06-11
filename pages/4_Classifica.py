@@ -331,23 +331,23 @@ if not df_res.empty:
             u = row['Utente_Telegram']
             p = str(row['Partita']).strip().lower()
     
-    # 1. Inizializzazione sicura dell'utente
+    # Inizializza l'utente se è la prima volta che lo incontri
             if u not in punteggi_utenti:
                punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
     
-    # 2. Controllo esistenza partita nel dizionario
-            if p in partite_reali:
-               reale_segno = str(partite_reali[p]).strip()
-               prono_segno = str(row['Pronostico_Segno']).strip()
-        
-            if reale_segno == prono_segno:
+    # Valori di default se la partita non esiste
+            reale_segno = partite_reali.get(p, "N/A")
+            reale_ris = risultati_reali.get(p, "N/A")
+    
+            prono_segno = str(row['Pronostico_Segno']).strip()
+            prono_risultato = str(row.get('Pronostico_Risultato', '')).strip()
+    
+    # Ora 'reale_segno' esiste sempre!
+            if reale_segno != "N/A" and reale_segno == prono_segno:
                punteggi_utenti[u]["Gironi_1X2"] += 1
             
-        # Controllo risultato esatto
-            reale_ris = str(risultati_reali.get(p, "")).strip()
-            prono_risultato = str(row.get('Pronostico_Risultato', '')).strip()
-        
-            if prono_risultato and prono_risultato == reale_ris:
+    # Controllo risultato esatto
+            if prono_risultato and reale_ris != "N/A" and reale_ris == prono_risultato:
                punteggi_utenti[u]["Risultati_Esatti"] += 3
         
         # for _, row in df_live_grouped.iterrows():
