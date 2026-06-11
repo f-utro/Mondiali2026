@@ -309,8 +309,8 @@ if not df_res.empty:
     df_res['Tipo'] = df_res['Tipo'].astype(str).str.strip().str.lower()
     df_res['Chiave_Evento'] = df_res['Chiave_Evento'].astype(str).str.strip().str.lower()
     df_partite = df_res[df_res['Tipo'] == 'partita']
-    st.write(f"DEBUG: Ho trovato {len(df_partite)} righe di tipo 'partita'.")
-    st.write(df_partite['Chiave_Evento'].tolist()) # Vediamo se qui appaiono tutte!
+   # st.write(f"DEBUG: Ho trovato {len(df_partite)} righe di tipo 'partita'.")
+   # st.write(df_partite['Chiave_Evento'].tolist()) # Vediamo se qui appaiono tutte!
 
     # Ora creiamo i dizionari
     partite_reali = dict(zip(df_partite['Chiave_Evento'], df_partite['Valore_1'].astype(str).str.strip()))
@@ -319,14 +319,14 @@ if not df_res.empty:
     squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
 
-    st.write("Chiavi risultati:", list(partite_reali.keys()))
-    st.write(partite_reali)
-    st.write("Tipi presenti nel file Risultati:", df_res['Tipo'].unique())        
-    #st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
-    if not df_live.empty:
-       st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
-    else:
-       st.warning("⚠️ Il DataFrame df_live è vuoto! Nessuna giocata trovata dopo il filtro.")
+    # st.write("Chiavi risultati:", list(partite_reali.keys()))
+    # st.write(partite_reali)
+    # st.write("Tipi presenti nel file Risultati:", df_res['Tipo'].unique())        
+    # #st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+    # if not df_live.empty:
+    #    st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+    # else:
+    #    st.warning("⚠️ Il DataFrame df_live è vuoto! Nessuna giocata trovata dopo il filtro.")
 
 
     # 1. Calcolo da Schedine Live (Esito e Totogol)
@@ -334,10 +334,10 @@ if not df_res.empty:
         df_live = df_live.sort_values(by="Data")
         df_live_grouped = df_live.groupby(['Utente_Telegram', 'Partita']).last().reset_index()
 
-        st.write("--- DEBUG DELLE CHIAVI NEL DIZIONARIO RISULTATI ---")
+       # st.write("--- DEBUG DELLE CHIAVI NEL DIZIONARIO RISULTATI ---")
 # Stampiamo le prime 5 chiavi per vedere come sono scritte
-        chiavi_test = list(partite_reali.keys())
-        st.write(f"Chiavi caricate: {chiavi_test[:5]}")
+        c#hiavi_test = list(partite_reali.keys())
+        #st.write(f"Chiavi caricate: {chiavi_test[:5]}")
 
 # Controlliamo la partita specifica che fallisce
         # Sostituisci il tuo blocco del ciclo for con questo:
@@ -379,7 +379,7 @@ if not df_res.empty:
     # 3. Confronto Risultato Esatto
             if p_prono_ris and p_reale_ris != "n/a" and p_reale_ris == p_prono_ris:
                punteggi_utenti[u]["Risultati_Esatti"] += 3
-            st.write(f"DEBUG Segno -> Reale: '{p_reale_segno}' | Pronostico: '{p_prono_segno}' | Match: {p_reale_segno == p_prono_segno}")
+           # st.write(f"DEBUG Segno -> Reale: '{p_reale_segno}' | Pronostico: '{p_prono_segno}' | Match: {p_reale_segno == p_prono_segno}")
         
         # for _, row in df_live_grouped.iterrows():
         #     u = row['Utente_Telegram']
