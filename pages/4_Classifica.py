@@ -259,9 +259,6 @@ except Exception as e:
 # --- BLOCCO DI CALCOLO DINAMICO ---
 punteggi_utenti = {}
 
-st.write("Chiavi risultati:", list(partite_reali.keys()))
-st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
-
 if not df_res.empty:
     #partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
     #risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
@@ -270,6 +267,10 @@ if not df_res.empty:
     podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
     squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
+
+    st.write("Chiavi risultati:", list(partite_reali.keys()))
+    st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+
 
     # 1. Calcolo da Schedine Live (Esito e Totogol)
     if not df_live.empty:
