@@ -282,8 +282,9 @@ if not df_res.empty:
             
             if p in partite_reali and str(partite_reali[p]).strip() == prono_segno:
                 punteggi_utenti[u]["Gironi_1X2"] += 1
-            if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
-                punteggi_utenti[u]["Risultati_Esatti"] += 3
+            if prono_risultato.strip() !='':             
+                        if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
+                            punteggi_utenti[u]["Risultati_Esatti"] += 3
 
     # 2. Calcolo Classifica Finali Gironi (Bonus Podio +2)
     if not df_gironi.empty:
