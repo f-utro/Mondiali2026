@@ -318,6 +318,18 @@ if not df_res.empty:
         df_live = df_live.sort_values(by="Data")
         df_live_grouped = df_live.groupby(['Utente_Telegram', 'Partita']).last().reset_index()
 
+        st.write("--- DEBUG DELLE CHIAVI NEL DIZIONARIO RISULTATI ---")
+# Stampiamo le prime 5 chiavi per vedere come sono scritte
+        chiavi_test = list(partite_reali.keys())
+        st.write(f"Chiavi caricate: {chiavi_test[:5]}")
+
+# Controlliamo la partita specifica che fallisce
+       p_test = "messico vs sudafrica"
+       if p_test in partite_reali:
+          st.success(f"Trovata! La chiave '{p_test}' esiste.")
+       else:
+          st.error(f"La chiave '{p_test}' NON esiste nel dizionario.")
+
         for _, row in df_live_grouped.iterrows():
             u = row['Utente_Telegram']
             p = row['Partita'].strip().lower() # Pulizia estrema
