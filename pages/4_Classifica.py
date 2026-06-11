@@ -104,39 +104,76 @@ CALENDARIO_GIORNATE = {
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+# def filtra_giocate_valide(df_live):
+#     giocate_valide = []
+#     fuso_roma = ZoneInfo("Europe/Rome")
+#     anno = 2026 # Fissato per il torneo
+    
+#     for _, row in df_live.iterrows():
+#         partita_nome = row["Partita"]
+        
+#         # 1. Recupero orario inizio partita dal calendario
+#         orario_inizio = None
+#         for giornata in CALENDARIO_GIORNATE:
+#             for match in CALENDARIO_GIORNATE[giornata]:
+#                 match_str = f"{match['t1']} vs {match['t2']}"
+#                 if match_str == partita_nome:
+#                     # Parsing della stringa oraria
+#                     data_str = f"{anno}/{match['data']} {match['ora']}"
+#                     dt_naive = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
+#                     # Rendiamo l'orario inizio consapevole del fuso
+#                     orario_inizio = dt_naive.replace(tzinfo=fuso_roma)
+#                     break
+        
+#         # 2. Parsing della data giocata dal CSV
+#         try:
+#             # Assumiamo che data_giocata nel CSV sia in UTC o locale, 
+#             # se non ha fuso orario, gli assegniamo quello di Roma
+#             dt_giocata_naive = datetime.strptime(row["Data_Invio"], '%Y-%m-%d %H:%M:%S')
+#             data_giocata = dt_giocata_naive.replace(tzinfo=fuso_roma)
+#         except:
+#             continue
+
+#         # 3. Confronto (ora entrambi gli oggetti sono 'aware')
+#         if orario_inizio and data_giocata < orario_inizio:
+#             giocate_valide.append(row)
+            
+#     return pd.DataFrame(giocate_valide)
+
 def filtra_giocate_valide(df_live):
     giocate_valide = []
     fuso_roma = ZoneInfo("Europe/Rome")
-    anno = 2026 # Fissato per il torneo
+    anno = 2026
+    
+    st.write("--- LOG DI DEBUG FILTRO ---")
     
     for _, row in df_live.iterrows():
         partita_nome = row["Partita"]
-        
-        # 1. Recupero orario inizio partita dal calendario
         orario_inizio = None
+        
+        # 1. Trova orario in calendario
         for giornata in CALENDARIO_GIORNATE:
             for match in CALENDARIO_GIORNATE[giornata]:
-                match_str = f"{match['t1']} vs {match['t2']}"
-                if match_str == partita_nome:
-                    # Parsing della stringa oraria
+                if f"{match['t1']} vs {match['t2']}" == partita_nome:
                     data_str = f"{anno}/{match['data']} {match['ora']}"
                     dt_naive = datetime.strptime(data_str, '%Y/%d/%m %H:%M')
-                    # Rendiamo l'orario inizio consapevole del fuso
                     orario_inizio = dt_naive.replace(tzinfo=fuso_roma)
                     break
         
-        # 2. Parsing della data giocata dal CSV
+        # 2. Parsing Data Invio
         try:
-            # Assumiamo che data_giocata nel CSV sia in UTC o locale, 
-            # se non ha fuso orario, gli assegniamo quello di Roma
-            dt_giocata_naive = datetime.strptime(row["Data_Invio"], '%Y-%m-%d %H:%M:%S')
-            data_giocata = dt_giocata_naive.replace(tzinfo=fuso_roma)
-        except:
+            dt_invio = datetime.strptime(row["Data_Invio"], '%Y-%m-%d %H:%M:%S')
+            data_giocata = dt_invio.replace(tzinfo=fuso_roma)
+        except Exception as e:
+            st.write(f"Errore parsing data {row['Data_Invio']}: {e}")
             continue
 
-        # 3. Confronto (ora entrambi gli oggetti sono 'aware')
+        # 3. Confronto con STAMPA (Questo ti dirà la verità!)
         if orario_inizio and data_giocata < orario_inizio:
+            st.success(f"VALIDA: {partita_nome} (Invio: {data_giocata} < Inizio: {orario_inizio})")
             giocate_valide.append(row)
+        else:
+            st.error(f"SCARTATA: {partita_nome} (Invio: {data_giocata} >= Inizio: {orario_inizio})")
             
     return pd.DataFrame(giocate_valide)
 
