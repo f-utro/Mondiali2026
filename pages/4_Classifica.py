@@ -259,6 +259,9 @@ except Exception as e:
 # --- BLOCCO DI CALCOLO DINAMICO ---
 punteggi_utenti = {}
 
+st.write("Chiavi risultati:", list(partite_reali.keys()))
+st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+
 if not df_res.empty:
     #partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
     #risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
