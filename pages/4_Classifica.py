@@ -170,11 +170,11 @@ def filtra_giocate_valide(df_live):
 
         # 3. Confronto con STAMPA (Questo ti dirà la verità!)
         if orario_inizio and data_giocata < orario_inizio:
-            st.success(f"VALIDA: {partita_nome} (Invio: {data_giocata} < Inizio: {orario_inizio})")
+     #       st.success(f"VALIDA: {partita_nome} (Invio: {data_giocata} < Inizio: {orario_inizio})")
             giocate_valide.append(row)
-        else:
-            st.error(f"SCARTATA: {partita_nome} (Invio: {data_giocata} >= Inizio: {orario_inizio})")
-    st.write(len(pd.DataFrame(giocate_valide)))      
+      #  else:
+      #      st.error(f"SCARTATA: {partita_nome} (Invio: {data_giocata} >= Inizio: {orario_inizio})")
+    #st.write(len(pd.DataFrame(giocate_valide)))      
     return pd.DataFrame(giocate_valide)
 
 @st.cache_resource
@@ -317,33 +317,54 @@ if not df_res.empty:
     if not df_live.empty:
         df_live = df_live.sort_values(by="Data")
         df_live_grouped = df_live.groupby(['Utente_Telegram', 'Partita']).last().reset_index()
-        
+
         for _, row in df_live_grouped.iterrows():
             u = row['Utente_Telegram']
-            p = row['Partita']
-            #prono_segno = str(row['Pronostico_Segno']).strip()
-            #prono_risultato = str(row['Pronostico_Resultato'] if 'Pronostico_Resultato' in row else row.get('Pronostico_Risultato', '')).strip()
+            p = row['Partita'].strip().lower() # Pulizia estrema
             prono_segno = str(row['Pronostico_Segno']).strip()
-            prono_risultato = str(row.get('Pronostico_Risultato', '')).strip() # Corretto 'Risultato'
+            prono_risultato = str(row.get('Pronostico_Risultato', '')).strip()
             
-            if u not in punteggi_utenti:
-                punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
+            # DEBUG: stampa cosa stiamo confrontando
+            reale_segno = partite_reali.get(p, "NOT_FOUND")
+            reale_ris = risultati_reali.get(p, "NOT_FOUND")
             
-            #if p in partite_reali and str(partite_reali[p]).strip() == prono_segno:
-            #    punteggi_utenti[u]["Gironi_1X2"] += 1
-            #if prono_risultato.strip() !='':             
-            #            if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
-            #                punteggi_utenti[u]["Risultati_Esatti"] += 3
-            # 3. Confronto debuggato
-            if p in partite_reali:
-               reale_segno = partite_reali[p]
-               if reale_segno == prono_segno:
-                  punteggi_utenti[u]["Gironi_1X2"] += 1
+            # Questo scrive in console cosa sta succedendo per ogni riga
+            st.write(f"Utente: {u} | Partita: {p}")
+            st.write(f"Pronostico: {prono_segno} vs Reale: {reale_segno}")
+            st.write(f"Pronostico Ris: {prono_risultato} vs Reale Ris: {reale_ris}")
+
+            if reale_segno != "NOT_FOUND" and reale_segno == prono_segno:
+                punteggi_utenti[u]["Gironi_1X2"] += 1
+                
+            if prono_risultato and reale_ris != "NOT_FOUND" and reale_ris == prono_risultato:
+                punteggi_utenti[u]["Risultati_Esatti"] += 3    
+        
+        # for _, row in df_live_grouped.iterrows():
+        #     u = row['Utente_Telegram']
+        #     p = row['Partita']
+        #     #prono_segno = str(row['Pronostico_Segno']).strip()
+        #     #prono_risultato = str(row['Pronostico_Resultato'] if 'Pronostico_Resultato' in row else row.get('Pronostico_Risultato', '')).strip()
+        #     prono_segno = str(row['Pronostico_Segno']).strip()
+        #     prono_risultato = str(row.get('Pronostico_Risultato', '')).strip() # Corretto 'Risultato'
             
-               if prono_risultato: # Se l'utente ha messo un risultato
-                  reale_ris = risultati_reali.get(p, "")
-                  if reale_ris == prono_risultato:
-                     punteggi_utenti[u]["Risultati_Esatti"] += 3
+        #     if u not in punteggi_utenti:
+        #         punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
+            
+        #     #if p in partite_reali and str(partite_reali[p]).strip() == prono_segno:
+        #     #    punteggi_utenti[u]["Gironi_1X2"] += 1
+        #     #if prono_risultato.strip() !='':             
+        #     #            if p in risultati_reali and str(risultati_reali[p]).strip() == prono_risultato:
+        #     #                punteggi_utenti[u]["Risultati_Esatti"] += 3
+        #     # 3. Confronto debuggato
+        #     if p in partite_reali:
+        #        reale_segno = partite_reali[p]
+        #        if reale_segno == prono_segno:
+        #           punteggi_utenti[u]["Gironi_1X2"] += 1
+            
+        #        if prono_risultato: # Se l'utente ha messo un risultato
+        #           reale_ris = risultati_reali.get(p, "")
+        #           if reale_ris == prono_risultato:
+        #              punteggi_utenti[u]["Risultati_Esatti"] += 3
 
     # 2. Calcolo Classifica Finali Gironi (Bonus Podio +2)
     if not df_gironi.empty:
