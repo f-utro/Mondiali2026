@@ -145,7 +145,7 @@ def filtra_giocate_valide(df_live):
     fuso_roma = ZoneInfo("Europe/Rome")
     anno = 2026
     
-    st.write("--- LOG DI DEBUG FILTRO ---")
+    #st.write("--- LOG DI DEBUG FILTRO ---")
     
     for _, row in df_live.iterrows():
         partita_nome = row["Partita"]
@@ -336,7 +336,7 @@ if not df_res.empty:
 
        # st.write("--- DEBUG DELLE CHIAVI NEL DIZIONARIO RISULTATI ---")
 # Stampiamo le prime 5 chiavi per vedere come sono scritte
-        c#hiavi_test = list(partite_reali.keys())
+        #chiavi_test = list(partite_reali.keys())
         #st.write(f"Chiavi caricate: {chiavi_test[:5]}")
 
 # Controlliamo la partita specifica che fallisce
