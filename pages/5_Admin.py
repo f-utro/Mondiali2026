@@ -183,7 +183,7 @@ else:
     LISTA_PARTITE_COMPLETE = []
     for g_nome, match_list in CALENDARIO_GIORNATE.items():
         for m in match_list:
-            LISTA_PARTITE_COMPLETE.append(f"{m['t1']}_vs_{m['t2']}")
+            LISTA_PARTITE_COMPLETE.append(f"{m['t1']} vs {m['t2']}")
 
     GRUPPI = sorted(list(squadre_gironi.keys()))
 
