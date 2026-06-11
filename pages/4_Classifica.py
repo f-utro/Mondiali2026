@@ -301,9 +301,20 @@ if not df_res.empty:
     #risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
     #partite_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1'])}
     #partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
-    df_partite = df_res[df_res['Tipo'].str.strip().str.lower() == 'partita']
+    #df_partite = df_res[df_res['Tipo'].str.strip().str.lower() == 'partita']
+    #partite_reali = dict(zip(df_partite['Chiave_Evento'], df_partite['Valore_1'].astype(str).str.strip()))
+    #risultati_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2'])}
+
+    # Pulisci subito le stringhe in tutto il file per evitare problemi
+    df_res['Tipo'] = df_res['Tipo'].astype(str).str.strip().str.lower()
+    df_res['Chiave_Evento'] = df_res['Chiave_Evento'].astype(str).str.strip().str.lower()
+    df_partite = df_res[df_res['Tipo'] == 'partita']
+    st.write(f"DEBUG: Ho trovato {len(df_partite)} righe di tipo 'partita'.")
+    st.write(df_partite['Chiave_Evento'].tolist()) # Vediamo se qui appaiono tutte!
+
+    # Ora creiamo i dizionari
     partite_reali = dict(zip(df_partite['Chiave_Evento'], df_partite['Valore_1'].astype(str).str.strip()))
-    risultati_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2'])}
+    risultati_reali = dict(zip(df_partite['Chiave_Evento'], df_partite['Valore_2'].astype(str).str.strip()))        
     podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
     squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
