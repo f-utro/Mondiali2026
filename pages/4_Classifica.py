@@ -373,7 +373,9 @@ if not df_res.empty:
     # 2. Confronto Segno (1X2)
             if p_reale_segno != "n/a" and p_reale_segno == p_prono_segno:
                punteggi_utenti[u]["Gironi_1X2"] += 1
-            
+
+            if p_reale_segno == "n/a":
+               continue
     # 3. Confronto Risultato Esatto
             if p_prono_ris and p_reale_ris != "n/a" and p_reale_ris == p_prono_ris:
                punteggi_utenti[u]["Risultati_Esatti"] += 3
