@@ -269,7 +269,11 @@ if not df_res.empty:
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
 
     st.write("Chiavi risultati:", list(partite_reali.keys()))
-    st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+    #st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+    if not df_live.empty:
+       st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
+    else:
+       st.warning("⚠️ Il DataFrame df_live è vuoto! Nessuna giocata trovata dopo il filtro.")
 
 
     # 1. Calcolo da Schedine Live (Esito e Totogol)
