@@ -299,13 +299,15 @@ punteggi_utenti = {}
 if not df_res.empty:
     #partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
     #risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
-    partite_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1'])}
+    #partite_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1'])}
+    partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
     risultati_reali = {str(k).strip().lower(): str(v).strip() for k, v in zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2'])}
     podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
     squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
 
     st.write("Chiavi risultati:", list(partite_reali.keys()))
+    st.write("Tipi presenti nel file Risultati:", df_res['Tipo'].unique())        
     #st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
     if not df_live.empty:
        st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
@@ -324,32 +326,29 @@ if not df_res.empty:
         st.write(f"Chiavi caricate: {chiavi_test[:5]}")
 
 # Controlliamo la partita specifica che fallisce
-        p_test = "messico vs sudafrica"
-        if p_test in partite_reali:
-           st.success(f"Trovata! La chiave '{p_test}' esiste.")
-        else:
-           st.error(f"La chiave '{p_test}' NON esiste nel dizionario.")
-
+        # Sostituisci il tuo blocco del ciclo for con questo:
         for _, row in df_live_grouped.iterrows():
             u = row['Utente_Telegram']
-            p = row['Partita'].strip().lower() # Pulizia estrema
-            prono_segno = str(row['Pronostico_Segno']).strip()
+            p = str(row['Partita']).strip().lower()
+    
+    # 1. Inizializzazione sicura dell'utente
+            if u not in punteggi_utenti:
+               punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
+    
+    # 2. Controllo esistenza partita nel dizionario
+            if p in partite_reali:
+               reale_segno = str(partite_reali[p]).strip()
+               prono_segno = str(row['Pronostico_Segno']).strip()
+        
+            if reale_segno == prono_segno:
+               punteggi_utenti[u]["Gironi_1X2"] += 1
+            
+        # Controllo risultato esatto
+            reale_ris = str(risultati_reali.get(p, "")).strip()
             prono_risultato = str(row.get('Pronostico_Risultato', '')).strip()
-            
-            # DEBUG: stampa cosa stiamo confrontando
-            reale_segno = partite_reali.get(p, "NOT_FOUND")
-            reale_ris = risultati_reali.get(p, "NOT_FOUND")
-            
-            # Questo scrive in console cosa sta succedendo per ogni riga
-            st.write(f"Utente: {u} | Partita: {p}")
-            st.write(f"Pronostico: {prono_segno} vs Reale: {reale_segno}")
-            st.write(f"Pronostico Ris: {prono_risultato} vs Reale Ris: {reale_ris}")
-
-            if reale_segno != "NOT_FOUND" and reale_segno == prono_segno:
-                punteggi_utenti[u]["Gironi_1X2"] += 1
-                
-            if prono_risultato and reale_ris != "NOT_FOUND" and reale_ris == prono_risultato:
-                punteggi_utenti[u]["Risultati_Esatti"] += 3    
+        
+            if prono_risultato and prono_risultato == reale_ris:
+               punteggi_utenti[u]["Risultati_Esatti"] += 3
         
         # for _, row in df_live_grouped.iterrows():
         #     u = row['Utente_Telegram']
