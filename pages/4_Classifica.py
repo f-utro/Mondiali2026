@@ -363,6 +363,7 @@ if not df_res.empty:
     # 3. Confronto Risultato Esatto
             if p_prono_ris and p_reale_ris != "n/a" and p_reale_ris == p_prono_ris:
                punteggi_utenti[u]["Risultati_Esatti"] += 3
+            st.write(f"DEBUG Segno -> Reale: '{p_reale_segno}' | Pronostico: '{p_prono_segno}' | Match: {p_reale_segno == p_prono_segno}")
         
         # for _, row in df_live_grouped.iterrows():
         #     u = row['Utente_Telegram']
