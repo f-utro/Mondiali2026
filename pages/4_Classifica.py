@@ -174,7 +174,7 @@ def filtra_giocate_valide(df_live):
             giocate_valide.append(row)
         else:
             st.error(f"SCARTATA: {partita_nome} (Invio: {data_giocata} >= Inizio: {orario_inizio})")
-    st.write(len(giocate_valide)      
+    st.write(len(giocate_valide))      
     return pd.DataFrame(giocate_valide)
 
 @st.cache_resource
