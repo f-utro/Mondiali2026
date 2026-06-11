@@ -336,18 +336,32 @@ if not df_res.empty:
                punteggi_utenti[u] = {"Gironi_1X2": 0, "Risultati_Esatti": 0, "Podio_Bonus": 0, "Eliminatorie": 0, "Totale": 0}
     
     # Valori di default se la partita non esiste
-            reale_segno = partite_reali.get(p, "N/A")
-            reale_ris = risultati_reali.get(p, "N/A")
+    #         reale_segno = partite_reali.get(p, "N/A")
+    #         reale_ris = risultati_reali.get(p, "N/A")
     
-            prono_segno = str(row['Pronostico_Segno']).strip()
-            prono_risultato = str(row.get('Pronostico_Risultato', '')).strip()
+    #         prono_segno = str(row['Pronostico_Segno']).strip()
+    #         prono_risultato = str(row.get('Pronostico_Risultato', '')).strip()
     
-    # Ora 'reale_segno' esiste sempre!
-            if reale_segno != "N/A" and reale_segno == prono_segno:
+    # # Ora 'reale_segno' esiste sempre!
+    #         if reale_segno != "N/A" and reale_segno == prono_segno:
+    #            punteggi_utenti[u]["Gironi_1X2"] += 1
+            
+    # # Controllo risultato esatto
+    #         if prono_risultato and reale_ris != "N/A" and reale_ris == prono_risultato:
+    #            punteggi_utenti[u]["Risultati_Esatti"] += 3
+
+            p_reale_segno = str(partite_reali.get(p, "N/A")).strip().lower()
+            p_prono_segno = str(row.get('Pronostico_Segno', '')).strip().lower()
+    
+            p_reale_ris = str(risultati_reali.get(p, "N/A")).strip().lower()
+            p_prono_ris = str(row.get('Pronostico_Risultato', '')).strip().lower()
+
+    # 2. Confronto Segno (1X2)
+            if p_reale_segno != "n/a" and p_reale_segno == p_prono_segno:
                punteggi_utenti[u]["Gironi_1X2"] += 1
             
-    # Controllo risultato esatto
-            if prono_risultato and reale_ris != "N/A" and reale_ris == prono_risultato:
+    # 3. Confronto Risultato Esatto
+            if p_prono_ris and p_reale_ris != "n/a" and p_reale_ris == p_prono_ris:
                punteggi_utenti[u]["Risultati_Esatti"] += 3
         
         # for _, row in df_live_grouped.iterrows():
