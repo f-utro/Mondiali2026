@@ -458,7 +458,7 @@ if punteggi_utenti:
     df_c.insert(0, "Pos.", df_c.index)
     #df_c["Pos."] = df_c["Pos"].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
     df_c["Pos."] = df_c["Pos."].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
-    st.markdown("### 🏁 CLASSIFICA GENERALE TOTOJUVE&ME")
+    st.markdown("### 🏁 CLASSIFICA GENERALE")
     
     # --- RENDERING HTML/CSS OTTIMIZZATO SENZA SCROLL ---
     html_classifica = """
