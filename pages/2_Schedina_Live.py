@@ -51,168 +51,317 @@ st.set_page_config(page_title="Mundial&Me Live", page_icon="⚽", layout="center
    
 # </style>
 # """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+#     /* 1. Blocca totalmente l'inversione colori del browser (Android/iOS) */
+#     html {
+#         color-scheme: light !important;
+#     }
+    
+#     /* 2. Forza il tuo sfondo su TUTTO il corpo dell'app */
+#     .stApp, body, .stAppHeader {
+#         background-color: #f9ebdf !important;
+#     }
+
+#     /* 3. Forza il testo nero ovunque */
+#     h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+#         color: #000000 !important;
+#     }
+
+#     /* 4. Disabilita le impostazioni di sistema che potrebbero sovrascrivere */
+#     @media (prefers-color-scheme: dark) {
+#         :root {
+#             color-scheme: light !important;
+#         }
+#         .stApp {
+#             background-color: #f9ebdf !important;
+#         }
+#         h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+#             color: #000000 !important;
+#         }
+#     }
+            
+#     /* 4. Nascondi elementi Streamlit */
+#     #MainMenu, footer, header { visibility: hidden !important; }
+
+#     /* 5. Componenti personalizzati */
+#     .telegram-ballon {
+#         background-color: #effdde; padding: 15px; border-radius: 15px;
+#         border-bottom-left-radius: 0; margin-bottom: 20px;
+#         border: 1px solid #c9e4b7; color: #000000; font-family: monospace;
+#     }
+#     .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
+# </style>
+# """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+#     /* 1. Forza il tema chiaro a livello di documento */
+#     :root {
+#         color-scheme: light !important;
+#     }
+
+#     /* 2. Forza lo sfondo di tutta l'app */
+#     .stApp { 
+#         background-color: #f9ebdf !important; 
+#     }
+
+#     /* 3. Forza lo sfondo e il colore dei WIDGET (Input, Select, Bottoni) */
+#     /* Input di testo e Selectbox */
+#     div[data-baseweb="base-input"], 
+#     div[data-baseweb="select"],
+#     input, 
+#     textarea,
+#     div[data-baseweb="dropdown"] {
+#         background-color: #ffffff !important;
+#         color: #000000 !important;
+#         border: 1px solid #c9e4b7 !important;
+#     }
+
+#     /* Bottoni */
+#     button {
+#         background-color: #ffffff !important;
+#         color: #000000 !important;
+#         border: 1px solid #c9e4b7 !important;
+#     }
+
+#     /* Etichette (label) dei campi */
+#     label {
+#         color: #000000 !important;
+#     }
+
+#     /* Forza il colore del testo ovunque */
+#     h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+#         color: #000000 !important;
+#     }
+
+#     /* 4. Ignora il tema scuro del sistema */
+#     @media (prefers-color-scheme: dark) {
+#         :root { color-scheme: light !important; }
+#         .stApp, div[data-baseweb="base-input"], button {
+#             background-color: #f9ebdf !important;
+#         }
+#     }
+# </style>
+# """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+#     /* Forza il colore di sfondo dellaselectbox quando è chiusa */
+#     div[data-baseweb="select"] > div {
+#         background-color: #ffffff !important;
+#         border: 1px solid #c9e4b7 !important;
+#     }
+    
+#     /* Forza il colore del testo all'interno della selectbox */
+#     div[data-baseweb="select"] span {
+#         color: #000000 !important;
+#     }
+
+#     /* Forza il colore quando la tendina è aperta (il menu vero e proprio) */
+#     div[role="listbox"] {
+#         background-color: #ffffff !important;
+#     }
+    
+#     /* Forza il colore delle opzioni nel menu */
+#     div[role="option"] {
+#         background-color: #ffffff !important;
+#         color: #000000 !important;
+#     }
+    
+#     /* Forza il colore quando passi sopra un'opzione col mouse */
+#     div[role="option"]:hover {
+#         background-color: #f9ebdf !important;
+#     }
+# </style>
+# """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+#     /* 1. Forza il colore di sfondo dell'expander a rosato */
+#     div[data-testid="stExpander"] {
+#         background-color: #f9ebdf !important;
+#         border: 1px solid #c9e4b7 !important;
+#     }
+
+#     /* 2. Forza il colore dell'area interna quando viene aperta */
+#     div[data-testid="stExpanderDetails"] {
+#         background-color: #f9ebdf !important;
+#     }
+
+#     /* 3. Forza il colore del titolo dell'expander (la barra nera che vedi) */
+#     button[data-testid="stExpanderDetails"] {
+#         background-color: #f9ebdf !important;
+#         color: #000000 !important;
+#     }
+
+#     /* 4. Forza il colore di TUTTO il testo dentro l'expander a nero */
+#     div[data-testid="stExpander"] * {
+#         color: #000000 !important;
+#     }
+
+#     /* 5. Forza lo sfondo dell'input (Ris. Esatto) a bianco/chiaro */
+#     input {
+#         background-color: #ffffff !important;
+#         color: #000000 !important;
+#         border: 1px solid #c9e4b7 !important;
+#     }
+
+#     /* 6. Forza il colore del box della "Cedola Live" (quello grigio bluastro) */
+#     div[data-testid="stAlert"] {
+#         background-color: #f9ebdf !important;
+#         border: 1px solid #c9e4b7 !important;
+#         color: #000000 !important;
+#     }
+# </style>
+# """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+#     /* 1. Reset assoluto per i componenti Streamlit/BaseWeb su mobile */
+#     @media (prefers-color-scheme: dark) {
+#         :root, body, .stApp, div, span, button, [data-testid="stExpander"] {
+#             background-color: #f9ebdf !important;
+#             color: #000000 !important;
+#         }
+        
+#         /* Forza il colore di sfondo specifico dei menu a tendina */
+#         [data-baseweb="select"] div[role="listbox"],
+#         div[role="option"] {
+#             background-color: #ffffff !important;
+#             color: #000000 !important;
+#         }
+        
+#         /* Forza il colore del box nero che vedi nello screen */
+#         div[data-baseweb="popover"],
+#         div[data-baseweb="menu"] {
+#             background-color: #ffffff !important;
+#             border: 1px solid #c9e4b7 !important;
+#         }
+#     }
+# </style>
+# """, unsafe_allow_html=True)
+
 st.markdown("""
 <style>
-    /* 1. Blocca totalmente l'inversione colori del browser (Android/iOS) */
-    html {
+    /* 1. Reset Globale e Forza Tema Chiaro */
+    :root, html {
         color-scheme: light !important;
+        background-color: #f9ebdf !important;
     }
     
-    /* 2. Forza il tuo sfondo su TUTTO il corpo dell'app */
     .stApp, body, .stAppHeader {
         background-color: #f9ebdf !important;
     }
 
-    /* 3. Forza il testo nero ovunque */
-    h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
+    /* 2. Forza testo nero ovunque */
+    h1, h2, h3, h4, h5, h6, p, div, span, label, li, a, button {
         color: #000000 !important;
     }
 
-    /* 4. Disabilita le impostazioni di sistema che potrebbero sovrascrivere */
+    /* 3. Input, Select e Bottoni */
+    div[data-baseweb="base-input"], div[data-baseweb="select"], input, textarea, button {
+        background-color: #ffffff !important;
+        border: 1px solid #c9e4b7 !important;
+        color: #000000 !important;
+    }
+
+    /* 4. Menu a tendina (il "popover" incriminato) */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], div[role="listbox"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    div[role="option"] {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    div[role="option"]:hover {
+        background-color: #f9ebdf !important;
+    }
+
+    /* 5. Expander e Alert */
+    div[data-testid="stExpander"], div[data-testid="stAlert"] {
+        background-color: #f9ebdf !important;
+        border: 1px solid #c9e4b7 !important;
+    }
+
+    /* 6. Override forzato per Dark Mode di sistema */
     @media (prefers-color-scheme: dark) {
-        :root {
-            color-scheme: light !important;
-        }
-        .stApp {
+        :root { color-scheme: light !important; }
+        .stApp, div[data-baseweb="popover"], div[role="listbox"] {
             background-color: #f9ebdf !important;
-        }
-        h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
-            color: #000000 !important;
         }
     }
             
-    /* 4. Nascondi elementi Streamlit */
+    /* 7. Nascondi elementi Streamlit */
     #MainMenu, footer, header { visibility: hidden !important; }
-
-    /* 5. Componenti personalizzati */
-    .telegram-ballon {
-        background-color: #effdde; padding: 15px; border-radius: 15px;
-        border-bottom-left-radius: 0; margin-bottom: 20px;
-        border: 1px solid #c9e4b7; color: #000000; font-family: monospace;
-    }
-    .match-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #dcdcdc; }
 </style>
 """, unsafe_allow_html=True)
 st.markdown("""
 <style>
-    /* 1. Forza il tema chiaro a livello di documento */
-    :root {
-        color-scheme: light !important;
-    }
-
-    /* 2. Forza lo sfondo di tutta l'app */
-    .stApp { 
-        background-color: #f9ebdf !important; 
-    }
-
-    /* 3. Forza lo sfondo e il colore dei WIDGET (Input, Select, Bottoni) */
-    /* Input di testo e Selectbox */
-    div[data-baseweb="base-input"], 
-    div[data-baseweb="select"],
-    input, 
-    textarea,
-    div[data-baseweb="dropdown"] {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        border: 1px solid #c9e4b7 !important;
-    }
-
-    /* Bottoni */
-    button {
-        background-color: #ffffff !important;
-        color: #000000 !important;
-        border: 1px solid #c9e4b7 !important;
-    }
-
-    /* Etichette (label) dei campi */
-    label {
-        color: #000000 !important;
-    }
-
-    /* Forza il colore del testo ovunque */
-    h1, h2, h3, h4, h5, h6, p, div, span, label, li, a {
-        color: #000000 !important;
-    }
-
-    /* 4. Ignora il tema scuro del sistema */
-    @media (prefers-color-scheme: dark) {
-        :root { color-scheme: light !important; }
-        .stApp, div[data-baseweb="base-input"], button {
-            background-color: #f9ebdf !important;
-        }
-    }
-</style>
-""", unsafe_allow_html=True)
-st.markdown("""
-<style>
-    /* Forza il colore di sfondo dellaselectbox quando è chiusa */
-    div[data-baseweb="select"] > div {
+    /* Forza il colore di sfondo del contenitore del menu (il dropdown/popover) */
+    div[data-baseweb="popover"], 
+    div[data-baseweb="menu"], 
+    ul[role="listbox"] {
         background-color: #ffffff !important;
         border: 1px solid #c9e4b7 !important;
     }
-    
-    /* Forza il colore del testo all'interno della selectbox */
-    div[data-baseweb="select"] span {
-        color: #000000 !important;
-    }
 
-    /* Forza il colore quando la tendina è aperta (il menu vero e proprio) */
-    div[role="listbox"] {
-        background-color: #ffffff !important;
-    }
-    
-    /* Forza il colore delle opzioni nel menu */
+    /* Forza il colore di ogni singola opzione all'interno del menu */
+    li[role="option"], 
     div[role="option"] {
         background-color: #ffffff !important;
         color: #000000 !important;
     }
     
-    /* Forza il colore quando passi sopra un'opzione col mouse */
+    /* Forza il colore al passaggio del mouse (hover) */
+    li[role="option"]:hover, 
     div[role="option"]:hover {
         background-color: #f9ebdf !important;
+        color: #000000 !important;
+    }
+    
+    /* Forza il colore del testo se il componente è di tipo 'BaseWeb' */
+    div[data-baseweb="select"] * {
+        color: #000000 !important;
     }
 </style>
 """, unsafe_allow_html=True)
 st.markdown("""
 <style>
-    /* 1. Forza il colore di sfondo dell'expander a rosato */
-    div[data-testid="stExpander"] {
-        background-color: #f9ebdf !important;
+    /* 1. Forza il colore di sfondo su tutto il sistema (inclusi i portali esterni) */
+    div[data-baseweb="popover"], 
+    div[data-baseweb="menu"], 
+    div[role="listbox"],
+    ul[role="listbox"],
+    div[style*="position: absolute"] {
+        background-color: #ffffff !important;
         border: 1px solid #c9e4b7 !important;
-    }
-
-    /* 2. Forza il colore dell'area interna quando viene aperta */
-    div[data-testid="stExpanderDetails"] {
-        background-color: #f9ebdf !important;
-    }
-
-    /* 3. Forza il colore del titolo dell'expander (la barra nera che vedi) */
-    button[data-testid="stExpanderDetails"] {
-        background-color: #f9ebdf !important;
         color: #000000 !important;
     }
 
-    /* 4. Forza il colore di TUTTO il testo dentro l'expander a nero */
-    div[data-testid="stExpander"] * {
-        color: #000000 !important;
-    }
-
-    /* 5. Forza lo sfondo dell'input (Ris. Esatto) a bianco/chiaro */
-    input {
+    /* 2. Target specifico per le opzioni (voci del menu) */
+    div[role="option"], 
+    li[role="option"] {
         background-color: #ffffff !important;
         color: #000000 !important;
-        border: 1px solid #c9e4b7 !important;
     }
 
-    /* 6. Forza il colore del box della "Cedola Live" (quello grigio bluastro) */
-    div[data-testid="stAlert"] {
-        background-color: #f9ebdf !important;
-        border: 1px solid #c9e4b7 !important;
+    /* 3. Forza il colore del testo dentro il selectbox */
+    div[data-baseweb="select"] span {
+        color: #000000 !important;
+    }
+    
+    /* 4. Disabilita forzatamente il tema scuro su tutti i componenti di input */
+    [data-baseweb="select"], 
+    [data-baseweb="popover"] {
+        filter: none !important;
+        -webkit-filter: none !important;
+    }
+
+    /* 5. Override per il selettore che sta causando il nero */
+    div[data-baseweb="menu"] * {
+        background-color: #ffffff !important;
         color: #000000 !important;
     }
 </style>
 """, unsafe_allow_html=True)
-
 
 # --- FILE DATABASE LOCALE (BACKUP) ---
 LIVE_DATA_FILE = "schedine_live.csv"
