@@ -819,7 +819,7 @@ if not giornate_disponibili:
 giornata_scelta = st.selectbox(
     "📅 Seleziona il turno:", 
     options=giornate_disponibili,
-    index=1 
+    index=2
 )
 st.session_state.giornata = giornata_scelta
 
