@@ -429,7 +429,7 @@ if not df_res.empty:
                     p1 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"].empty else ""
                     p2 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"].empty else ""
 
-                    print(f"DEBUG: Utente: {u}, Girone: {lettera}, Pronostico 1°: '{p1}', Pronostico 2°: '{p2}', Reale 1°: '{r1}', Reale 2°: '{r2}'")
+                    #print(f"DEBUG: Utente: {u}, Girone: {lettera}, Pronostico 1°: '{p1}', Pronostico 2°: '{p2}', Reale 1°: '{r1}', Reale 2°: '{r2}'")
                     
                     if p1 == str(r1).strip() and p2 == str(r2).strip():
                         punteggi_utenti[u]["Podio_Bonus"] += 2
