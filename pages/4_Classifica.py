@@ -293,6 +293,7 @@ except Exception as e:
     df_live = pd.DataFrame()
     df_gironi = pd.DataFrame()
 
+
 # --- BLOCCO DI CALCOLO DINAMICO ---
 punteggi_utenti = {}
 
@@ -315,11 +316,11 @@ if not df_res.empty:
     # Ora creiamo i dizionari
     partite_reali = dict(zip(df_partite['Chiave_Evento'], df_partite['Valore_1'].astype(str).str.strip()))
     risultati_reali = dict(zip(df_partite['Chiave_Evento'], df_partite['Valore_2'].astype(str).str.strip()))        
-    podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
+    podio_gironi = dict(zip(df_res[df_res['Tipo']=='pos_girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='pos_girone']['Valore_1'], df_res[df_res['Tipo']=='pos_girone']['Valore_2'])))
     squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
     fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
 
-    # st.write("Chiavi risultati:", list(partite_reali.keys()))
+     # st.write("Chiavi risultati:", list(partite_reali.keys()))
     # st.write(partite_reali)
     # st.write("Tipi presenti nel file Risultati:", df_res['Tipo'].unique())        
     # #st.write("Chiave esempio predizioni:", str(df_live.iloc[0]['Partita']).strip().lower())
@@ -420,12 +421,15 @@ if not df_res.empty:
             ultime_giocate_g = gruppo_utente[gruppo_utente["Data"] == ultimo_timestamp]
             
             for chiave_g, (r1, r2) in podio_gironi.items():
-                lettera = chiave_g.replace("Pos_Girone_", "")
+                lettera = "Gruppo " + chiave_g.replace("pos_girone_", "").strip().upper()
+                #print(lettera)
                 giocate_del_girone = ultime_giocate_g[ultime_giocate_g["Girone"] == lettera] if "Girone" in ultime_giocate_g.columns else pd.DataFrame()
-                
+               # print(ultime_giocate_g.head())
                 if not giocate_del_girone.empty:
                     p1 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"].empty else ""
                     p2 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"].empty else ""
+
+                    print(f"DEBUG: Utente: {u}, Girone: {lettera}, Pronostico 1°: '{p1}', Pronostico 2°: '{p2}', Reale 1°: '{r1}', Reale 2°: '{r2}'")
                     
                     if p1 == str(r1).strip() and p2 == str(r2).strip():
                         punteggi_utenti[u]["Podio_Bonus"] += 2
@@ -453,7 +457,7 @@ if punteggi_utenti:
     df_c = pd.DataFrame.from_dict(punteggi_utenti, orient='index').reset_index()
     df_c.columns = ["Utente Telegram", "Esiti 1X2", "Totogol", "Bonus Podio", "Tabellone", "PUNTEGGIO TOTALE"]
     df_c = df_c.sort_values(by="PUNTEGGIO TOTALE", ascending=False).reset_index(drop=True)
-    
+
     df_c.index = df_c.index + 1
     df_c.insert(0, "Pos.", df_c.index)
     #df_c["Pos."] = df_c["Pos"].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
@@ -531,12 +535,13 @@ if punteggi_utenti:
             <th class="pos-col">POS</th>
             <th class="user-col align-left">PARTECIPANTE</th>
             <th class="punti-col">1X2</th>
-            <th class="punti-col">GOAL</th>
-            <th class="punti-col">PODIO</th>
-            <th class="punti-col">FASE</th>
+            <th class="punti-col">Risultato Esatto</th>
+            <th class="punti-col">Podio Gironi</th>
+      
             <th class="tot-col tot-header">TOT</th>
         </tr>
-    """
+    """ 
+     #     <th class="punti-col">FASE</th>
 
     for _, row in df_c.iterrows():
         pos = row["Pos."]
@@ -544,7 +549,7 @@ if punteggi_utenti:
         p_1x2 = row["Esiti 1X2"]
         p_totogol = row["Totogol"]
         p_podio = row["Bonus Podio"]
-        p_tabellone = row["Tabellone"]
+     #   p_tabellone = row["Tabellone"]
         p_totale = row["PUNTEGGIO TOTALE"]
 
         html_classifica += f"""
@@ -554,10 +559,11 @@ if punteggi_utenti:
             <td class="punti-col">{p_1x2}</td>
             <td class="punti-col">{p_totogol}</td>
             <td class="punti-col">{p_podio}</td>
-            <td class="punti-col">{p_tabellone}</td>
+        
             <td class="tot-col">{p_totale}</td>
         </tr>
         """
+        #  <td class="punti-col">{p_tabellone}</td>
 
     html_classifica += "</table>"
     st.markdown(html_classifica.replace("\n", ""), unsafe_allow_html=True)
