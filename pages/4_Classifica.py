@@ -462,6 +462,18 @@ if punteggi_utenti:
     df_c.insert(0, "Pos.", df_c.index)
     #df_c["Pos."] = df_c["Pos"].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
     df_c["Pos."] = df_c["Pos."].apply(lambda x: "🥇 1°" if x==1 else "🥈 2°" if x==2 else "🥉 3°" if x==3 else f"🏃 {x}°")
+
+    # Usiamo method='dense' per avere 1, 2, 3, 4... senza saltare numeri
+    df_c["Pos."] = df_c["PUNTEGGIO TOTALE"].rank(method='dense', ascending=False).astype(int)
+
+    # Ora la funzione di formattazione funzionerà come volevi:
+    def format_pos(x):
+        if x == 1: return "🥇 1°"
+        if x == 2: return "🥈 2°"
+        if x == 3: return "🥉 3°"
+        return f"🏃 {x}°"
+
+    df_c["Pos."] = df_c["Pos."].apply(format_pos)
     st.markdown("### 🏁 CLASSIFICA GENERALE")
     
     # --- RENDERING HTML/CSS OTTIMIZZATO SENZA SCROLL ---
