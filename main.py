@@ -233,10 +233,11 @@ with col_info:
         st.write(
         "Per garantire la massima trasparenza, ecco come vengono calcolati i punti "
         "durante tutto il corso del torneo, dalla fase a gironi fino alla finalissima. "
-        "Ricorda: nella fase a eliminazione diretta ti verrà chiesto di pronosticare l'intero tabellone! 🚀"
+        "Il gioco si concentra sull'emozione di ogni singola giornata! "
+        "Il torneo segue lo svolgimento della fase a gironi: ogni partita è un'occasione per scalare la classifica. 🚀"
          )
         # --- FASE A GIRONI ---
-        st.markdown("#### ⚽ 1. FASE A GIRONI")
+        st.markdown("#### ⚽ 1. PRONOSTICI SCHEDINA")
         st.markdown(
             """
         * **Esito Esatto (1X2)**: **+1 Punto** ➡️ Se indovini chi vince o il pareggio.
@@ -245,22 +246,22 @@ with col_info:
         """
         )
 
-        # --- FASE A ELIMINAZIONE DIRETTA ---
-        st.markdown("#### 🏆 2. FASE A ELIMINAZIONE DIRETTA (Fino alla Finale)")
-        st.write(
-            "Prima dell'inizio degli ottavi di finale, dovrai compilare l'intero tabellone cartellone "
-            "pronosticando il cammino completo delle squadre fino all'assegnazione della coppa. I punti vengono assegnati così:"
-        )
-        st.markdown(
-            """
-        * **Passaggio Turno Indovinato**: **+2 Punti** ➡️ Per ogni Passaggio del turno indovinato (Ottavi ➡️ Quarti ➡️ Semifinale).
-        * **Finalista Indovinata**: **+4 Punti** ➡️ Per ogni squadra finalista indovinata.
-        * **Vincitore Torneo**: **+7 Punti** ➡️ Se indovini la squadra che solleverà il trofeo.
-        """
-        )
+        # # --- FASE A ELIMINAZIONE DIRETTA ---
+        # st.markdown("#### 🏆 2. FASE A ELIMINAZIONE DIRETTA (Fino alla Finale)")
+        # st.write(
+        #     "Prima dell'inizio degli ottavi di finale, dovrai compilare l'intero tabellone cartellone "
+        #     "pronosticando il cammino completo delle squadre fino all'assegnazione della coppa. I punti vengono assegnati così:"
+        # )
+        # st.markdown(
+        #     """
+        # * **Passaggio Turno Indovinato**: **+2 Punti** ➡️ Per ogni Passaggio del turno indovinato (Ottavi ➡️ Quarti ➡️ Semifinale).
+        # * **Finalista Indovinata**: **+4 Punti** ➡️ Per ogni squadra finalista indovinata.
+        # * **Vincitore Torneo**: **+7 Punti** ➡️ Se indovini la squadra che solleverà il trofeo.
+        # """
+        # )
 
         # --- BONUS COMMUNITY ---
-        st.markdown("#### 💎 3. BONUS EXTRA CHIUSURA GIRONI")
+        st.markdown("#### 💎 2. BONUS EXTRA CHIUSURA GIRONI")
         st.markdown(
             """
         * **Podio Girone Esatto**: **+2 Punti** ➡️ Se indovini l'esatto ordine di arrivo delle prime due classificate del girone.
@@ -268,6 +269,7 @@ with col_info:
         )
 
         st.info("💡 *Nota: Tutti i pronostici della fase eliminatoria sono 'fissi' una volta convalidati prima degli ottavi. Segui l'avanzamento e la spinta della tua schedina nella dashboard!*")
+        st.caption("🔄 **Aggiornamento:** La fase a eliminazione diretta è stata rimossa per dare più spazio e priorità alle schedine come nella fase a gironi.")
 
 # with col_navigazione:
 #     st.markdown("#### 🚀 ACCESSO RAPIDO AI VOTI")
