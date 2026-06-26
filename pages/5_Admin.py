@@ -169,14 +169,19 @@ else:
     }
 
     squadre_gironi = {
-        "A": ["Messico", "Sudafrica", "Corea del Sud", "Rep. Ceca"],
-        "B": ["Canada", "Bosnia ed Erzegovina", "Qatar", "Svizzera"], # Allineata a calendario
-        "C": ["Germania", "Curaçao", "Costa d'Avorio", "Ecuador"],
-        "D": ["Stati Uniti", "Paraguay", "Haiti", "Scozia"],
-        "E": ["Brasile", "Marocco", "Australia", "Turchia"],
-        "F": ["Paesi Bassi", "Giappone", "Svezia", "Tunisia"],
-        "G": ["Belgio", "Egitto", "Iran", "Nuova Zelanda"],
-        "H": ["Spagna", "Capo Verde", "Arabia Saudita", "Uruguay"]
+      "Gruppo A": ["Messico", "Sudafrica", "Corea del Sud", "Rep. Ceca"],
+    "Gruppo B": ["Canada", "Bosnia ed Erzegovina", "Qatar", "Svizzera"],
+    "Gruppo C": ["Brasile", "Marocco", "Haiti", "Scozia"],
+    "Gruppo D": ["Stati Uniti", "Paraguay", "Australia", "Turchia"],
+    "Gruppo E": ["Germania", "Curaçao", "Costa d'Avorio", "Ecuador"],
+    "Gruppo F": ["Olanda", "Giappone", "Svezia", "Tunisia"],
+    "Gruppo G": ["Belgio", "Egitto", "Iran", "Nuova Zelanda"],
+    "Gruppo H": ["Spagna", "Capo Verde", "Arabia Saudita", "Uruguay"],
+    "Gruppo I": ["Francia", "Senegal", "Iraq", "Norvegia"],
+    "Gruppo J": ["Argentina", "Algeria", "Austria", "Giordania"],
+    "Gruppo K": ["Portogallo", "Rep. Dem. del Congo", "Uzbekistan", "Colombia"],
+    "Gruppo L": ["Inghilterra", "Croazia", "Ghana", "Panama"]
+
     }
 
     # Generazione automatica della lista partite dal calendario
