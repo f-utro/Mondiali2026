@@ -632,9 +632,9 @@ CALENDARIO_GIORNATE = {
             {"t1": "Inghilterra", "t2": "RD del Congo", "ora": "18:00", "data": "01/07"},
             {"t1": "Belgio", "t2": "Senegal", "ora": "22:00", "data": "01/07"},
             {"t1": "Stati Uniti", "t2": "Bosnia ed Erzegovina", "ora": "02:00", "data": "02/07"},
-            {"t1": "Spagna", "t2": "non conosciuta", "ora": "21:00", "data": "02/07"},
+            {"t1": "Spagna", "t2": "Austria", "ora": "21:00", "data": "02/07"},
             {"t1": "Portogallo", "t2": "Croazia", "ora": "01:00", "data": "03/07"},
-            {"t1": "Svizzera", "t2": "non conosciuta", "ora": "05:00", "data": "03/07"},
+            {"t1": "Svizzera", "t2": "Algeria", "ora": "05:00", "data": "03/07"},
             {"t1": "Australia", "t2": "Egitto", "ora": "20:00", "data": "03/07"},
             {"t1": "Argentina", "t2": "Capo Verde", "ora": "00:00", "data": "04/07"},
             {"t1": "Colombia", "t2": "Ghana", "ora": "03:30", "data": "04/07"}
