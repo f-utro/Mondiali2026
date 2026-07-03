@@ -639,7 +639,7 @@ CALENDARIO_GIORNATE = {
             {"t1": "Argentina", "t2": "Capo Verde", "ora": "00:00", "data": "04/07"},
             {"t1": "Colombia", "t2": "Ghana", "ora": "03:30", "data": "04/07"}
             ],
-        "Ottavi (4–7 Luglio)":artite_schedina = [
+        "Ottavi (4–7 Luglio)": [
             {"t1": "Canada", "t2": "Marocco", "ora": "19:00", "data": "05/07"},
             {"t1": "Paraguay", "t2": "Francia", "ora": "23:00", "data": "04/07"},
             {"t1": "Brasile", "t2": "Norvegia", "ora": "22:00", "data": "05/07"},
