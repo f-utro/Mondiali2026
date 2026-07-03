@@ -98,7 +98,25 @@ CALENDARIO_GIORNATE = {
             {"t1": "RD del Congo", "t2": "Uzbekistan", "ora": "02:30", "data": "28/06"},
             {"t1": "Panama", "t2": "Inghilterra", "ora": "23:00", "data": "27/06"},
             {"t1": "Croazia", "t2": "Ghana", "ora": "23:00", "data": "27/06"}
-            ]
+            ],
+            "Sedicesimi (28 Giugno - 3 Luglio)": [
+            {"t1": "Sudafrica", "t2": "Canada", "ora": "21:00", "data": "28/06"},
+            {"t1": "Brasile", "t2": "Giappone", "ora": "19:00", "data": "29/06"},
+            {"t1": "Germania", "t2": "Paraguay", "ora": "22:30", "data": "29/06"},
+            {"t1": "Marocco", "t2": "Paesi Bassi", "ora": "03:00", "data": "30/06"},
+            {"t1": "Costa d'Avorio", "t2": "Norvegia", "ora": "19:00", "data": "30/06"},
+            {"t1": "Francia", "t2": "Svezia", "ora": "23:00", "data": "30/06"},
+            {"t1": "Messico", "t2": "Ecuador", "ora": "03:00", "data": "01/07"},
+            {"t1": "Inghilterra", "t2": "RD del Congo", "ora": "18:00", "data": "01/07"},
+            {"t1": "Belgio", "t2": "Senegal", "ora": "22:00", "data": "01/07"},
+            {"t1": "Stati Uniti", "t2": "Bosnia ed Erzegovina", "ora": "02:00", "data": "02/07"},
+            {"t1": "Spagna", "t2": "Austria", "ora": "21:00", "data": "02/07"},
+            {"t1": "Portogallo", "t2": "Croazia", "ora": "01:00", "data": "03/07"},
+            {"t1": "Svizzera", "t2": "Algeria", "ora": "05:00", "data": "03/07"},
+            {"t1": "Australia", "t2": "Egitto", "ora": "20:00", "data": "03/07"},
+            {"t1": "Argentina", "t2": "Capo Verde", "ora": "00:00", "data": "04/07"},
+            {"t1": "Colombia", "t2": "Ghana", "ora": "03:30", "data": "04/07"}
+            ],
     }
 
 from datetime import datetime

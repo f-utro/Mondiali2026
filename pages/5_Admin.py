@@ -165,7 +165,25 @@ else:
             {"t1": "RD del Congo", "t2": "Uzbekistan", "ora": "19:30", "data": "27/06"},
             {"t1": "Panama", "t2": "Inghilterra", "ora": "17:00", "data": "27/06"},
             {"t1": "Croazia", "t2": "Ghana", "ora": "17:00", "data": "27/06"}
-            ]
+            ],
+        "Sedicesimi (28 Giugno - 3 Luglio)": [
+            {"t1": "Sudafrica", "t2": "Canada", "ora": "21:00", "data": "28/06"},
+            {"t1": "Brasile", "t2": "Giappone", "ora": "19:00", "data": "29/06"},
+            {"t1": "Germania", "t2": "Paraguay", "ora": "22:30", "data": "29/06"},
+            {"t1": "Marocco", "t2": "Paesi Bassi", "ora": "03:00", "data": "30/06"},
+            {"t1": "Costa d'Avorio", "t2": "Norvegia", "ora": "19:00", "data": "30/06"},
+            {"t1": "Francia", "t2": "Svezia", "ora": "23:00", "data": "30/06"},
+            {"t1": "Messico", "t2": "Ecuador", "ora": "03:00", "data": "01/07"},
+            {"t1": "Inghilterra", "t2": "RD del Congo", "ora": "18:00", "data": "01/07"},
+            {"t1": "Belgio", "t2": "Senegal", "ora": "22:00", "data": "01/07"},
+            {"t1": "Stati Uniti", "t2": "Bosnia ed Erzegovina", "ora": "02:00", "data": "02/07"},
+            {"t1": "Spagna", "t2": "Austria", "ora": "21:00", "data": "02/07"},
+            {"t1": "Portogallo", "t2": "Croazia", "ora": "01:00", "data": "03/07"},
+            {"t1": "Svizzera", "t2": "Algeria", "ora": "05:00", "data": "03/07"},
+            {"t1": "Australia", "t2": "Egitto", "ora": "20:00", "data": "03/07"},
+            {"t1": "Argentina", "t2": "Capo Verde", "ora": "00:00", "data": "04/07"},
+            {"t1": "Colombia", "t2": "Ghana", "ora": "03:30", "data": "04/07"}
+            ],
     }
 
     squadre_gironi = {
@@ -197,7 +215,7 @@ else:
     if not df_res.empty:
         partite_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_1']))
         risultati_reali = dict(zip(df_res[df_res['Tipo']=='Partita']['Chiave_Evento'], df_res[df_res['Tipo']=='Partita']['Valore_2']))
-        podio_gironi = dict(zip(df_res[df_res['Tipo']=='Pos_Girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='Pos_Girone']['Valore_1'], df_res[df_res['Tipo']=='Pos_Girone']['Valore_2'])))
+        podio_gironi = dict(zip(df_res[df_res['Tipo']=='pos_girone']['Chiave_Evento'], zip(df_res[df_res['Tipo']=='pos_girone']['Valore_1'], df_res[df_res['Tipo']=='pos_girone']['Valore_2'])))
         squadre_eliminate = df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip().tolist()
         fasi_eliminate = dict(zip(df_res[df_res['Tipo']=='Eliminatoria']['Valore_2'].str.lower().str.strip(), df_res[df_res['Tipo']=='Eliminatoria']['Valore_1']))
 
@@ -226,11 +244,18 @@ else:
                     punteggi_utenti[u] = 0
                 
                 for chiave_g, (r1, r2) in podio_gironi.items():
-                    lettera = chiave_g.replace("Pos_Girone_", "")
-                    p1 = str(row.get(f"Girone_{lettera}_1", "")).strip()
-                    p2 = str(row.get(f"Girone_{lettera}_2", "")).strip()
-                    if p1 == str(r1).strip() and p2 == str(r2).strip():
-                        punteggi_utenti[u] += 2
+                    lettera = "Gruppo " + chiave_g.replace("pos_girone_", "").strip().upper()
+                    #print(lettera)
+                    giocate_del_girone = df_gironi_last[df_gironi_last["Girone"] == lettera] if "Girone" in df_gironi_last.columns else pd.DataFrame()
+                # print(ultime_giocate_g.head())
+                    if not giocate_del_girone.empty:
+                        p1 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "1"].empty else ""
+                        p2 = str(giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"]["Squadra_Pronosticata"].values[0]).strip() if not giocate_del_girone[giocate_del_girone["Posizione"].astype(str) == "2"].empty else ""
+
+                        #print(f"DEBUG: Utente: {u}, Girone: {lettera}, Pronostico 1°: '{p1}', Pronostico 2°: '{p2}', Reale 1°: '{r1}', Reale 2°: '{r2}'")
+                        
+                        if p1 == str(r1).strip() and p2 == str(r2).strip():
+                            punteggi_utenti[u]["Podio_Bonus"] += 2
 
                 for colonna_campo in row.index:
                     if "Girone_" in colonna_campo:
