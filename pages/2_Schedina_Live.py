@@ -647,7 +647,7 @@ CALENDARIO_GIORNATE = {
             {"t1": "Portogallo", "t2": "Spagna", "ora": "21:00", "data": "06/07"},
             {"t1": "Stati Uniti", "t2": "Belgio", "ora": "02:00", "data": "07/07"},
             {"t1": "Argentina", "t2": "Egitto", "ora": "18:00", "data": "07/07"},
-            {"t1": "Svizzera", "t2": "TBD", "ora": "22:00", "data": "07/07"}
+            {"t1": "Svizzera", "t2": "Colombia", "ora": "22:00", "data": "07/07"}
         ],
         "Quarti (9–11 Luglio)":[],
         "Semifinali (14–15 Luglio)":[],
