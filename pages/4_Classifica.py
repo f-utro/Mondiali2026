@@ -117,6 +117,16 @@ CALENDARIO_GIORNATE = {
             {"t1": "Argentina", "t2": "Capo Verde", "ora": "00:00", "data": "04/07"},
             {"t1": "Colombia", "t2": "Ghana", "ora": "03:30", "data": "04/07"}
             ],
+            "Ottavi (4–7 Luglio)": [
+            {"t1": "Canada", "t2": "Marocco", "ora": "19:00", "data": "05/07"},
+            {"t1": "Paraguay", "t2": "Francia", "ora": "23:00", "data": "04/07"},
+            {"t1": "Brasile", "t2": "Norvegia", "ora": "22:00", "data": "05/07"},
+            {"t1": "Messico", "t2": "Inghilterra", "ora": "02:00", "data": "06/07"},
+            {"t1": "Portogallo", "t2": "Spagna", "ora": "21:00", "data": "06/07"},
+            {"t1": "Stati Uniti", "t2": "Belgio", "ora": "02:00", "data": "07/07"},
+            {"t1": "Argentina", "t2": "Egitto", "ora": "18:00", "data": "07/07"},
+            {"t1": "Svizzera", "t2": "Colombia", "ora": "22:00", "data": "07/07"}
+        ],
     }
 
 from datetime import datetime
