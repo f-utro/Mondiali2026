@@ -649,7 +649,11 @@ CALENDARIO_GIORNATE = {
             {"t1": "Argentina", "t2": "Egitto", "ora": "18:00", "data": "07/07"},
             {"t1": "Svizzera", "t2": "Colombia", "ora": "22:00", "data": "07/07"}
         ],
-        "Quarti (9–11 Luglio)":[],
+        "Quarti (9–11 Luglio)": [
+            {"t1": "Francia", "t2": "Marocco", "ora": "22:00", "data": "09/07"},
+            {"t1": "Spagna", "t2": "Belgio", "ora": "21:00", "data": "10/07"},
+            {"t1": "Norvegia", "t2": "Inghilterra", "ora": "23:00", "data": "11/07"},
+            {"t1": "Argentina", "t2": "Svizzera", "ora": "03:00", "data": "12/07"}],
         "Semifinali (14–15 Luglio)":[],
         "Finale per il terzo posto (18 Luglio)":[],
         "Finale (19 Luglio)":[]
@@ -855,7 +859,7 @@ if not giornate_disponibili:
 giornata_scelta = st.selectbox(
     "📅 Seleziona il turno:", 
     options=giornate_disponibili,
-    index=4
+    index=5
 )
 st.session_state.giornata = giornata_scelta
 

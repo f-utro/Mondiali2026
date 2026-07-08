@@ -127,6 +127,11 @@ CALENDARIO_GIORNATE = {
             {"t1": "Argentina", "t2": "Egitto", "ora": "18:00", "data": "07/07"},
             {"t1": "Svizzera", "t2": "Colombia", "ora": "22:00", "data": "07/07"}
         ],
+        "Quarti (9–11 Luglio)": [
+            {"t1": "Francia", "t2": "Marocco", "ora": "22:00", "data": "09/07"},
+            {"t1": "Spagna", "t2": "Belgio", "ora": "21:00", "data": "10/07"},
+            {"t1": "Norvegia", "t2": "Inghilterra", "ora": "23:00", "data": "11/07"},
+            {"t1": "Argentina", "t2": "Svizzera", "ora": "03:00", "data": "12/07"}],
     }
 
 from datetime import datetime
