@@ -654,9 +654,12 @@ CALENDARIO_GIORNATE = {
             {"t1": "Spagna", "t2": "Belgio", "ora": "21:00", "data": "10/07"},
             {"t1": "Norvegia", "t2": "Inghilterra", "ora": "23:00", "data": "11/07"},
             {"t1": "Argentina", "t2": "Svizzera", "ora": "03:00", "data": "12/07"}],
-        "Semifinali (14–15 Luglio)":[],
-        "Finale per il terzo posto (18 Luglio)":[],
-        "Finale (19 Luglio)":[]
+        "Semifinali (14–15 Luglio)":[
+        {"t1": "Francia", "t2": "Spagna", "ora": "21:00", "data": "14/07"},
+        {"t1": "Non conosciuta", "t2": "Non conosciuta", "ora": "21:00", "data": "15/07"}],
+        "Finali (18-19 Luglio)":[{"t1": "Non conosciuta", "t2": "Non conosciuta", "ora": "23:00", "data": "18/07"},
+        {"t1": "Non conosciuta", "t2": "Non conosciuta", "ora": "21:00", "data": "19/07"}],
+       
     }
 
 
