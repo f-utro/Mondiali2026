@@ -135,6 +135,8 @@ CALENDARIO_GIORNATE = {
         "Semifinali (14–15 Luglio)":[
         {"t1": "Francia", "t2": "Spagna", "ora": "21:00", "data": "14/07"},
         {"t1": "Inghilterra", "t2": "Argentina", "ora": "21:00", "data": "15/07"}],
+        "Finali (18-19 Luglio)":[{"t1": "Francia", "t2": "Inghilterra", "ora": "23:00", "data": "18/07"},
+        {"t1": "Spagna", "t2": "Argentina", "ora": "21:00", "data": "19/07"}],
     }
 
 from datetime import datetime
